@@ -87,9 +87,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">สร้างออเดอร์</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="del2()">
                     <span aria-hidden="true">&times;</span>
                 </button>
+                <script>
+                function del2(){
+                    popup1 = document.querySelector("#exampleModal")
+                    popup1.setAttribute("aria-hidden", "true")
+                    popup1.removeAttribute("aria-modal")
+                }
+                </script>
             </div>
             <form action="{% url 'create_table' %}" method="POST">
                 <div class="modal-body">
