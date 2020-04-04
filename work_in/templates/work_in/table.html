@@ -47,7 +47,7 @@
 
 <div class="row" style="margin-top:50px;">
     <div class="col">
-        <h1>ทำการเลือกโต๊ะ</h1>
+        <h1>รายชื่อโต๊ะ</h1>
     </div>
     <div class="col" align="right"><button href="{% url 'create_table' %}" type="button" class="btn btn-success"
             style="height: 60px;padding-top: 7.5px;" data-toggle="modal" data-target="#exampleModal">+
@@ -66,7 +66,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <a type="button" class="btn btn-info"
+                <a href="{% url 'at_store' %}" type="button" class="btn btn-info"
                     style="width:100%; margin-bottom: 50px; color:#fff;">นั่งทานที่ร้าน</a>
                 <button type="button" class="btn btn-info" style="width:100%; margin-bottom: 50px; color:#fff;"
                     data-toggle="modal" data-target="#exampleModal2" onclick="change_detail()">สั่งกลับบ้าน</button>
