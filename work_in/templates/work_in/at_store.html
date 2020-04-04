@@ -52,7 +52,7 @@
     </div>
     <div class="col" align="right"><button href="{% url 'create_table' %}" type="button" class="btn btn-primary"
             style="height: 60px;padding-top: 7.5px;" data-toggle="modal"
-            data-target="#exampleModal">ดำเนินการต่อ</button></div>
+            data-target="#exampleModal" onclick="table_list()">ดำเนินการต่อ</button></div>
 </div>
 
 <!-- Modal -->
@@ -87,24 +87,57 @@
 <center>
     <div class="row row-cols-4 row-cols-sm-3 row-cols-md-5 " id="table_list">
         {% for t in table %}
-        {% if t.status %}
         <div class="col"><button class="activetable" type="button" onclick="select_order(this)">{{t.id}}</button></div>
-        {% else %}
-        <div class="col"><button class="busytable" type="button" disable>{{t.id}}</button></div>
-        {% endif %}
+
         {% endfor %}
     </div>
 </center>
-<script>
-    var table_book = []
+<div class="hidden_div" style="display:none">
 
+</div>
+
+<script>
     function select_order(button) {
+        var div = document.querySelector(".hidden_div")
+        var num = document.querySelectorAll(".hidden_div > input");
         if (button.style.border == "10px solid rgb(51, 51, 51)") {
             button.style.border = "0px solid #333";
+            var count = div.childElementCount
+            for(i=0;i<count;i++){
+                console.log(button.innerHTML, num[i].value)
+                if(button.innerHTML == num[i].value){
+                    num[i].remove()
+                    break
+                }
+                
+            }
+            console.log(div)    
         } else {
             button.style.border = "10px solid #333";
+            hidden_input = document.createElement("input")
+            hidden_input.setAttribute("type", "text")
+            hidden_input.setAttribute("value", button.innerHTML)
+            div.appendChild(hidden_input)       
+            console.log(div)
         }
 
+    }
+    function table_list(){
+        var div = document.querySelector(".hidden_div")
+        var count = div.childElementCount
+        var num = document.querySelectorAll(".hidden_div > input");
+        var text = document.querySelector("#exampleModalLabel");
+        text.innerHTML = "โต๊ะที่เลือก คือ "
+        for(i=0;i<count;i++){
+            if(i==0){
+                text.innerHTML = text.innerHTML+num[i].value
+            }
+            else{
+                text.innerHTML = text.innerHTML+", "+num[i].value
+            }
+            
+        }
+        console.log(text.innerHTML)
     }
 </script>
 {% endblock  %}
