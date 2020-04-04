@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    #table_list .col {
+        text-align: center;
+        height: 75px;
+        border-radius: 5px;
+        margin: 15px 2.5%;
+        font-size: 25px;
+        box-shadow: 2px 2px 3px 3px #ccc;
+        padding: 0px 0px;
+
+    }
+
+    #table_list .col a {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        border-radius: 5px;
+        text-decoration: none;
+        padding-top: 17.5px;
+        color: #fff;
+    }
+
+    .activetable {
+        background: #ffb385;
+        transition: 0.25s;
+    }
+
+    .busytable {
+        background: #333;
+        color: #fff;
+        opacity: 0.3;
+        pointer-events: none;
+    }
+
+    .activetable:hover {
+        background: #f78259;
+    }
+
+    @media screen and (max-width: 600px) {
+        #table_list {
+            margin-left: 4%;
+        }
+    }
+</style>
+
+<div class="row" style="margin-top:50px;">
+    <div class="col">
+        <h1>Table</h1>
+    </div>
+    <div class="col" align="right"><button href="{% url 'create_table' %}" type="button" class="btn btn-success"
+            style="height: 60px;padding-top: 7.5px;" data-toggle="modal" data-target="#exampleModal">+
+            สร้างโต๊ะ</button></div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">สร้างโต๊ะ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{% url 'create_table' %}" method="POST">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    {{ form_table }}
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    <input type="submit" class="btn btn-primary" value="ยืนยืน">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<center>
+    <div class="row row-cols-4 row-cols-sm-3 row-cols-md-5 " id="table_list">
+        {% for t in table %}
+        {% if t.status %}
+        <div class="col"><a href="" class="activetable" type="button">{{t.id}}</a></div>
+        {% else %}
+        <div class="col"><a href="https://www.youtube.com/feed/subscriptions" class="busytable" type="button"
+                disable>{{t.id}}</a></div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</center>
+{% endblock  %}
