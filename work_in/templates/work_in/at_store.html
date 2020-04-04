@@ -24,7 +24,7 @@
     }
 
     .activetable {
-        background: #ffb385;
+        background: #84a9ac;
         transition: 0.25s;
     }
 
@@ -36,7 +36,7 @@
     }
 
     .activetable:hover {
-        background: #f78259;
+        background: #3b6978;
     }
 
     @media screen and (max-width: 600px) {
@@ -50,9 +50,9 @@
     <div class="col">
         <h1>ทำการเลือกโต๊ะ</h1>
     </div>
-    <div class="col" align="right"><button href="{% url 'create_table' %}" type="button" class="btn btn-primary"
+    <div class="col" align="right"><button type="button" class="btn btn-primary"
             style="height: 60px;padding-top: 7.5px;" data-toggle="modal"
-            data-target="#exampleModal" onclick="table_list()">ดำเนินการต่อ</button></div>
+            data-target="#exampleModal" onclick="table_list()" id="next_button" disabled>ดำเนินการต่อ</button></div>
 </div>
 
 <!-- Modal -->
@@ -89,7 +89,11 @@
 <center>
     <div class="row row-cols-4 row-cols-sm-3 row-cols-md-5 " id="table_list">
         {% for t in table %}
+        {% if t.status %}
+        <div class="col"><button class="busytable" type="button" onclick="select_order(this)" disabled>{{t.id}} <i class="fas fa-lock"></i></button></div>
+        {% else %}   
         <div class="col"><button class="activetable" type="button" onclick="select_order(this)">{{t.id}}</button></div>
+        {% endif %}
         {% endfor %}
     </div>
 </center>
@@ -99,15 +103,14 @@
 <script>
     function select_order(button) {
         var div = document.querySelector(".hidden_div")
-        var num = document.querySelectorAll(".hidden_div > input");
         var hidden_input;
-        if (button.style.border == "10px solid rgb(51, 51, 51)") {
+        if (button.style.border == "5px solid rgb(45, 45, 45)") {
             button.style.border = "0px solid #333";
             hidden_input = document.getElementById("t"+button.innerHTML)
             hidden_input.remove()
             console.log(div)    
         } else {
-            button.style.border = "10px solid #333";
+            button.style.border = "5px solid rgb(45, 45, 45)";
             hidden_input = document.createElement("input")
             hidden_input.setAttribute("type", "text")
             hidden_input.setAttribute("value", button.innerHTML)
@@ -115,6 +118,13 @@
             hidden_input.setAttribute("id", "t"+button.innerHTML)
             div.appendChild(hidden_input)       
             console.log(div)
+        }
+        if (div.childElementCount == 0){
+            console.log(div.childElementCount)
+            document.querySelector("#next_button").disabled = true
+        }
+        else{
+            document.querySelector("#next_button").disabled = false
         }
 
     }
