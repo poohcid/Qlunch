@@ -67,8 +67,9 @@
                 </button>
             </div>
             <form action="{% url 'create_table' %}" method="POST">
-                <div class="modal-body">
+                <div class="modal-body" id="field">
                     {% csrf_token %}
+                    <input type="hidden" value="0">
                     {% for order in form_order %}
                     {{ order.label }}
                     {{ order }}
@@ -99,11 +100,20 @@
     var table_book = []
 
     function select_order(button) {
+        let input1;
         if (button.style.border == "10px solid rgb(51, 51, 51)") {
             button.style.border = "0px solid #333";
+            input1 = document.getElementById("t"+button.innerHTML)
+            input1.remove()
         } else {
             button.style.border = "10px solid #333";
+            input1 = document.createElement("input");
+            input1.name = "t"+button.innerHTML;
+            input1.id = "t"+button.innerHTML;
+            input1.type = "hidden";
+            document.getElementById("field").appendChild(input1)
         }
+        console.log(input1);
 
     }
 </script>
