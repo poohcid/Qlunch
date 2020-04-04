@@ -76,6 +76,7 @@
                     {% endfor %}
                 </div>
                 <div class="hidden_div" style="display:none"></div>
+                <input type="hidden" name="count_table" value="" id="count_table">
                 <div class="modal-footer">
                     <input type="submit" class="btn btn-primary" value="ยืนยืน">
                 </div>
@@ -120,10 +121,12 @@
     function table_list(){
         var div = document.querySelector(".hidden_div")
         var count = div.childElementCount
+        document.getElementById("count_table").value = ""
         var num = document.querySelectorAll(".hidden_div > input");
         var text = document.querySelector("#exampleModalLabel");
         text.innerHTML = "หมายเลขโต๊ะที่เลือก คือ "
         for(i=0;i<count;i++){
+            document.getElementById("count_table").value += num[i].value
             if(i==0){
                 text.innerHTML = text.innerHTML+num[i].value
             }
