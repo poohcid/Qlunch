@@ -47,11 +47,11 @@
 
 <div class="row" style="margin-top:50px;">
     <div class="col">
-        <h1>Table</h1>
+        <h1>ทำการเลือกโต๊ะ</h1>
     </div>
     <div class="col" align="right"><button href="{% url 'create_table' %}" type="button" class="btn btn-success"
             style="height: 60px;padding-top: 7.5px;" data-toggle="modal" data-target="#exampleModal">+
-            สร้างโต๊ะ</button></div>
+            สร้างออเดอร์</button></div>
 </div>
 
 <!-- Modal -->
@@ -60,7 +60,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">สร้างโต๊ะ</h5>
+                <h5 class="modal-title" id="exampleModalLabel">สร้างออเดอร์</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -68,8 +68,11 @@
             <form action="{% url 'create_table' %}" method="POST">
                 <div class="modal-body">
                     {% csrf_token %}
-                    {{ form_table }}
-
+                    {% for order in form_order %}
+                        {{ order.label }}
+                        {{ order }}
+                        <br><br>
+                    {% endfor %}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>

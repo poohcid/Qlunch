@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .card a{
+        width: 150px;
+    }
+</style>
+<h1 style="margin:50px 0 50px 0;">โปรดเลือก</h1>
+<center>
+<div class="row">
+    <div class="col">
+        <div class="card" style="width: 18rem;">
+            <img src="https://www.elmedico.net/wp-content/uploads/2019/07/Food-quality-.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">ทานที่ร้าน</h5>
+                <a href="{% url 'table' %}" class="btn btn-primary">เลือก</a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card" style="width: 18rem;">
+            <img src="https://www.elmedico.net/wp-content/uploads/2019/07/Food-quality-.jpg" class="card-img-top" alt="..." style="">
+            <div class="card-body">
+                <h5 class="card-title">ทานที่บ้าน</h5>
+                <a href="#" class="btn btn-primary">เลือก</a>
+            </div>
+        </div>
+    </div>
+</div>
+</center>
+{% endblock  %}
