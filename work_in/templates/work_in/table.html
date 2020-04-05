@@ -49,7 +49,7 @@
     <div class="col">
         <h1>รายชื่อโต๊ะ</h1>
     </div>
-    <div class="col" align="right"><button href="{% url 'create_table' %}" type="button" class="btn btn-success"
+    <div class="col" align="right"><button type="button" class="btn btn-success"
             style="height: 60px;padding-top: 7.5px;" data-toggle="modal" data-target="#exampleModal">+
             สร้างออเดอร์</button></div>
 </div>
@@ -86,7 +86,7 @@
     </div>
 </div>
 <div class="hidden" style="display:none;">
-    <form action="{% url 'create_table' %}" method="POST">
+    <form action="{% url 'create_order' %}" method="POST">
         <div class="modal-body">
             {% csrf_token %}
             {% for order in form_order %}
@@ -95,6 +95,7 @@
             <br><br>
             {% endfor %}
         </div>
+        <input type="hidden" name="count_table" value="" id="count_table">
         <div class="modal-footer">
             <input type="submit" class="btn btn-primary" value="ยืนยืน">
         </div>
