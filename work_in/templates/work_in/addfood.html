@@ -29,7 +29,7 @@
                 <div class="foodname p-1 flex-grow-1 bd-highlight">{{ f.name }}</div>
                 <div class="p-1 bd-highlight alert alert-primary m-0">{{ f.price }} บาท</div>
                 <div class="p-1 bd-highlight"> <button type="button" class="btn btn-success" onclick="addtoOrder(this)"
-                        value="{{ f.name }}">
+                        value="{{ f.name }}" price="{{ f.price }}">
                         เพิ่ม
                     </button></div>
             </li>
@@ -43,7 +43,7 @@
         <div class="d-flex bd-highlight">
             <div class="p-2 w-100 bd-highlight">
                 <h3>รายการอาหารของออเดอร์</h3>
-                <h4>ราคาทั้งหมด : 0 บาท</h4>
+                <h4>ราคาทั้งหมด : <span id="total_price">0</span> บาท</h4>
             </div>
             <div class="p-2 flex-shrink-1 bd-highlight">
                 <input class="btn btn-primary" type="submit" name="" id="" value="ดำเนินการต่อ">
@@ -60,10 +60,15 @@
     var total_price = 0;
     var count = 1
 
+    function calTotalPrice(number){
+        total_price = Number(document.getElementById("total_price").innerHTML)
+    }
+
     function addtoOrder(list) {
         var order_ul = document.querySelectorAll("#foodorder > li")
         var have_menu = false
 
+        //เพิ่มของเดิม
         for (i = 0; i < order_ul.length; i++) {
             if (list.value == order_ul[i].firstChild.textContent) {
                 num = order_ul[i].firstChild.nextSibling.value
@@ -71,18 +76,21 @@
                 have_menu = true
             }
         }
+        //สร้างใหม่
         if (have_menu == false) {
             ul = document.querySelector("#foodorder")
             li = document.createElement("li")
             li.className = "list-group-item d-flex justify-content-between align-items-center"
             li.innerHTML = '<div class="foodname p-1 flex-grow-1 bd-highlight">' + list.value + '</div>'
             li.innerHTML = li.innerHTML + '<input class="amount' + count +
-                ' form-control" style="width: 60px; margin-right: 10px;" type="number" value="1" min="0" max="999"/>'
+                ' form-control" price="'+list.getAttribute("price")+'" style="width: 60px; margin-right: 10px;" type="number" value="1" min="0" max="999"/>'
             li.innerHTML = li.innerHTML +
                 '<button type="button" class="btn btn-danger" onclick="deleteMenu(this)">ลบ</button>'
             ul.appendChild(li)
             count = count + 1
         }
+
+        calTotalPrice(1)
     }
 
     function deleteMenu(menuname) {
