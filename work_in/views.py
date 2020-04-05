@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.shortcuts import redirect, render
 
-from appModel.models import Order, Table, Order_in
+from appModel.models import Order, Table, Order_in, Food
 from .forms import OrderForm, TableForm
 from django.contrib.auth.models import User
 
@@ -64,3 +64,9 @@ def at_store(request):
     context['table'] = table
     context['form_order'] = form_order
     return render(request, template_name='work_in/at_store.html', context=context)
+
+def addfood(request, table_id):
+    context = {}
+    context['table'] = Table.objects.get(pk=table_id)
+    context['food'] = Food.objects.all()
+    return render(request, template_name='work_in/addfood.html', context=context)
