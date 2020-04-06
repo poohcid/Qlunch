@@ -91,13 +91,16 @@
     function addtoOrder(list) {
         var order_ul = document.querySelectorAll("#foodorder > li")
         var have_menu = false
-
+        
         //เพิ่มของเดิม
         for (i = 0; i < order_ul.length; i++) {
+            console.log("asd",i)
+            console.log(list.value, order_ul[i].firstChild.textContent)
             if (list.value == order_ul[i].firstChild.textContent) {
-                num = order_ul[i].firstChild.nextSibling.value
-                order_ul[i].firstChild.nextSibling.value = parseInt(num) + 1
+                var num = order_ul[i].firstChild.nextSibling.nextSibling.value
+                order_ul[i].firstChild.nextSibling.nextSibling.value = parseInt(num) + 1
                 have_menu = true
+               
 
             }
         }
