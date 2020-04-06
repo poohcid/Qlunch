@@ -27,7 +27,8 @@
         animation: fade .750s ease;
     }
 </style>
-<h1><br>หมายเลขโต๊ะ : {{ table.id }}</h1><br>
+<h2><br>โต๊ะที่ : {{ table.id }}</h2>
+<h2>หมายเลขออเดอร์ : {{ order.id }}</h2>
 <div class="row">
     <div class="col-md todolist">
             {% csrf_token %}
@@ -68,6 +69,17 @@
             </div>
             <h4>ราคาทั้งหมด : <span id="total_price">0</span> บาท</h4>
             <ul id="foodorder" class="list-group">
+                {% for order_food in order_foods %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center"
+                    style="animation: 0.25s ease-in-out 0s 1 normal none running expand;">
+                        <div class="foodname p-1 flex-grow-1 bd-highlight">{{ order_food.food.name }}</div>
+                        จำนวน : 
+                        <input id="amount{{ forloop.counter }}" class="form-control" price="{{ order_food.food.price }}"
+                        style="width: 60px; margin-right: 10px; margin-left: 10px;" onchange="input_event(this)"
+                        type="number" value={{ order_food.unit }} min="0" max="999">
+                        <button type="button" class="btn btn-danger" onclick="deleteMenu(this)"><i class="fas fa-trash-alt"></i> ลบ</button>
+                    </li>
+                {% endfor %}
             </ul>
         </form>
     </div>
@@ -76,7 +88,7 @@
 
 <script>
     var total_price;
-    var count = 1
+    var count = document.querySelectorAll("#foodorder > li").length
 
     function calTotalPrice() {
         total_price = 0;
@@ -155,6 +167,7 @@
             }
         }
     }
+    calTotalPrice()
 </script>
 
 {% endblock  %}

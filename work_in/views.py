@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.shortcuts import redirect, render
 
-from appModel.models import Order, Table, Order_in, Food
+from appModel.models import Order, Table, Order_in, Food, Order_food
 from .forms import OrderForm, TableForm
 from django.contrib.auth.models import User
 
@@ -67,6 +67,13 @@ def at_store(request):
 
 def add_edit_order(request, table_id):
     context = {}
-    context['table'] = Table.objects.get(pk=table_id)
+    table = Table.objects.get(pk=table_id)
+    order_ins = list(table.order_in_set.all())
+    if not order_ins:
+        return redirect('here_or_home')
+    order = list(table.order_in_set.all())[-1].order
+    context['order'] = order
+    context['table'] = table
     context['food'] = Food.objects.all()
+    context['order_foods'] = order.order_food_set.all()
     return render(request, template_name='work_in/add_edit_order.html', context=context)

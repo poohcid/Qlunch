@@ -34,6 +34,9 @@ class Order_food(models.Model):
     food = models.ForeignKey(Food, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return str(self.order.id)+" "+self.food.name+" "+str(self.unit)
+
 class Receipt(models.Model):
     date = models.DateTimeField()
     payment = models.DecimalField(max_digits=8, decimal_places=2)

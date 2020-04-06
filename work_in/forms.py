@@ -1,7 +1,7 @@
 from django.db import models
 from django.forms import ModelForm, CharField, Textarea
 from django import forms
-from appModel.models import Table, Order
+from appModel.models import Table, Order, Order_food
 
 class TableForm(ModelForm):
     class Meta:
@@ -24,5 +24,8 @@ class OrderForm(ModelForm):
             'name': 'ชื่อ ',
             'detail': 'รายละเอียด',
         }
-         
 
+class Order_food(ModelForm):
+    class Meta:
+        model = Order_food
+        fields = ['food', 'unit']
