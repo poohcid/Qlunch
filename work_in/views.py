@@ -65,12 +65,8 @@ def at_store(request):
     context['form_order'] = form_order
     return render(request, template_name='work_in/at_store.html', context=context)
 
-def addfood(request, table_id):
+def add_edit_order(request, table_id):
     context = {}
     context['table'] = Table.objects.get(pk=table_id)
     context['food'] = Food.objects.all()
-    food_name = request.POST.get("foodname", "")
-    if request.method == "POST":
-        menu = Food.objects.filter(name__icontains=food_name)
-        context['food'] = menu
-    return render(request, template_name='work_in/addfood.html', context=context)
+    return render(request, template_name='work_in/add_edit_order.html', context=context)
