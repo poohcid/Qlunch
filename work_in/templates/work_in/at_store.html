@@ -7,7 +7,7 @@
         border-radius: 5px;
         margin: 15px 2.5%;
         font-size: 25px;
-        box-shadow: 2px 2px 3px 3px #ccc;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
         padding: 0px 0px;
 
     }
@@ -19,12 +19,13 @@
         border-radius: 5px;
         text-decoration: none;
         padding-top: 10x;
-        color: #fff;
+
         transition: 0.25s;
     }
 
     .activetable {
-        background: #84a9ac;
+        background: #ff7272;
+        color: #fff;
         transition: 0.25s;
     }
 
@@ -36,7 +37,8 @@
     }
 
     .activetable:hover {
-        background: #3b6978;
+        background: #f19292;
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     }
 
     @media screen and (max-width: 600px) {
@@ -104,13 +106,13 @@
     function select_order(button) {
         var div = document.querySelector(".hidden_div")
         var hidden_input;
-        if (button.style.border == "5px solid rgb(45, 45, 45)") {
+        if (button.style.border == "7px solid rgb(45, 45, 45)") {
             button.style.border = "0px solid #333";
             hidden_input = document.getElementById("t"+button.innerHTML)
             hidden_input.remove()
             console.log(div)    
         } else {
-            button.style.border = "5px solid rgb(45, 45, 45)";
+            button.style.border = "7px solid rgb(45, 45, 45)";
             hidden_input = document.createElement("input")
             hidden_input.setAttribute("type", "text")
             hidden_input.setAttribute("value", button.innerHTML)

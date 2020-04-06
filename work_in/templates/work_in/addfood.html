@@ -3,35 +3,52 @@
 <style>
     .todolist {
         height: 600px;
-        border: 1px solid #000;
         padding: 15px;
         border-radius: 5px;
         margin: 5px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    }
+
+    @keyframes expand {
+        from {
+            transform: scale(0);
+            opacity: 0;
+            background: #5470B0;
+        }
+    }
+
+    @keyframes fade {
+        from {
+            opacity: 0;
+        }
+    }
+
+    .row {
+        animation: fade .750s ease;
     }
 </style>
 <h1><br>หมายเลขโต๊ะ : {{ table.id }}</h1><br>
 <div class="row">
     <div class="col-md todolist">
-        <div class="row">
-            <div class="col">
-                <h3>เพิ่มเมนูอาหาร</h3>
+        <form action="{% url 'addfood' table_id=table.id %}" method="POST">
+            {% csrf_token %}
+            <div class="d-flex bd-highlight">
+                <div class="p-2 flex-grow-1 bd-highlight">
+                    <h3>เพิ่มเมนูอาหาร</h3>
+                </div>
+                <div class="p-2 bd-highlight"><input type="text" name="foodname" id="" placeholder="ค้นหารายการอาหาร"
+                        class="form-control"></div>
+                <div class="p-2 bd-highlight"><button type="submit" style="height: 100%;width:42px; height:41px;"
+                        value="" class="btn btn-info"><i class="fas fa-search"></i></button></div>
             </div>
-            <div class="col">
-                <form action="">
-                    <input type="text" name="" id="" placeholder="ค้นหารายการอาหาร" class="form-control">
-                </form>
-            </div>
-        </div>
-
+        </form>
         <ul id="foodmenu" class="list-group overflow-auto">
             {% for f in food %}
             <li class="list-group-item d-flex justify-content-between align-items-center bd-highlight">
                 <div class="foodname p-1 flex-grow-1 bd-highlight">{{ f.name }}</div>
-                <div class="p-1 bd-highlight alert alert-primary m-0">{{ f.price }} บาท</div>
+                <div class="p-1 bd-highlight alert alert-danger m-0 mr-1">{{ f.price|floatformat:"0" }} บาท</div>
                 <div class="p-1 bd-highlight"> <button type="button" class="btn btn-success" onclick="addtoOrder(this)"
-                        value="{{ f.name }}" price="{{ f.price }}">
-                        เพิ่ม
-                    </button></div>
+                        value="{{ f.name }}" price="{{ f.price }}"><i class="fas fa-plus"></i> เพิ่ม</button></div>
             </li>
             {% endfor %}
         </ul>
@@ -40,16 +57,17 @@
 
     <div class="col-md todolist overflow-auto ">
         <form action="">
-        <div class="d-flex bd-highlight">
-            <div class="p-2 w-100 bd-highlight">
-                <h3>รายการอาหารของออเดอร์</h3>
-                <h4>ราคาทั้งหมด : <span id="total_price">0</span> บาท</h4>
+            <div class="d-flex bd-highlight">
+                <div class="p-1 w-100 bd-highlight">
+                    <h3>รายการอาหารของออเดอร์</h3>
+                </div>
+                <input type="hidden" name="total_price" id="form_total" value="0">
+                <div class="p-1 h-50 flex-shrink-0 bd-highlight">
+                    <button class="btn btn-primary" type="submit" name="" value="">ดำเนินการต่อ <i
+                            class="fas fa-angle-right"></i></button>
+                </div>
             </div>
-            <input type="hidden" name="total_price" id="form_total" value="0">
-            <div class="p-2 flex-shrink-1 bd-highlight">
-                <input class="btn btn-primary" type="submit" name="" id="" value="ดำเนินการต่อ">
-            </div>
-        </div>
+            <h4>ราคาทั้งหมด : <span id="total_price">0</span> บาท</h4>
             <ul id="foodorder" class="list-group">
             </ul>
         </form>
@@ -60,12 +78,13 @@
 <script>
     var total_price;
     var count = 1
+    getLocalStorage()
 
-    function calTotalPrice(){
+    function calTotalPrice() {
         total_price = 0;
         let inputs = document.getElementsByClassName("form-control")
-        for (let i=1; i < inputs.length; i++){
-            total_price += inputs[i].value*Number(inputs[i].getAttribute("price"))
+        for (let i = 1; i < inputs.length; i++) {
+            total_price += inputs[i].value * Number(inputs[i].getAttribute("price"))
         }
         document.getElementById("total_price").innerHTML = total_price
         document.getElementById("form_total").value = total_price
@@ -81,6 +100,7 @@
                 num = order_ul[i].firstChild.nextSibling.value
                 order_ul[i].firstChild.nextSibling.value = parseInt(num) + 1
                 have_menu = true
+
             }
         }
         //สร้างใหม่
@@ -89,9 +109,12 @@
             li = document.createElement("li")
             li.className = "list-group-item d-flex justify-content-between align-items-center"
             li.innerHTML = '<div class="foodname p-1 flex-grow-1 bd-highlight">' + list.value + '</div>'
-            li.innerHTML = li.innerHTML + '<input id="amount'+ count +'"class="form-control" price="'+list.getAttribute("price")+
-            '"style="width: 60px; margin-right: 10px;" onchange="input_event(this)" type="number" value="1" min="0" max="999"/>'
-            li.innerHTML = li.innerHTML +'<button type="button" class="btn btn-danger" onclick="deleteMenu(this)">ลบ</button>'
+            li.innerHTML = li.innerHTML + '<input id="amount' + count + '"class="form-control" price="' + list
+                .getAttribute("price") +
+                '"style="width: 60px; margin-right: 10px;" onchange="input_event(this)" type="number" value="1" min="0" max="999"/>'
+            li.innerHTML = li.innerHTML +
+                '<button type="button" class="btn btn-danger" onclick="deleteMenu(this)">ลบ</button>'
+            li.style.animation = "expand .25s ease-in-out"
             ul.appendChild(li)
             count = count + 1
         }
@@ -102,16 +125,15 @@
     function deleteMenu(menuname) {
         menuname.parentNode.remove()
         calTotalPrice()
+
     }
 
-    function input_event(input){
-        if (input.value <= 0){
+    function input_event(input) {
+        if (input.value <= 0) {
             deleteMenu(input)
         }
         calTotalPrice()
     }
 </script>
 
-
-<button onclick="calculate()">asdds</button>
 {% endblock  %}

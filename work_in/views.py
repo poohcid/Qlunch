@@ -69,4 +69,8 @@ def addfood(request, table_id):
     context = {}
     context['table'] = Table.objects.get(pk=table_id)
     context['food'] = Food.objects.all()
+    food_name = request.POST.get("foodname", "")
+    if request.method == "POST":
+        menu = Food.objects.filter(name__icontains=food_name)
+        context['food'] = menu
     return render(request, template_name='work_in/addfood.html', context=context)
