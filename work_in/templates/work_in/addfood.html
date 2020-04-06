@@ -30,26 +30,27 @@
 <h1><br>หมายเลขโต๊ะ : {{ table.id }}</h1><br>
 <div class="row">
     <div class="col-md todolist">
-        <form action="{% url 'addfood' table_id=table.id %}" method="POST">
             {% csrf_token %}
             <div class="d-flex bd-highlight">
                 <div class="p-2 flex-grow-1 bd-highlight">
                     <h3>เพิ่มเมนูอาหาร</h3>
                 </div>
-                <div class="p-2 bd-highlight"><input type="text" name="foodname" id="" placeholder="ค้นหารายการอาหาร"
-                        class="form-control"></div>
+                <div class="p-2 bd-highlight"><input type="text" name="foodname" id="foodname_input"
+                        placeholder="ค้นหารายการอาหาร" class="form-control" onkeyup="search_menu()"></div>
                 <div class="p-2 bd-highlight"><button type="submit" style="height: 100%;width:42px; height:41px;"
                         value="" class="btn btn-info"><i class="fas fa-search"></i></button></div>
             </div>
-        </form>
         <ul id="foodmenu" class="list-group overflow-auto">
             {% for f in food %}
-            <li class="list-group-item d-flex justify-content-between align-items-center bd-highlight">
-                <div class="foodname p-1 flex-grow-1 bd-highlight">{{ f.name }}</div>
-                <div class="p-1 bd-highlight alert alert-danger m-0 mr-1">{{ f.price|floatformat:"0" }} บาท</div>
-                <div class="p-1 bd-highlight"> <button type="button" class="btn btn-success" onclick="addtoOrder(this)"
-                        value="{{ f.name }}" price="{{ f.price }}"><i class="fas fa-plus"></i> เพิ่ม</button></div>
-            </li>
+            <div class="col">
+                <li class="list_menu list-group-item d-flex justify-content-between align-items-center bd-highlight">
+                    <div class="foodname p-1 flex-grow-1 bd-highlight">{{ f.name }}</div>
+                    <div class="p-1 bd-highlight alert alert-danger m-0 mr-1">{{ f.price|floatformat:"0" }} บาท</div>
+                    <div class="p-1 bd-highlight"> <button type="button" class="btn btn-success"
+                            onclick="addtoOrder(this)" value="{{ f.name }}" price="{{ f.price }}"><i
+                                class="fas fa-plus"></i> เพิ่ม</button></div>
+                </li>
+            </div>
             {% endfor %}
         </ul>
     </div>
@@ -78,7 +79,6 @@
 <script>
     var total_price;
     var count = 1
-    getLocalStorage()
 
     function calTotalPrice() {
         total_price = 0;
@@ -133,6 +133,29 @@
             deleteMenu(input)
         }
         calTotalPrice()
+    }
+
+    function search_menu() {
+
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById('foodname_input');
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("foodmenu");
+        li = ul.getElementsByTagName('li');
+
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByClassName("foodname")[0];
+
+            txtValue = a.textContent
+            console.log(txtValue, txtValue.toUpperCase().indexOf(filter))
+            console.log(li[i])
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].parentNode.style.display = "";
+            } else {
+                console.log("none")
+                li[i].parentNode.style.display = "none";
+            }
+        }
     }
 </script>
 
