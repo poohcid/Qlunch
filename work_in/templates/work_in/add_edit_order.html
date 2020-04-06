@@ -111,7 +111,7 @@
                 .getAttribute("price") +
                 '"style="width: 60px; margin-right: 10px;" onchange="input_event(this)" type="number" value="1" min="0" max="999"/>'
             li.innerHTML = li.innerHTML +
-                '<button type="button" class="btn btn-danger" onclick="deleteMenu(this)">ลบ</button>'
+                '<button type="button" class="btn btn-danger" onclick="deleteMenu(this)"><i class="fas fa-trash-alt"></i> ลบ</button>'
             li.style.animation = "expand .25s ease-in-out"
             ul.appendChild(li)
             count = count + 1
