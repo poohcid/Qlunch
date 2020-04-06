@@ -1,11 +1,13 @@
 
 from datetime import datetime
 
+from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from appModel.models import Order, Table, Order_in, Food, Order_food
+from appModel.models import Food, Order, Order_food, Order_in, Table
+
 from .forms import OrderForm, TableForm
-from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -56,7 +58,6 @@ def table(request):
 
     return render(request, template_name='work_in/table.html', context=context)
 
-
 def at_store(request):
     context = {}
     table = Table.objects.all().order_by('id')
@@ -65,15 +66,46 @@ def at_store(request):
     context['form_order'] = form_order
     return render(request, template_name='work_in/at_store.html', context=context)
 
-def add_edit_order(request, table_id):
+def save_order(request, order_id):
+    if request.method == "POST":
+        order = Order.objects.get(pk=order_id)
+        remove_list = order.order_food_set.exclude(food__in=request.POST.get("order_foods"))
+        for order_food in remove_list:
+            print(order_food)
+            order_food.delete()
+        for food_id in request.POST.get("order_foods"):
+            food = Food.objects.get(pk=food_id)
+            order_foods = order.order_food_set.filter(food=food)
+            if order_foods:
+                order_food = order_foods[0]
+                order_food.unit = int(request.POST.get(food_id))
+                order_food.food_price = int(request.POST.get(food_id))*food.price
+                order_food.save()
+            else:
+                Order_food.objects.create(
+                    food_price = int(request.POST.get(food_id))*food.price,
+                    unit = int(request.POST.get(food_id)),
+                    food = food,
+                    order = order
+                )
+
+    return redirect('here_or_home')
+
+
+def edit_order_food(request, order, table=False):
     context = {}
+    context['order'] = order
+    if table:
+        context['table'] = table
+    context['food'] = Food.objects.all()
+    context['order_foods'] = order.order_food_set.all()
+    return render(request, template_name='work_in/add_edit_order.html', context=context)
+    
+
+def select_table(request, table_id):
     table = Table.objects.get(pk=table_id)
     order_ins = list(table.order_in_set.all())
     if not order_ins:
         return redirect('here_or_home')
     order = list(table.order_in_set.all())[-1].order
-    context['order'] = order
-    context['table'] = table
-    context['food'] = Food.objects.all()
-    context['order_foods'] = order.order_food_set.all()
-    return render(request, template_name='work_in/add_edit_order.html', context=context)
+    return edit_order_food(request, order, table)
