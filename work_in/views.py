@@ -69,4 +69,4 @@ def add_edit_order(request, table_id):
     context = {}
     context['table'] = Table.objects.get(pk=table_id)
     context['food'] = Food.objects.all()
-    return render(request, template_name='work_in/addfood.html', context=context)
+    return render(request, template_name='work_in/add_edit_order.html', context=context)
