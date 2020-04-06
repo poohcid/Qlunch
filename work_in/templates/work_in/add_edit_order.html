@@ -99,7 +99,7 @@
         input_order_food.value = ""
         let inputs = document.getElementsByClassName("form-control")
         for (let i = 1; i < inputs.length; i++) {
-            input_order_food.value += inputs[i].getAttribute("name")
+            input_order_food.value += inputs[i].getAttribute("name")+","
             total_price += inputs[i].value * Number(inputs[i].getAttribute("price"))
         }
         document.getElementById("total_price").innerHTML = total_price
@@ -117,8 +117,6 @@
                 var num = order_ul[i].firstElementChild.nextSibling.nextSibling.value
                 order_ul[i].firstElementChild.nextSibling.nextSibling.value = parseInt(num) + 1
                 have_menu = true
-               
-
             }
         }
         //สร้างใหม่
