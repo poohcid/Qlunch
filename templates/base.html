@@ -20,6 +20,7 @@
   <style>
     body {
       font-family: 'Kanit', sans-serif;
+
     }
 
     .container-md {
@@ -35,16 +36,29 @@
     li {
       list-style: none;
     }
-    .footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            /* Set the fixed height of the footer here */
-            height: 60px;
-            line-height: 60px;
-            /* Vertically center the text there */
-            background-color: rgb(52, 58, 64);
-        }
+
+
+    ::-webkit-scrollbar {
+      width: 10px;
+     
+    }
+
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      
+    }
+
+
+    ::-webkit-scrollbar-thumb {
+      background: #888;
+       border-radius: 5px;
+    }
+
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
   </style>
 
 </head>
@@ -91,11 +105,7 @@
     {% block content %}
     {% endblock  %}
   </div>
-  <footer class="footer">
-    <div class="container">
-      <span class="text-muted"><i class="fab fa-github" style="font-size:25px;"></i>  Web Progamming IT.KMITL 2020</span>
-    </div>
-  </footer>
+
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
   </script>
