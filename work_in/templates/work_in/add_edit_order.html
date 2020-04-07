@@ -26,28 +26,31 @@
     .row {
         animation: fade .750s ease;
     }
+
+    .list_menu:hover {
+        background: #EEE;
+        transition: 0.2s;
+    }
 </style>
 <h2><br>โต๊ะที่ : {{ table.id }}</h2>
 <h2>หมายเลขออเดอร์ : {{ order.id }}</h2>
 <div class="row">
-    <div class="col-md todolist">
-            {% csrf_token %}
-            <div class="d-flex bd-highlight">
-                <div class="p-2 flex-grow-1 bd-highlight">
-                    <h3>เพิ่มเมนูอาหาร</h3>
-                </div>
-                <div class="p-2 bd-highlight"><input type="text" name="foodname" id="foodname_input"
-                        placeholder="ค้นหารายการอาหาร" class="form-control" onkeyup="search_menu()"></div>
+    <div class="col-md todolist overflow-auto">
+        {% csrf_token %}
+        <div class="d-flex bd-highlight">
+            <div class="p-2 flex-grow-1 bd-highlight">
+                <h3>เพิ่มเมนูอาหาร</h3>
             </div>
-        <ul id="foodmenu" class="list-group overflow-auto">
+            <div class="p-2 bd-highlight"><input type="text" name="foodname" id="foodname_input"
+                    placeholder="ค้นหารายการอาหาร" class="form-control" onkeyup="search_menu()"></div>
+        </div>
+        <ul id="foodmenu" class="list-group">
             {% for f in food %}
-            <div class="col">
+            <div class="col" onclick="addtoOrder(this)" value="{{ f.name }}" price="{{ f.price }}" food-id="{{ f.id }}">
                 <li class="list_menu list-group-item d-flex justify-content-between align-items-center bd-highlight">
                     <div class="foodname p-1 flex-grow-1 bd-highlight">{{ f.name }}</div>
-                    <div class="p-1 bd-highlight alert alert-danger m-0 mr-1">{{ f.price|floatformat:"0" }} บาท</div>
-                    <div class="p-1 bd-highlight"> <button type="button" class="btn btn-success" food-id="{{ f.id }}"
-                            onclick="addtoOrder(this)" value="{{ f.name }}" price="{{ f.price }}"><i
-                                class="fas fa-plus"></i> เพิ่ม</button></div>
+                    <div class="p-1 bd-highlight alert alert-danger m-0 mr-1">{{ f.price|floatformat:"0" }} บาท
+                    </div>
                 </li>
             </div>
             {% endfor %}
@@ -55,38 +58,65 @@
     </div>
 
 
-    <div class="col-md todolist overflow-auto ">
+    <div class="col-md todolist overflow-auto">
         <form action="{% url 'save_order' order_id=order.id %}" method="POST">
-        {% csrf_token %}
+            {% csrf_token %}
             <div class="d-flex bd-highlight">
                 <div class="p-1 w-100 bd-highlight">
                     <h3>รายการอาหารของออเดอร์</h3>
                 </div>
                 <input type="hidden" name="total_price" id="form_total" value="0">
                 <div class="p-1 h-50 flex-shrink-0 bd-highlight">
-                    <button class="btn btn-primary" type="submit" name="" value="">ดำเนินการต่อ <i
-                            class="fas fa-angle-right"></i></button>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"
+                        type="button">ดำเนินการต่อ <i class="fas fa-angle-right"></i></button>
                 </div>
             </div>
             <h4>ราคาทั้งหมด : <span id="total_price">0</span> บาท</h4>
             <input type="hidden" id="order_foods" name="order_foods" value="">
             <ul id="foodorder" class="list-group">
                 {% for order_food in order_foods %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center"
+                <li class="list-group-item d-flex justify-content-between align-items-center"
                     style="animation: 0.25s ease-in-out 0s 1 normal none running expand;">
-                        <div class="foodname p-1 flex-grow-1 bd-highlight">{{ order_food.food.name }}</div>
-                        จำนวน : 
-                        <input id="amount{{ forloop.counter }}" class="form-control" price="{{ order_food.food.price }}"
-                        name="{{ order_food.food.id }}" style="width: 60px; margin-right: 10px; margin-left: 10px;" onchange="input_event(this)"
-                        type="number" value={{ order_food.unit }} min="0" max="999">
-                        <button type="button" class="btn btn-danger" onclick="deleteMenu(this)"><i class="fas fa-trash-alt"></i> ลบ</button>
-                    </li>
+                    <div class="foodname p-1 flex-grow-1 bd-highlight">{{ order_food.food.name }}</div>
+                    จำนวน :
+                    <input id="amount{{ forloop.counter }}" class="form-control" price="{{ order_food.food.price }}"
+                        name="{{ order_food.food.id }}" style="width: 60px; margin-right: 10px; margin-left: 10px;"
+                        onchange="input_event(this)" type="number" value={{ order_food.unit }} min="0" max="999">
+                    <button type="button" class="btn btn-danger" onclick="deleteMenu(this)"><i
+                            class="fas fa-trash-alt"></i> ลบ</button>
+                </li>
                 {% endfor %}
             </ul>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">โปรดเลือกเพื่อดำเนินการต่อ</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <center>
+                            <div class="modal-body">
+                                <button type="submit" class="btn btn-success"
+                                    value="save"><i class="fas fa-save"></i> บันทึกข้อมูล</button>
+                                <button type="submit" class="btn btn-primary"
+                                    value="sendorder"><i class="fas fa-paper-plane"></i> ส่งออเดอร์</button>
+                            </div>
+                        </center>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
-
 </div>
+
+
+
+
+
 
 <script>
     var total_price;
@@ -99,7 +129,7 @@
         input_order_food.value = ""
         let inputs = document.getElementsByClassName("form-control")
         for (let i = 1; i < inputs.length; i++) {
-            input_order_food.value += inputs[i].getAttribute("name")+","
+            input_order_food.value += inputs[i].getAttribute("name") + ","
             total_price += inputs[i].value * Number(inputs[i].getAttribute("price"))
         }
         document.getElementById("total_price").innerHTML = total_price
@@ -109,11 +139,10 @@
     function addtoOrder(list) {
         var order_ul = document.querySelectorAll("#foodorder > li")
         var have_menu = false
-        
+
         //เพิ่มของเดิม
         for (i = 0; i < order_ul.length; i++) {
-            console.log(list.value, order_ul[i].firstElementChild)
-            if (list.value == order_ul[i].firstElementChild.textContent) {
+            if (list.getAttribute("value") == order_ul[i].firstElementChild.textContent) {
                 var num = order_ul[i].firstElementChild.nextSibling.nextSibling.value
                 order_ul[i].firstElementChild.nextSibling.nextSibling.value = parseInt(num) + 1
                 have_menu = true
@@ -124,9 +153,10 @@
             ul = document.querySelector("#foodorder")
             li = document.createElement("li")
             li.className = "list-group-item d-flex justify-content-between align-items-center"
-            li.innerHTML = '<div class="foodname p-1 flex-grow-1 bd-highlight">' + list.value + '</div>'
+
+            li.innerHTML = '<div class="foodname p-1 flex-grow-1 bd-highlight">' + list.getAttribute("value") + '</div>'
             li.innerHTML = li.innerHTML + 'จำนวน : <input id="amount' + count + '"class="form-control" price="' + list
-                .getAttribute("price") + '" name="'+list.getAttribute("food-id")+
+                .getAttribute("price") + '" name="' + list.getAttribute("food-id") +
                 '" style="width: 60px; margin-right: 10px; margin-left: 10px;" onchange="input_event(this)" type="number" value="1" min="0" max="999"/>'
             li.innerHTML = li.innerHTML +
                 '<button type="button" class="btn btn-danger" onclick="deleteMenu(this)"><i class="fas fa-trash-alt"></i> ลบ</button>'
