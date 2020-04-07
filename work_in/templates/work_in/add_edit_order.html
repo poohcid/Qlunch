@@ -49,7 +49,8 @@
             <div class="col" onclick="addtoOrder(this)" value="{{ f.name }}" price="{{ f.price }}" food-id="{{ f.id }}">
                 <li class="list_menu list-group-item d-flex justify-content-between align-items-center bd-highlight">
                     <div class="foodname p-1 flex-grow-1 bd-highlight">{{ f.name }}</div>
-                    <div class="p-1 bd-highlight alert alert-danger m-0 mr-1"><i class="fas fa-money-bill-wave"></i> {{ f.price|floatformat:"0" }} บาท
+                    <div class="p-1 bd-highlight alert alert-danger m-0 mr-1"><b>ราคา</b> 
+                        {{ f.price|floatformat:"0" }} บาท
                     </div>
                 </li>
             </div>
@@ -79,35 +80,36 @@
                     style="animation: 0.25s ease-in-out 0s 1 normal none running expand;">
                     <div class="foodname p-1 flex-grow-1 bd-highlight">{{ order_food.food.name }}</div>
                     จำนวน :
-                    
+
                     {% if order_food.status == None %}
-                    <input id="amount{{ forloop.counter }}" status="none" class="form-control" price="{{ order_food.food.price }}"
-                        name="{{ order_food.food.id }}" style="width: 60px; margin-right: 10px; margin-left: 10px;"
-                        onchange="input_event(this)" type="number" value="{{ order_food.unit }}" min="0" max="999">
+                    <input id="amount{{ forloop.counter }}" status="none" class="form-control"
+                        price="{{ order_food.food.price }}" name="{{ order_food.food.id }}"
+                        style="width: 60px; margin-right: 10px; margin-left: 10px;" onchange="input_event(this)"
+                        type="number" value="{{ order_food.unit }}" min="0" max="999">
                     <button type="button" class="btn btn-danger" onclick="deleteMenu(this)"><i
                             class="fas fa-trash-alt"></i> ลบ</button>
                     {% elif order_food.status %}
-                    <input id="amount{{ forloop.counter }}" status="true" class="form-control" price="{{ order_food.food.price }}"
-                        name="{{ order_food.food.id }}" style="width: 60px; margin-right: 10px; margin-left: 10px;"
-                        onchange="input_event(this)" type="number" value="{{ order_food.unit }}" min="0" max="999"
-                        >
+                    <input id="amount{{ forloop.counter }}" status="true" class="form-control"
+                        price="{{ order_food.food.price }}" name="{{ order_food.food.id }}"
+                        style="width: 60px; margin-right: 10px; margin-left: 10px;" onchange="input_event(this)"
+                        type="number" value="{{ order_food.unit }}" min="0" max="999" disabled>
                     <div class="p-1 bd-highlight alert alert-success m-0 mr-1"><i class="fas fa-check"></i>
                         จัดทำแล้ว</div>
                     {% else %}
-                    <input id="amount{{ forloop.counter }}" status="false" class="form-control" price="{{ order_food.food.price }}"
-                        name="{{ order_food.food.id }}" style="width: 60px; margin-right: 10px; margin-left: 10px;"
-                        onchange="input_event(this)" type="number" value="{{ order_food.unit }}" min="{{ order_food.unit }}" max="999"
-                        >
+                    <input id="amount{{ forloop.counter }}" status="false" class="form-control"
+                        price="{{ order_food.food.price }}" name="{{ order_food.food.id }}"
+                        style="width: 60px; margin-right: 10px; margin-left: 10px;" onchange="input_event(this)"
+                        type="number" value="{{ order_food.unit }}" min="{{ order_food.unit }}" max="999" disabled>
                     <div class="p-1 bd-highlight alert alert-warning m-0 mr-1"><i class="fas fa-paper-plane"></i>
                         เมนูถูกส่งแล้ว</div>
                     {% endif %}
                 </li>
-                
+
                 {% endfor %}
             </ul>
             <!-- Modal -->
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -116,14 +118,18 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <center>
+
                             <div class="modal-body">
-                                <button type="submit" class="btn btn-success" name="action"
-                                    value="save"><i class="fas fa-save"></i> บันทึกข้อมูล</button>
-                                <button type="submit" class="btn btn-primary" name="action"
-                                    value="sendorder"><i class="fas fa-paper-plane"></i> ส่งออเดอร์</button>
+                                <p><b>ส่งออเดอร์</b> : เมนูที่ผู้ใช้เลือกจะถูกส่งและไม่สามารถแก้ไขเมนูนั้นได้</p>
+                                <p><b>บันทึกข้อมูล</b> : เมนูที่ผู้ใช้เลือกจะถูกบันทึกไว้และสามารถแก้ไขจำนวนของเมนูได้</p>
                             </div>
-                        </center>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success" name="action" value="save"><i
+                                    class="fas fa-save"></i> บันทึกข้อมูล</button>
+                            <button type="submit" class="btn btn-primary" name="action" value="sendorder"><i
+                                    class="fas fa-paper-plane"></i> ส่งออเดอร์</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -148,7 +154,7 @@
         input_order_food.value = ""
         let inputs = document.getElementsByClassName("form-control")
         for (let i = 1; i < inputs.length; i++) {
-            if (inputs[i].getAttribute("status") == "none"){
+            if (inputs[i].getAttribute("status") == "none") {
                 input_order_food.value += inputs[i].getAttribute("name") + ","
             }
             total_price += inputs[i].value * Number(inputs[i].getAttribute("price"))
@@ -164,7 +170,8 @@
         //เพิ่มของเดิม
         for (i = 0; i < order_ul.length; i++) {
             var status = order_ul[i].firstElementChild.nextSibling.nextSibling.getAttribute("status")
-            if ((list.getAttribute("value") == order_ul[i].firstElementChild.textContent) && (status == "true" || status == "none")) {
+            if ((list.getAttribute("value") == order_ul[i].firstElementChild.textContent) && (status == "true" ||
+                    status == "none")) {
                 var num = order_ul[i].firstElementChild.nextSibling.nextSibling.value
                 order_ul[i].firstElementChild.nextSibling.nextSibling.value = parseInt(num) + 1
                 have_menu = true
@@ -177,7 +184,8 @@
             li.className = "list-group-item d-flex justify-content-between align-items-center"
 
             li.innerHTML = '<div class="foodname p-1 flex-grow-1 bd-highlight">' + list.getAttribute("value") + '</div>'
-            li.innerHTML = li.innerHTML + 'จำนวน : <input id="amount' + count + '"class="form-control" status="none" price="' + list
+            li.innerHTML = li.innerHTML + 'จำนวน : <input id="amount' + count +
+                '"class="form-control" status="none" price="' + list
                 .getAttribute("price") + '" name="' + list.getAttribute("food-id") +
                 '" style="width: 60px; margin-right: 10px; margin-left: 10px;" onchange="input_event(this)" type="number" value="1" min="0" max="999"/>'
             li.innerHTML = li.innerHTML +

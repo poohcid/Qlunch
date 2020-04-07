@@ -7,7 +7,7 @@
         border-radius: 5px;
         margin: 15px 2.5%;
         font-size: 25px;
-        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
         padding: 0px 0px;
 
     }
@@ -36,7 +36,7 @@
 
     .activetable:hover {
         background: #f78259;
-        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     }
 
     @media screen and (max-width: 600px) {
@@ -44,7 +44,6 @@
             margin-left: 4%;
         }
     }
-
 </style>
 
 <div class="row" style="margin-top:50px;">
@@ -52,33 +51,41 @@
         <h1>รายชื่อโต๊ะ</h1>
     </div>
     <div class="col" align="right"><button type="button" class="btn btn-success"
-            style="height: 60px;padding-top: 7.5px;" data-toggle="modal" data-target="#exampleModal">+
+            style="height: 60px;padding-top: 7.5px;" data-toggle="modal" data-target="#exampleModal"><i
+                class="fas fa-plus"></i>
             สร้างออเดอร์</button></div>
 </div>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">สร้างออเดอร์</h5>
+                <h5 class="modal-title" id="exampleModalLabel">โปรดเลือกประเภทของออเดอร์</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="todefault()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <a href="{% url 'at_store' %}" type="button" class="btn btn-info"
-                    style="width:100%; margin-bottom: 50px; color:#fff;">นั่งทานที่ร้าน</a>
-                <button type="button" class="btn btn-info" style="width:100%; margin-bottom: 50px; color:#fff;"
-                    data-toggle="modal" data-target="#exampleModal2" onclick="change_detail()">สั่งกลับบ้าน</button>
+                <div class="row">
+                    <div class="col"><a href="{% url 'at_store' %}" type="button" class="btn btn-info"
+                            style="width:100%; margin-bottom: 50px; color:#fff; height: 60px; padding-top:18px;"><i class="fas fa-store"></i>
+                            นั่งทานที่ร้าน</a></div>
+                    <div class="col"> <button type="button" class="btn btn-info"
+                            style="width:100%; margin-bottom: 50px; color:#fff; height: 60px;" data-toggle="modal"
+                            data-target="#exampleModal2" onclick="change_detail()"><i class="fas fa-home"></i>
+                            สั่งกลับบ้าน</button></div>
+                </div>
                 <script>
-                    var backup =  document.querySelector(".modal-body").innerHTML
+                    var backup = document.querySelector(".modal-body").innerHTML
+
                     function change_detail() {
                         popup1 = document.querySelector(".modal-body")
                         popup1.innerHTML = document.querySelector(".hidden").innerHTML
                     }
-                    function todefault(){
+
+                    function todefault() {
                         popup1 = document.querySelector(".modal-body")
                         popup1.innerHTML = backup
                     }
@@ -108,10 +115,11 @@
     <div class="row row-cols-4 row-cols-sm-3 row-cols-md-5 " id="table_list">
         {% for t in table %}
         {% if t.status %}
-        <div class="col"><a href="{% url 'select_table' table_id=t.id %}" class="activetable" type="button">{{t.id}}</a></div>
+        <div class="col"><a href="{% url 'select_table' table_id=t.id %}" class="activetable" type="button">{{t.id}}</a>
+        </div>
         {% else %}
-        <div class="col"><a href="" class="busytable" type="button"
-                disable>{{t.id}} <i class="fas fa-lock"></i></a></div>
+        <div class="col"><a href="" class="busytable" type="button" disable>{{t.id}} <i class="fas fa-lock"></i></a>
+        </div>
         {% endif %}
         {% endfor %}
     </div>
