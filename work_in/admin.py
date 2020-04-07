@@ -12,12 +12,18 @@ def select_true(modeladmin, request, queryset):
 def select_false(modeladmin, request, queryset):
     queryset.update(status=False)
 
+def select_null(modeladmin, request, queryset):
+    queryset.update(status=None)
+
 class TableAdmin(admin.ModelAdmin):
     list_display = ["id", "status"]
     actions = [select_true, select_false]
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = ["id", "order_type"]
+
+class OrderFoodAdmin(admin.ModelAdmin):
+    actions = [select_true, select_false, select_null]
 
 admin.site.register(Customer)
 
@@ -27,7 +33,7 @@ admin.site.register(Table, TableAdmin)
 
 admin.site.register(Order, OrderAdmin)
 
-admin.site.register(Order_food)
+admin.site.register(Order_food, OrderFoodAdmin)
 
 admin.site.register(Order_in)
 

@@ -83,12 +83,15 @@ def save_order(request, order_id):
                 order_food.food_price = int(request.POST.get(food_id))*food.price
                 order_food.save()
             else:
-                Order_food.objects.create(
+                order_food = Order_food.objects.create(
                     food_price = int(request.POST.get(food_id))*food.price,
                     unit = int(request.POST.get(food_id)),
                     food = food,
                     order = order
                 )
+            if request.POST.get('action') == "sendorder":
+                order_food.status = False
+                order_food.save()
 
     return redirect('here_or_home')
 
