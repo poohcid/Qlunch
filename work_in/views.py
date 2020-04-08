@@ -113,3 +113,7 @@ def select_table(request, table_id):
         return redirect('here_or_home')
     order = list(table.order_in_set.all())[-1].order
     return edit_order_food(request, order, table)
+
+def home_order(request):
+    context = {}
+    return render(request, 'work_in/home_order.html', context=context)
