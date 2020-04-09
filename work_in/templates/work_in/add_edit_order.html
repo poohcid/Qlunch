@@ -32,8 +32,16 @@
         transition: 0.2s;
     }
 </style>
+
+    
+{% if table %}
 <h2><br>โต๊ะที่ : {{ table.id }}</h2>
 <h2>หมายเลขออเดอร์ : {{ order.id }}</h2>
+{% else %}
+<h2><br><b>ออเดอร์สั่งกลับบ้าน</b></h2>
+<h2 style="margin-top: 25px;">หมายเลขออเดอร์ : {{ order.id }}</h2><br>
+{% endif %}
+
 <div class="row">
     <div class="col-md todolist overflow-auto">
         {% csrf_token %}

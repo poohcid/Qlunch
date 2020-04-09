@@ -115,5 +115,22 @@ def select_table(request, table_id):
     return edit_order_food(request, order, table)
 
 def home_order(request):
-    context = {}
+    context = {}   
+    order_in = Order_in.objects.all()
+    order_list= []
+    for have_table in order_in:
+        if not have_table.table.all():
+            order_list.append(have_table.order_id)
+    order_in = Order_in.objects.filter(order_id__in=order_list)
+    order = Order.objects.filter(id__in=order_list)
+
+    context['order'] = order.order_by("date_book")
+    print(order_in, order)
     return render(request, 'work_in/home_order.html', context=context)
+
+
+
+def order_fromhome(request, id):
+    order = Order.objects.get(id=id)
+    print(order)
+    return edit_order_food(request, order)

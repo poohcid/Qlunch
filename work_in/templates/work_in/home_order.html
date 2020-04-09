@@ -1,4 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1 style="margin-top:50px;">ออเดอร์สั่งกลับบ้าน</h1>
+<h1 style="margin-top:50px;">ออเดอร์สั่งกลับบ้าน</h1><br><br>
+<table class="table text-center table-hover" style="border-radius:5px;">
+
+    <thead>
+        <tr>
+            <th scope="col">หมายเลขออเดอร์</th>
+            <th scope="col">วันที่สร้าง</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order_list in order %}
+            <tr onclick="window.location.href='{% url 'order_fromhome' order_list.id %}'">
+                <td>{{order_list.name}}</td>
+                <td>{{order_list.date_book}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock  %}
