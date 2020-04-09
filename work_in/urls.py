@@ -8,5 +8,5 @@ urlpatterns = [
     path('select_table/<int:table_id>/', views.select_table, name="select_table"),
     path('save_order/<int:order_id>/', views.save_order, name="save_order"),
     path('home_order/', views.home_order, name="home_order"),
-    path('order_fromhome/<int:id>', views.order_fromhome, name="home_order"),
+    path('order_fromhome/<int:id>', views.order_fromhome, name="order_fromhome"),
 ]
