@@ -7,6 +7,6 @@ urlpatterns = [
     path('at_store/', views.at_store, name="at_store"),
     path('select_table/<int:table_id>/', views.select_table, name="select_table"),
     path('save_order/<int:order_id>/', views.save_order, name="save_order"),
-    path('home_order/', views.home_order, name="home_order"),
+    path('manage_order/', views.manage_order, name="manage_order"),
     path('order_fromhome/<int:id>', views.order_fromhome, name="order_fromhome"),
 ]
