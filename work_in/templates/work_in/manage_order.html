@@ -51,7 +51,7 @@
                 <thead>
                     <tr>
                         <th scope="col">ชื่อออเดอร์</th>
-                        <th scope="col">วันที่สร้าง</th>
+                        <th scope="col">วัน-เวลาที่สร้าง</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -59,7 +59,7 @@
                     {% for order_list in order %}
                     <tr>
                         <td>{{order_list.name}}</td>
-                        <td>{{order_list.date_book}}</td>
+                        <td>{{order_list.date_book|date:"d-M-Y H:i น."}}</td>
                         <td>
                             <button type="button" class="btn btn-warning"><i class="fas fa-edit"></i> แก้ไข</button>
                             <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
@@ -74,7 +74,7 @@
                 <thead>
                     <tr>
                         <th scope="col">ชื่อออเดอร์</th>
-                        <th scope="col">วันที่สร้าง</th>
+                        <th scope="col">วัน-เวลาที่สร้าง</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -82,7 +82,7 @@
                     {% for order_list in order2 %}
                     <tr>
                         <td>{{order_list.name}}</td>
-                        <td>{{order_list.date_book}}</td>
+                        <td>{{order_list.date_book|date:"d-M-Y H:i น."}}</td>
                         <td>
                             <button type="button" class="btn btn-warning"><i class="fas fa-edit"></i> แก้ไข</button>
                             <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
