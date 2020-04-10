@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .tabs {
+        width: 100%;
+        height: 500px;
+        background: #EEE;
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        border-radius: 15px;
+    }
+    .heading {
+        width: 100%;
+        height: 45px;
+        border-radius: 15px 15px 0px 0px;
+        background: #698474;
+
+    }
+    .heading li {
+        float: left;
+        color: #fff;
+    }
+    .heading li a {
+        height: 100%;
+        width: 200px;
+        color: #111;
+        text-align: center;
+        padding-top: 12px;
+        background: #EEE;
+        border: none;
+    }
+    .heading li a:hover{
+        color: #111;
+    }
+    .content {
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+        
+    }
+</style>
+<h1 style="margin-top:50px;">จัดการออเดอร์</h1><br><br>
+
+<div class="tabs">
+    <div class="heading">
+        <li><a type="button" onclick="show_shop()" id="shop_button" style="border-radius: 15px 0px 0px 0px">ทานที่ร้าน</a></li>
+        <li><a type="button" onclick="show_home()" id="home_button" style="background: #698474; color: #fff;">สั่งกลับบ้าน</a></li>
+    </div>
+    <div class="content">
+        <div id="order">
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">ชื่อออเดอร์</th>
+                        <th scope="col">วันที่สร้าง</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order_list in order %}
+                    <tr>
+                        <td>{{order_list.name}}</td>
+                        <td>{{order_list.date_book}}</td>
+                        <td>
+                            <button type="button" class="btn btn-warning"><i class="fas fa-edit"></i> แก้ไข</button>
+                            <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="order2" style="display:none;">
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">ชื่อออเดอร์</th>
+                        <th scope="col">วันที่สร้าง</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order_list in order2 %}
+                    <tr>
+                        <td>{{order_list.name}}</td>
+                        <td>{{order_list.date_book}}</td>
+                        <td>
+                            <button type="button" class="btn btn-warning"><i class="fas fa-edit"></i> แก้ไข</button>
+                            <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function show_shop(){
+        document.getElementById("order").style.display = ""
+        document.getElementById("order2").style.display = "none"
+
+        document.getElementById("home_button").style.background = "#698474"
+        document.getElementById("shop_button").style.background = "#EEE"
+
+        document.getElementById("shop_button").style.color = "#111"
+        document.getElementById("home_button").style.color = "#FFF"
+    }
+    function show_home(){
+        document.getElementById("order").style.display = "none"
+        document.getElementById("order2").style.display = ""
+
+        document.getElementById("shop_button").style.background = "#698474"
+        document.getElementById("home_button").style.background = "#EEE"
+
+        document.getElementById("home_button").style.color = "#111"
+        document.getElementById("shop_button").style.color = "#FFF"
+    }
+</script>
+
+{% endblock  %}
