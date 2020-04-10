@@ -133,6 +133,6 @@ def manage_order(request):
 
 
 
-def order_fromhome(request, id):
-    order = Order.objects.get(id=id)
+def get_order(request, id):
+    order = Order.objects.get(pk=id)
     return edit_order_food(request, order)
