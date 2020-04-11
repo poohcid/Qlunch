@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 style="margin: 50px 0;">จัดการคิว</h1>
+
+<table class="table text-center table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">ชื่อ</th>
+      <th scope="col">จำนวนลูกค้า</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for cus in customer %}
+        <tr>
+            <td>{{ cus.name }}</td>
+            <td>{{ cus.amount }}</td>
+            <td>
+                <a type="button" class="btn btn-success mr-2" href="{% url 'at_store' %}"><i class="fas fa-plus"></i> สร้างออเดอร์</a>
+                <a type="button" class="btn btn-danger" href="{% url 'del_booking' id=cus.id %}" ><i class="fas fa-trash-alt"></i> ลบ</a>
+            </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock  %}

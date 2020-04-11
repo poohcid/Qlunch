@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from appModel.models import Food, Order, Order_food, Order_in, Table
+from appModel.models import Food, Order, Order_food, Order_in, Table, Customer
 
 from .forms import OrderForm, TableForm
 
@@ -132,7 +132,18 @@ def manage_order(request):
     return render(request, 'work_in/manage_order.html', context=context)
 
 
-
 def get_order(request, id):
     order = Order.objects.get(pk=id)
     return edit_order_food(request, order)
+
+
+def booking(request):
+    context = {}
+    context['customer'] = Customer.objects.all()
+    return render(request, 'work_in/booking.html', context=context)
+
+def del_booking(request, id):
+    customer = Customer.objects.get(pk=id)
+    customer.delete()
+    customer.save()
+    return redirect('booking')
