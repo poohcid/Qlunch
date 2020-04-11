@@ -59,14 +59,17 @@
     ::-webkit-scrollbar-thumb:hover {
       background: #555;
     }
+    .navbar{
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    }
   </style>
 
 </head>
 
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark position-sticky"
-    style="position: fixed; top:0; width:100%; z-index:1;">
+  <nav class="navbar navbar-expand-lg navbar-dark position-sticky"
+    style="background: #243447; position: fixed; top:0; width:100%; z-index:1;">
     <a class="navbar-brand" href="/"><img src="{% static 'cutlery.png' %}" alt="logo">Qlunch</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
