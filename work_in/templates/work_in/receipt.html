@@ -19,7 +19,12 @@
         {% if table %}
         {% if order.order_type == "order_in" %}
         <h6><b>ประเภทของออเดอร์ :</b> ทานที่ร้าน</h6>
-        <h6><b>หมายเลขโต๊ะ :</b> {{table}}</h6>
+        <h6>
+            <b>หมายเลขโต๊ะ :</b> 
+            {% for t in table %} 
+                {{t}}
+            {% endfor %}
+        </h6>
         {% elif order.order_type == "order_buffet" %}
         <h6><b>ประเภทของออเดอร์ :</b> บุฟเฟต์</h6>
         <h6><b>หมายเลขโต๊ะ :</b> {{table}}</h6>
@@ -96,7 +101,7 @@
                 กดยืนยันเพื่อทำการเช็คบิล <b>ออเดอร์ : {{order.name}}</b>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
                 <input type="submit" class="btn btn-primary float-right m-2" value="ยืนยัน">
             </div>
         </div>

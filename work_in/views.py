@@ -123,18 +123,20 @@ def manage_order(request):
 
     for r in receipt:
         receipt_list.append(r.order_id)
+        
     print(receipt_list)
     for have_table in order_in:
         if not have_table.table.all():
             order_list.append(have_table.order_id)
 
     order_in = Order_in.objects.filter(order_id__in=order_list)
-    order2 = Order.objects.filter(id__in=order_list)
-    order = Order.objects.exclude(id__in=order_list)
+    order2 = Order.objects.filter(id__in=order_list) #order ทานที่ร้าน
+    order = Order.objects.exclude(id__in=order_list) #order สั่งกลับบ้าน
 
     context['order2'] = order2.order_by("date_book")
     context['order'] = order.order_by("date_book")
     context['receipt'] = receipt_list
+    context['all_order'] = Order.objects.all()
 
     return render(request, 'work_in/manage_order.html', context=context)
 
@@ -160,14 +162,20 @@ def receipt(request, id):
     context = {}
     total_price = 0
     order = Order.objects.get(pk=id)
-    order_food = Order_food.objects.filter(order_id=id)
+    check = [False, True]
+    order_food = Order_food.objects.filter(order_id=id).filter(status__in=check)
     order_in = Order_in.objects.get(order_id=id)
 
     for i in order_food:  #บวกจำนวนเงินทั้งหมด
         total_price += i.food_price
 
     if order_in.table.all(): #เช็คว่า order นั้นมันโต๊ะหรือไม่
-        context['table'] = order_in.table.get().id
+        table_list = []
+        for i in order_in.table.all():
+            table_list.append(i.id)
+
+        context['table'] = table_list
+        print(table_list)
 
     context['order'] = order
     context['order_food'] = order_food
@@ -185,10 +193,10 @@ def receipt(request, id):
             employee_id=request.user.id
             )
         if order_in.table.all():
-            table = Table.objects.get(pk=order_in.table.get().id)
-            table.status = False
-            table.save()
-        # new_reciept.save()
+            for i in order_in.table.all():    
+                table = Table.objects.get(pk=i.id)
+                table.status = False
+                table.save()
         return redirect('receipt', id)
     if total_price == 0:
         context['error'] = 'ไม่สามารถเช็คบิลได้เนื่องจากออเดอร์นี้ไม่ได้ทำการสั่งเมนูใดเลย!'
@@ -198,6 +206,5 @@ def receipt(request, id):
         context['emp'] = User.objects.get(pk=receipt.employee_id)
     except ObjectDoesNotExist:  
         return render(request, 'work_in/receipt.html', context=context)
-
 
     return render(request, 'work_in/receipt.html', context=context)

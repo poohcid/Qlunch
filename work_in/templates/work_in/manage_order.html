@@ -5,9 +5,10 @@
         width: 100%;
         height: 500px;
         background: #EEE;
-        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
         border-radius: 15px;
     }
+
     .heading {
         width: 100%;
         height: 45px;
@@ -15,11 +16,13 @@
         background: #698474;
 
     }
+
     .heading li {
-        width: 50%;
+        width: 33.33%;
         float: left;
         color: #fff;
     }
+
     .heading li a {
         height: 100%;
         width: 100%;
@@ -29,9 +32,11 @@
         background: #EEE;
         border: none;
     }
-    .heading li a:hover{
+
+    .heading li a:hover {
         color: #111;
     }
+
     .content {
         width: 100%;
         height: 85%;
@@ -39,15 +44,18 @@
         overflow: auto;
     }
 
-}
-
+    }
 </style>
 <h1 style="margin-top:50px;">จัดการออเดอร์</h1><br><br>
 
 <div class="tabs">
     <div class="heading">
-        <li><a type="button" onclick="show_shop()" id="shop_button" style="border-radius: 15px 0px 0px 0px">ทานที่ร้าน</a></li>
-        <li><a type="button" onclick="show_home()" id="home_button" style="background: #698474; color: #fff; border-radius: 0px 15px 0px 0px;">สั่งกลับบ้าน</a></li>
+        <li><a type="button" onclick="show_shop()" id="shop_button"
+                style="border-radius: 15px 0px 0px 0px">ทานที่ร้าน</a></li>
+        <li><a type="button" onclick="show_home()" id="home_button"
+                style="background: #698474; color: #fff;">สั่งกลับบ้าน</a></li>
+        <li><a type="button" onclick="show_pay()" id="pay_button"
+                style="background: #698474; color: #fff; border-radius: 0px 15px 0px 0px;">จ่ายเงินแล้ว</a></li>
     </div>
     <div class="content">
         <div id="order">
@@ -61,26 +69,26 @@
                 </thead>
                 <tbody>
                     {% for order_list in order %}
+                    {% if order_list.id not in receipt %}
                     <tr>
                         <td>{{order_list.name}}</td>
                         <td>{{order_list.date_book|date:"d-M-Y H:i น."}}</td>
                         <td>
-                        {% if order_list.id in receipt %}
-                            <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i class="far fa-eye"></i> ดูบิล</a>
+                            <a type="button" class="btn btn-success" href="{% url 'get_order' id=order_list.id %}"><i
+                                    class="fas fa-utensils"></i> สั่งอาหาร</a>
+                            <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i
+                                    class="fas fa-receipt"></i> เช็คบิล</a>
                             <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
-                        {% else %}
-                            <a type="button" class="btn btn-success" href="{% url 'get_order' id=order_list.id %}"><i class="fas fa-utensils"></i> สั่งอาหาร</a>
-                            <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i class="fas fa-receipt"></i> เช็คบิล</a>
-                            <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
-                        {% endif %}
-                            
+
+
                         </td>
                     </tr>
+                    {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-       <div id="order2" style="display:none;">
+        <div id="order2" style="display:none;">
             <table class="table text-center">
                 <thead>
                     <tr>
@@ -91,20 +99,59 @@
                 </thead>
                 <tbody>
                     {% for order_list in order2 %}
+                    {% if order_list.id not in receipt %}
                     <tr>
                         <td>{{order_list.name}}</td>
                         <td>{{order_list.date_book|date:"d-M-Y H:i น."}}</td>
                         <td>
                             {% if order_list.id in receipt %}
-                                <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i class="far fa-eye"></i> ดูบิล</a>
-                                <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
+                            <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i
+                                    class="far fa-eye"></i> ดูบิล</a>
+                            <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
                             {% else %}
-                                <a type="button" class="btn btn-success" href="{% url 'get_order' id=order_list.id %}"><i class="fas fa-utensils"></i> สั่งอาหาร</a>
-                                <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i class="fas fa-receipt"></i> เช็คบิล</a>
-                                <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
+                            <a type="button" class="btn btn-success" href="{% url 'get_order' id=order_list.id %}"><i
+                                    class="fas fa-utensils"></i> สั่งอาหาร</a>
+                            <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i
+                                    class="fas fa-receipt"></i> เช็คบิล</a>
+                            <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
                             {% endif %}
                         </td>
                     </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="order3" style="display:none;">
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">ชื่อออเดอร์</th>
+                        <th scope="col">วัน-เวลาที่สร้าง</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order_list in all_order %}
+                    {% if order_list.id in receipt %}
+                    <tr>
+                        <td>{{order_list.name}}</td>
+                        <td>{{order_list.date_book|date:"d-M-Y H:i น."}}</td>
+                        <td>
+                            {% if order_list.id in receipt %}
+                            <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i
+                                    class="far fa-eye"></i> ดูบิล</a>
+                            <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
+                            {% else %}
+                            <a type="button" class="btn btn-success" href="{% url 'get_order' id=order_list.id %}"><i
+                                    class="fas fa-utensils"></i> สั่งอาหาร</a>
+                            <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i
+                                    class="fas fa-receipt"></i> เช็คบิล</a>
+                            <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
@@ -113,25 +160,55 @@
 </div>
 
 <script>
-    function show_shop(){
+    function show_shop() {
         document.getElementById("order").style.display = ""
         document.getElementById("order2").style.display = "none"
+        document.getElementById("order3").style.display = "none"
 
         document.getElementById("home_button").style.background = "#698474"
-        document.getElementById("shop_button").style.background = "#EEE"
+        document.getElementById("home_button").style.color = "#FFF"
 
         document.getElementById("shop_button").style.color = "#111"
-        document.getElementById("home_button").style.color = "#FFF"
+        document.getElementById("shop_button").style.background = "#EEE"
+
+        document.getElementById("pay_button").style.color = "#FFF"
+        document.getElementById("pay_button").style.background = "#698474"
+
     }
-    function show_home(){
+
+    function show_home() {
         document.getElementById("order").style.display = "none"
         document.getElementById("order2").style.display = ""
+        document.getElementById("order3").style.display = "none"
 
         document.getElementById("shop_button").style.background = "#698474"
-        document.getElementById("home_button").style.background = "#EEE"
+        document.getElementById("shop_button").style.color = "#FFF"
 
         document.getElementById("home_button").style.color = "#111"
+        document.getElementById("home_button").style.background = "#EEE"
+
+        document.getElementById("pay_button").style.color = "#FFF"
+        document.getElementById("pay_button").style.background = "#698474"
+
+    }
+
+    function show_pay() {
+        document.getElementById("order").style.display = "none"
+        document.getElementById("order2").style.display = "none"
+        document.getElementById("order3").style.display = ""
+
+        document.getElementById("pay_button").style.color = "#111"
+        document.getElementById("pay_button").style.background = "#EEE"
+
+        document.getElementById("home_button").style.color = "#FFF"
+        document.getElementById("home_button").style.background = "#698474"
+
         document.getElementById("shop_button").style.color = "#FFF"
+        document.getElementById("shop_button").style.background = "#698474"
+
+
+
+
     }
 </script>
 
