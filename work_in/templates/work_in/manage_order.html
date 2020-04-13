@@ -66,11 +66,11 @@
                         <td>{{order_list.date_book|date:"d-M-Y H:i น."}}</td>
                         <td>
                         {% if order_list.id in receipt %}
-                            <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i class="fas fa-file-invoice-dollar"></i> ดูบิล</a>
+                            <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i class="far fa-eye"></i> ดูบิล</a>
                             <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
                         {% else %}
                             <a type="button" class="btn btn-success" href="{% url 'get_order' id=order_list.id %}"><i class="fas fa-utensils"></i> สั่งอาหาร</a>
-                            <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i class="fas fa-file-invoice-dollar"></i> เช็คบิล</a>
+                            <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i class="fas fa-receipt"></i> เช็คบิล</a>
                             <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
                         {% endif %}
                             
@@ -96,11 +96,11 @@
                         <td>{{order_list.date_book|date:"d-M-Y H:i น."}}</td>
                         <td>
                             {% if order_list.id in receipt %}
-                                <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i class="fas fa-file-invoice-dollar"></i> ดูบิล</a>
+                                <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i class="far fa-eye"></i> ดูบิล</a>
                                 <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
                             {% else %}
                                 <a type="button" class="btn btn-success" href="{% url 'get_order' id=order_list.id %}"><i class="fas fa-utensils"></i> สั่งอาหาร</a>
-                                <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i class="fas fa-file-invoice-dollar"></i> เช็คบิล</a>
+                                <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i class="fas fa-receipt"></i> เช็คบิล</a>
                                 <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
                             {% endif %}
                         </td>
