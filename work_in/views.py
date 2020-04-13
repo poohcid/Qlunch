@@ -188,9 +188,10 @@ def receipt(request, id):
             table = Table.objects.get(pk=order_in.table.get().id)
             table.status = False
             table.save()
-        new_reciept.save()
-        return render(request, 'work_in/receipt.html', context=context)
-    
+        # new_reciept.save()
+        return redirect('receipt', id)
+    if total_price == 0:
+        context['error'] = 'ไม่สามารถเช็คบิลได้เนื่องจากออเดอร์นี้ไม่ได้ทำการสั่งเมนูใดเลย!'
     try:  
         receipt = Receipt.objects.get(order_id=id)
         context['receipt'] = receipt
