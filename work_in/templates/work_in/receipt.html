@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    h6 {
+        font-size: 18px;
+    }
+</style>
+<h1 style="margin-top:50px;">ใบเสร็จรับเงิน</h1><br><br>
+
+{% if pay %}
+<h6>หมายเลขออเดอร์ : {{order.id}}</h6>
+<h6>ชื่อ : {{order.name}}</h6>
+<h6>วันเวลาที่สร้างออเดอร์: {{order.date_book|date:"d-M-Y H:i น."}}</h6>
+{% if table %}
+{% if order.order_type == "order_in" %}
+<h6>ประเภทของออเดอร์ : ทานที่ร้าน</h6>
+<h6>หมายเลขโต๊ะ : {{table}}</h6>
+{% elif order.order_type == "order_buffet" %}
+<h6>ประเภทของออเดอร์ : บุฟเฟต์</h6>
+<h6>หมายเลขโต๊ะ : {{table}}</h6>
+{% endif %}
+{% else %}
+<h6>ประเภทของออเดอร์ : สั่งกลับบ้าน</h6>
+{% endif %}
+<h6></h6>
+<h6></h6>
+<h6></h6>
+<table class="table table-sm text-center">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">รายละเอียด</th>
+            <th scope="col">จำนวน</th>
+            <th scope="col">ราคา</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for foods in order_food %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{foods.food.name}}</td>
+            <td>{{foods.unit}}</td>
+            <td>{{foods.food_price}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="d-flex bd-highlight text-right">
+    <div class="p-0 flex-grow-1 bd-highlight"></div>
+    <div class="p-0 flex-shrink-1 bd-highlight">
+        <h6>ราคาทั้งหมด : &nbsp;{{ total_price }} บาท</h6>
+        <h6>ภาษีมูลค่าเพิ่ม : &nbsp;&nbsp;&nbsp;{{ vat }} บาท</h6>
+        <h6>จำนวนเงินรวมทั้งสิ้น : &nbsp;{{ total }} บาท</h6>
+    </div>
+</div>
+{% else %}
+<form action="{% url 'receipt' id=order.id %}" method="POST">
+    {% csrf_token %}
+    <label>รายละเอียดใบเสร็จรับเงิน</label>
+    <textarea class="form-control" name="detail" rows="5"></textarea>
+    <br><input type="submit" class="btn btn-primary" value="ยืนยัน">
+</form>
+{% endif %}
+
+{% endblock  %}

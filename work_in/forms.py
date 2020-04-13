@@ -1,7 +1,7 @@
 from django.db import models
 from django.forms import ModelForm, CharField, Textarea
 from django import forms
-from appModel.models import Table, Order, Order_food
+from appModel.models import Table, Order, Order_food, Receipt
 
 class TableForm(ModelForm):
     class Meta:
@@ -29,3 +29,14 @@ class Order_food(ModelForm):
     class Meta:
         model = Order_food
         fields = ['food', 'unit']
+
+# class ReceiptForm(ModelForm):
+#     class Meta:
+#         model = Receipt
+#         fields = ['detail']
+#         widgets={
+#             "detail":forms.Textarea(attrs={'class':'form-control'})
+#         }
+#         labels = {
+#             'detail': 'รายละเอียดใบเสร็จรับเงิน'
+#         }

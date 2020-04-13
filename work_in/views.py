@@ -5,10 +5,9 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
-from appModel.models import Food, Order, Order_food, Order_in, Table, Customer
+from appModel.models import Food, Order, Order_food, Order_in, Table, Customer, Receipt
 
 from .forms import OrderForm, TableForm
-
 # Create your views here.
 
 
@@ -147,3 +146,43 @@ def del_booking(request, id):
     customer.delete()
     customer.save()
     return redirect('booking')
+
+
+def receipt(request, id):
+    context = {}
+    total_price = 0
+    order = Order.objects.get(pk=id)
+    order_food = Order_food.objects.filter(order_id=id)
+    order_in = Order_in.objects.get(order_id=id)
+
+    for i in order_food:
+        total_price += i.food_price
+
+    if order_in.table.all():
+        context['table'] = order_in.table.get().id
+
+    context['order'] = order
+    context['order_food'] = order_food
+    context['total_price'] = total_price
+    context['vat'] = (total_price*7)/100
+    context['total'] = total_price+(total_price*7)/100
+
+    if request.method == "POST":
+        reciepts = Receipt.objects.create(
+            date=datetime.now(),
+            payment=total_price+(total_price*7)/100,
+            detail=request.POST.get("detail"),
+            order_id=order.id,
+            employee_id=request.user.id
+            )
+        if order_in.table.all():
+            table = Table.objects.get(pk=order_in.table.get().id)
+            table.status = False
+            table.save()
+        reciepts.save()
+        context['pay'] = "pay"
+        return render(request, 'work_in/receipt.html', context=context)
+
+    
+    
+    return render(request, 'work_in/receipt.html', context=context)
