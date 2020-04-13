@@ -6,6 +6,11 @@
     }
 </style>
 <h1 style="margin-top:50px;">ใบเสร็จรับเงิน</h1><br><br>
+{% if error %}
+    <div class="alert alert-warning" role="alert">
+        {{error}}
+    </div>
+{% endif %}
 <div class="row">
     <div class="col" style="border:1px solid #AAA; border-radius: 5px; padding:10px;">
         <h6><b>หมายเลขออเดอร์ :</b> {{order.id}}</h6>
@@ -24,7 +29,7 @@
         {% endif %}
         <h6><b>ออกใบเสร็จโดยพนักงาน :</b> {{ emp.username }}</h6>
     </div>
-    {% if receipt %}
+    {% if receipt or error%}
     <div class="col" style="border:1px solid #AAA; border-radius: 5px; padding:10px;">
         <h6><b>รายละเอียดใบเสร็จรับเงิน</b></h6>
         <h6>{{receipt.detail}}</h6>
@@ -69,7 +74,7 @@
         <h6><b>จำนวนเงินรวมทั้งสิ้น :</b> &nbsp;{{ total }} บาท</h6>
     </div>
 </div>
-{% if not receipt %}
+{% if not receipt and not error %}
     <br><input type="submit" class="btn btn-primary float-right m-2" value="ยืนยัน">
 </form>
 {% endif %}
