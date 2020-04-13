@@ -4,7 +4,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-
+from django.core.exceptions import ObjectDoesNotExist
 from appModel.models import Food, Order, Order_food, Order_in, Table, Customer, Receipt
 
 from .forms import OrderForm, TableForm
@@ -117,16 +117,24 @@ def select_table(request, table_id):
 def manage_order(request):
     context = {}   
     order_in = Order_in.objects.all()
-    order_list= []
+    order_list = []
+    receipt_list = []
+    receipt = Receipt.objects.all()
+
+    for r in receipt:
+        receipt_list.append(r.order_id)
+    print(receipt_list)
     for have_table in order_in:
         if not have_table.table.all():
             order_list.append(have_table.order_id)
+
     order_in = Order_in.objects.filter(order_id__in=order_list)
     order2 = Order.objects.filter(id__in=order_list)
     order = Order.objects.exclude(id__in=order_list)
 
     context['order2'] = order2.order_by("date_book")
     context['order'] = order.order_by("date_book")
+    context['receipt'] = receipt_list
 
     return render(request, 'work_in/manage_order.html', context=context)
 
@@ -155,20 +163,21 @@ def receipt(request, id):
     order_food = Order_food.objects.filter(order_id=id)
     order_in = Order_in.objects.get(order_id=id)
 
-    for i in order_food:
+    for i in order_food:  #บวกจำนวนเงินทั้งหมด
         total_price += i.food_price
 
-    if order_in.table.all():
+    if order_in.table.all(): #เช็คว่า order นั้นมันโต๊ะหรือไม่
         context['table'] = order_in.table.get().id
 
     context['order'] = order
     context['order_food'] = order_food
-    context['total_price'] = total_price
-    context['vat'] = (total_price*7)/100
-    context['total'] = total_price+(total_price*7)/100
+    context['total_price'] = total_price #ราคา
+    context['vat'] = (total_price*7)/100 #vat
+    context['total'] = total_price+(total_price*7)/100 #ราคา+vat
+    
 
     if request.method == "POST":
-        reciepts = Receipt.objects.create(
+        new_reciept = Receipt.objects.create(
             date=datetime.now(),
             payment=total_price+(total_price*7)/100,
             detail=request.POST.get("detail"),
@@ -179,10 +188,15 @@ def receipt(request, id):
             table = Table.objects.get(pk=order_in.table.get().id)
             table.status = False
             table.save()
-        reciepts.save()
-        context['pay'] = "pay"
+        new_reciept.save()
+        return render(request, 'work_in/receipt.html', context=context)
+    
+    try:  
+        receipt = Receipt.objects.get(order_id=id)
+        context['receipt'] = receipt
+        context['emp'] = User.objects.get(pk=receipt.employee_id)
+    except ObjectDoesNotExist:  
         return render(request, 'work_in/receipt.html', context=context)
 
-    
-    
+
     return render(request, 'work_in/receipt.html', context=context)
