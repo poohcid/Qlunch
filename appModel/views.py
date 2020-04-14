@@ -12,7 +12,7 @@ from django.template.context_processors import request
 def index(request):
     if request.user.is_authenticated:    
         group = request.user.groups.all()
-        if request.user.is_superuser or group[0].name == "work_in": # http://127.0.0.1:8000/ จะไปที่หน้าแรก ของ user group นั้นๆ
+        if request.user.is_superuser or group[0].name == "waiter": # http://127.0.0.1:8000/ จะไปที่หน้าแรก ของ user group นั้นๆ
             return redirect('../work_in/')
 
     return redirect('login/')
@@ -33,7 +33,7 @@ def register(request):
             ) 
             # สร้าง uesr ใหม่โดยดึง username และ password จาก form
             
-            group = Group.objects.get(name='work_in')  # ดีงค่าชนิดของ work_in จาก form
+            group = Group.objects.get(name='waiter')  # ดีงค่าชนิดของ waiter จาก form
             group.user_set.add(user)  # เพิ่ม user เข้า group
             context['success'] = 'สร้าง Account สำเร็จ!'
         else:
