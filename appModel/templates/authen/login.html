@@ -24,9 +24,15 @@
   {% load static %}
 
   <style>
+     @keyframes fade {
+      from {
+        opacity: 0;
+      }
+    }
     body {
       background-image: url("{% static 'wallpaper.jpg' %}");
       font-family: 'Raleway', 'Mitr';
+      animation: fade .50s ease;
     }
 
     label,
