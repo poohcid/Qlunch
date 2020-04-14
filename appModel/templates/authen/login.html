@@ -18,6 +18,7 @@
   <link href="https://fonts.googleapis.com/css?family=Mitr&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
   <link href="{% static 'cutlery.png' %}" rel="shortcut icon" type="image/x-icon" />
+  <link href="{% static 'fontawesome/css/all.css' %}" rel="stylesheet">
 </head>
 
 <body>
@@ -91,7 +92,7 @@
             {% csrf_token %}
             {% if error %}
             <div class="alert alert-danger" role="alert">
-              <p style="margin:0;">{{ error }}</p>
+              <p style="margin:0;"><b><i class="fas fa-exclamation-circle"></i> {{ error }}</b></p>
             </div>
             {% endif %}
             <div class="form-group">
@@ -102,8 +103,8 @@
               <label for="exampleInputPassword1">Password</label>
               <input type="password" class="form-control" placeholder="Password" name="password">
             </div><br>
-            <button type="submit" class="btn btn-primary" value="login">Log in</button><br><br>
-            <a href="{% url 'register' %}" class="btn btn-success">register</a>
+            <button type="submit" class="btn btn-primary" value="login"><i class="fas fa-sign-in-alt"></i> Log in</button><br><br>
+            <a href="{% url 'register' %}" class="btn btn-success"><i class="fas fa-user-plus"></i> register</a>
           </form>
         </div>
       </div>
