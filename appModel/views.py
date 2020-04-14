@@ -9,6 +9,7 @@ from django.template.context_processors import request
 
 # Create your views here.
 
+@login_required
 def index(request):
     if request.user.is_authenticated:    
         group = request.user.groups.all()
@@ -61,7 +62,7 @@ def my_login(request):
             login(request, user)
             group = request.user.groups.all()
 
-            if user.is_superuser or group[0].name == "work_in": # พนักงานในร้าน
+            if user.is_superuser or group[0].name == "waiter": # พนักงานในร้าน
                 return redirect('../work_in/')
 
             # elif group[0].name == "User":

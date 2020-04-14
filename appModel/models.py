@@ -41,8 +41,8 @@ class Receipt(models.Model):
     date = models.DateTimeField()
     payment = models.DecimalField(max_digits=8, decimal_places=2)
     detail = models.TextField(null=True)
-    order = models.OneToOneField(Order, on_delete=models.DO_NOTHING)
-    employee = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    employee = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Table(models.Model):
     space = models.IntegerField()

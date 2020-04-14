@@ -1,16 +1,20 @@
 
 from datetime import datetime
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from django.core.exceptions import ObjectDoesNotExist
-from appModel.models import Food, Order, Order_food, Order_in, Table, Customer, Receipt
+
+from appModel.models import (Customer, Food, Order, Order_food, Order_in,
+                             Receipt, Table)
 
 from .forms import OrderForm, TableForm
+
 # Create your views here.
 
-
+@login_required
 def create_table(request):
     context = {}
     if request.method == "POST":
@@ -21,7 +25,7 @@ def create_table(request):
     return redirect('here_or_home')
     
 
-
+@login_required
 def create_order(request):
     context = {}
     if request.method == "POST":
@@ -48,6 +52,7 @@ def create_order(request):
     return redirect('here_or_home')
 
 #index work in
+@login_required
 def table(request):
     context = {}
     table = Table.objects.all().order_by('id')
@@ -57,6 +62,7 @@ def table(request):
 
     return render(request, template_name='work_in/table.html', context=context)
 
+@login_required
 def at_store(request):
     context = {}
     table = Table.objects.all().order_by('id')
@@ -65,6 +71,7 @@ def at_store(request):
     context['form_order'] = form_order
     return render(request, template_name='work_in/at_store.html', context=context)
 
+@login_required
 def save_order(request, order_id):
     if request.method == "POST":
         order = Order.objects.get(pk=order_id)
@@ -94,7 +101,7 @@ def save_order(request, order_id):
 
     return redirect('here_or_home')
 
-
+@login_required
 def edit_order_food(request, order, table=False):
     context = {}
     context['order'] = order
@@ -104,7 +111,7 @@ def edit_order_food(request, order, table=False):
     context['order_foods'] = order.order_food_set.all()
     return render(request, template_name='work_in/add_edit_order.html', context=context)
     
-
+@login_required
 def select_table(request, table_id):
     table = Table.objects.get(pk=table_id)
     order_ins = list(table.order_in_set.all())
@@ -113,7 +120,7 @@ def select_table(request, table_id):
     order = list(table.order_in_set.all())[-1].order
     return edit_order_food(request, order, table)
 
-
+@login_required
 def manage_order(request):
     context = {}   
     order_in = Order_in.objects.all()
@@ -140,24 +147,25 @@ def manage_order(request):
 
     return render(request, 'work_in/manage_order.html', context=context)
 
-
+@login_required
 def get_order(request, id):
     order = Order.objects.get(pk=id)
     return edit_order_food(request, order)
 
-
+@login_required
 def booking(request):
     context = {}
     context['customer'] = Customer.objects.all()
     return render(request, 'work_in/booking.html', context=context)
 
+@login_required
 def del_booking(request, id):
     customer = Customer.objects.get(pk=id)
     customer.delete()
     customer.save()
     return redirect('booking')
 
-
+@login_required
 def receipt(request, id):
     context = {}
     total_price = 0
