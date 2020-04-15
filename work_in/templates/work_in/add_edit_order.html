@@ -244,18 +244,20 @@
 <script>
     var total_price;
     var count = document.querySelectorAll("#foodorder > li").length
+    var side = 0;
     if (window.screen.availWidth < 480) {
         document.querySelector(".list_pc").remove()
     } else {
         document.querySelector(".sidebar").style.display = "none"
     }
-
     function sidebar() {
-        var side = document.querySelector(".sidebar").style.width
-        if (side == "0%") {
+        if (side == 0) {
             document.querySelector(".sidebar").style.width = "350px";
+            side = 1
+
         } else {
-            document.querySelector(".sidebar").style.width = "0%";
+            document.querySelector(".sidebar").style.width = "0px";
+            side = 0
         }
 
 
@@ -282,8 +284,8 @@
                 if (httpRequest.status === 200) {
                     let response = JSON.parse(httpRequest.responseText)
                     console.log("Asd")
-                    console.log(button.textContent)
-                    notification(button.textContent)
+                    console.log(button.value)
+                    notification(button.value)
                 }
             }
         }
@@ -391,7 +393,7 @@
     function notification(status) {
         var flex = document.getElementById("flex")
         var div = document.createElement("div")
-        if (status == " บันทึกข้อมูล") {
+        if (status == "save") {
             console.log(status)
             div.id = "notification"
             div.style.background = "green"
