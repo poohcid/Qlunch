@@ -1,11 +1,12 @@
-
+import json
 from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
+from django.views.decorators.csrf import csrf_exempt
 
 from appModel.models import (Customer, Food, Order, Order_food, Order_in,
                              Receipt, Table)
@@ -21,6 +22,7 @@ def create_table(request):
         form = TableForm(request.POST)
         if form.is_valid():
             form.save()
+        #return redirect('select_table', table_id=)
     
     return redirect('here_or_home')
     
@@ -48,6 +50,7 @@ def create_order(request):
                 order_in1.table.add(table1)
         else:
             order1.delete()
+        return redirect('get_order', id=order1.id)
 
     return redirect('here_or_home')
 
@@ -72,6 +75,7 @@ def at_store(request):
     return render(request, template_name='work_in/at_store.html', context=context)
 
 @login_required
+@csrf_exempt
 def save_order(request, order_id):
     if request.method == "POST":
         order = Order.objects.get(pk=order_id)
@@ -81,6 +85,7 @@ def save_order(request, order_id):
             print(order_food)
             order_food.delete()
         for food_id in food_id_list:
+            print(food_id)
             food = Food.objects.get(pk=food_id)
             order_foods = order.order_food_set.filter(food=food).filter(status=None)
             if order_foods:
@@ -98,6 +103,12 @@ def save_order(request, order_id):
             if request.POST.get('action') == "sendorder":
                 order_food.status = False
                 order_food.save()
+        response = {
+            "status" : "บันทึกข้อมูลเรียบร้อย"
+        }
+        if request.POST.get('action') == "sendorder":
+            response["status"] = "ส่งรายการออเดอร์เรียบร้อย"
+        return JsonResponse(response, status=200)
 
     return redirect('here_or_home')
 

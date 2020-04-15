@@ -37,8 +37,7 @@
 {% if table %}
 <h2><br>โต๊ะที่ : {{ table.id }}</h2>
 <h2>หมายเลขออเดอร์ : {{ order.id }}</h2>
-{% else %}
-<h2><br><b>ออเดอร์สั่งกลับบ้าน</b></h2>
+{% else %}<br>
 <h2 style="margin-top: 25px;">หมายเลขออเดอร์ : {{ order.id }}</h2><br>
 {% endif %}
 
@@ -133,9 +132,9 @@
                             </div>
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-success" name="action" value="save"><i
+                            <button type="button" class="btn btn-success" name="action" value="save" order="{{ order.id }}" onclick="sendForm(this)"><i
                                     class="fas fa-save"></i> บันทึกข้อมูล</button>
-                            <button type="submit" class="btn btn-primary" name="action" value="sendorder"><i
+                            <button type="button" class="btn btn-primary" name="action" value="sendorder" order="{{ order.id }}" onclick="sendForm(this)"><i
                                     class="fas fa-paper-plane"></i> ส่งออเดอร์</button>
                             <a href="{% url 'receipt' id=order.id %}" class="btn btn-secondary" style="color:white;"><i class="fas fa-receipt"></i> เช็คบิล</a>
                         </div>
@@ -154,8 +153,41 @@
 <script>
     var total_price;
     var count = document.querySelectorAll("#foodorder > li").length
-
     //ฟังก์ชันคำนวนราคามรวม และ เก็บรหัสเมนูอาหาร
+
+    function toData(){
+        let text = ""
+        let ul = document.querySelectorAll("#foodorder > li")
+        let input;
+        for (let i=0; i < ul.length; i++){
+            input = ul[i].firstElementChild.nextSibling.nextSibling
+            text += input.name+"="+input.value+"&"
+        }
+        return text
+    }
+
+    function sendForm(button){
+        let save_data = toData()
+        save_data += "action="+button.value+"&order_foods="+document.getElementById("order_foods").value
+        console.log(save_data)
+        var httpRequest = new XMLHttpRequest()
+        httpRequest.onreadystatechange = function (){
+            if (httpRequest.readyState === XMLHttpRequest.DONE){
+                if (httpRequest.status === 200){
+                    let response = JSON.parse(httpRequest.responseText)
+                    alert(response.status)
+                }
+            }
+        }
+        console.log(button.getAttribute("order"))
+        httpRequest.open('POST', '/work_in/save_order/'+button.getAttribute("order")+'/')
+        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+        httpRequest.send(save_data)
+
+        //axios.post('/work_in/api/', {
+        //    type : text
+        // })
+    }
 
     function calTotal() {
         total_price = 0;
@@ -176,16 +208,23 @@
         var order_ul = document.querySelectorAll("#foodorder > li")
         var have_menu = false
 
+        //สำหรับบันทึกข้อมูล
+        let text = ""
+        let input
+
         //เพิ่มของเดิม
         for (i = 0; i < order_ul.length; i++) {
-            var status = order_ul[i].firstElementChild.nextSibling.nextSibling.getAttribute("status")
+            input = order_ul[i].firstElementChild.nextSibling.nextSibling
+            var status = input.getAttribute("status")
+            text += "&"+input.name+"="+input.value
             if ((list.getAttribute("value") == order_ul[i].firstElementChild.textContent) && (status == "true" ||
                     status == "none")) {
-                var num = order_ul[i].firstElementChild.nextSibling.nextSibling.value
-                order_ul[i].firstElementChild.nextSibling.nextSibling.value = parseInt(num) + 1
+                var num = input.value
+                input.value = parseInt(num) + 1
                 have_menu = true
             }
         }
+        save_data = text
         //สร้างใหม่
         if (have_menu == false) {
             ul = document.querySelector("#foodorder")
