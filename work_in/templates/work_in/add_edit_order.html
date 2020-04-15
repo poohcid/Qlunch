@@ -31,7 +31,37 @@
         background: #EEE;
         transition: 0.2s;
     }
+    #flex{
+        display:flex;
+        justify-content: center;
+        
+    }
+    @keyframes test {
+        from {
+            top: -1000;
+        }
+    }
+
+    #notification{
+        width: 500px;
+        height: 125px;
+        position: fixed;
+        top: 10;
+        z-index: 1;
+        border-radius: 10px;
+        animation: test .7500s ease;
+        color: #fff;
+        font-size: 25px;
+        padding-top: 40px;
+        transition: 0.25s
+    }
 </style>
+<center>
+<div id="flex">
+
+</div>
+</center>
+<button onclick="notification()">test</button>
 
     
 {% if table %}
@@ -132,10 +162,10 @@
                             </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" name="action" value="save" order="{{ order.id }}" onclick="sendForm(this)"><i
+                            <button type="button" data-dismiss="modal" class="btn btn-success" name="action" value="save" order="{{ order.id }}" onclick="sendForm(this)"><i
                                     class="fas fa-save"></i> บันทึกข้อมูล</button>
-                            <button type="button" class="btn btn-primary" name="action" value="sendorder" order="{{ order.id }}" onclick="sendForm(this)"><i
-                                    class="fas fa-paper-plane"></i> ส่งออเดอร์</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-primary" name="action" value="sendorder" order="{{ order.id }}" onclick="sendForm(this)"><i
+                                    class="fas fa-paper-plane" ></i> ส่งออเดอร์</button>
                             <a href="{% url 'receipt' id=order.id %}" class="btn btn-secondary" style="color:white;"><i class="fas fa-receipt"></i> เช็คบิล</a>
                         </div>
                     </div>
@@ -175,7 +205,9 @@
             if (httpRequest.readyState === XMLHttpRequest.DONE){
                 if (httpRequest.status === 200){
                     let response = JSON.parse(httpRequest.responseText)
-                    alert(response.status)
+                    console.log("Asd")
+                    console.log(button.textContent)
+                    notification(button.textContent)
                 }
             }
         }
@@ -279,6 +311,29 @@
         }
     }
     calTotal()
+
+    function notification(status){
+        var flex = document.getElementById("flex")
+        var div = document.createElement("div")
+        if (status == " บันทึกข้อมูล"){
+            console.log(status)
+            div.id = "notification"
+            div.style.background = "green"
+            div.innerHTML= "<span style='font-size:50px;'><i class='fas fa-check'></i></span> บันทึกข้อมูลเสร็จสิ้น"
+            flex.appendChild(div)
+            setTimeout(function(){ document.getElementById("notification").style.opacity = "0" }, 2500);
+            setTimeout(function(){ document.getElementById("notification").remove() }, 4000);
+        }
+        else{
+            div.id = "notification"
+            div.style.background = "red"
+            div.innerHTML= "<span style='font-size:50px;'><i class='fas fa-check'></i></span> ส่งข้อมูลเสร็จสิ้น"
+            flex.appendChild(div)
+            setTimeout(function(){ document.getElementById("notification").style.opacity = "0" }, 2500);
+            setTimeout(function(){ document.getElementById("notification").remove() }, 4000);
+        }
+        
+    }
 </script>
 
 {% endblock  %}
