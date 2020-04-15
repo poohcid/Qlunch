@@ -31,18 +31,20 @@
         background: #EEE;
         transition: 0.2s;
     }
-    #flex{
-        display:flex;
+
+    #flex {
+        display: flex;
         justify-content: center;
-        
+
     }
+
     @keyframes test {
         from {
             top: -1000;
         }
     }
 
-    #notification{
+    #notification {
         width: 500px;
         height: 125px;
         position: fixed;
@@ -55,22 +57,55 @@
         padding-top: 40px;
         transition: 0.25s
     }
+
+    .sidebar {
+        height: 100%;
+        width: 0px;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #DDD;
+        overflow-x: hidden;
+        padding-top: 20px;
+        padding: 0px;
+    }
+
+    .button_side {
+        width: 65px;
+        height: 65px;
+        background: rgb(0, 0, 0);
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        border-radius: 50px;
+        margin: 15px;
+        border: 2px solid #fff;
+        transition: 0.3s;
+        color: #fff;
+        z-index: 1;
+    }
+
+    @media only screen and (min-width: 480px) {
+        .sidebar, .button_side{
+            display: none;
+        }
+    }
 </style>
 <center>
-<div id="flex">
+    <div id="flex">
 
-</div>
+    </div>
 </center>
-    
+
 {% if table %}
 <h2><br>โต๊ะที่ : {{ table.id }}</h2>
 <h2>หมายเลขออเดอร์ : {{ order.id }}</h2>
 {% else %}<br>
 <h2 style="margin-top: 25px;">หมายเลขออเดอร์ : {{ order.id }}</h2><br>
 {% endif %}
-
-<div class="row">
-    <div class="col-md todolist overflow-auto">
+<div class="sidebar">
+    <div class="col-md todolist overflow-auto h-100">
         {% csrf_token %}
         <div class="d-flex bd-highlight">
             <div class="p-2 flex-grow-1 bd-highlight">
@@ -84,7 +119,32 @@
             <div class="col" onclick="addtoOrder(this)" value="{{ f.name }}" price="{{ f.price }}" food-id="{{ f.id }}">
                 <li class="list_menu list-group-item d-flex justify-content-between align-items-center bd-highlight">
                     <div class="foodname p-1 flex-grow-1 bd-highlight">{{ f.name }}</div>
-                    <div class="p-1 bd-highlight alert alert-danger m-0 mr-1"><b>ราคา</b> 
+                    <div class="p-1 bd-highlight alert alert-danger m-0 mr-1">
+                        {{ f.price|floatformat:"0" }} บาท
+                    </div>
+                </li>
+            </div>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<button class="button_side" onclick="sidebar()"><i class="fas fa-plus"></i></button>
+<div class="row">
+    <div class="col-md todolist overflow-auto list_pc">
+        {% csrf_token %}
+        <div class="d-flex bd-highlight">
+            <div class="p-2 flex-grow-1 bd-highlight">
+                <h3>เพิ่มเมนูอาหาร</h3>
+            </div>
+            <div class="p-2 bd-highlight"><input type="text" name="foodname" id="foodname_input"
+                    placeholder="ค้นหารายการอาหาร" class="form-control" onkeyup="search_menu()"></div>
+        </div>
+        <ul id="foodmenu" class="list-group">
+            {% for f in food %}
+            <div class="col" onclick="addtoOrder(this)" value="{{ f.name }}" price="{{ f.price }}" food-id="{{ f.id }}">
+                <li class="list_menu list-group-item d-flex justify-content-between align-items-center bd-highlight">
+                    <div class="foodname p-1 flex-grow-1 bd-highlight">{{ f.name }}</div>
+                    <div class="p-1 bd-highlight alert alert-danger m-0 mr-1"><b>ราคา</b>
                         {{ f.price|floatformat:"0" }} บาท
                     </div>
                 </li>
@@ -154,17 +214,20 @@
                             </button>
                         </div>
 
-                            <div class="modal-body">
-                                <p><b>ส่งออเดอร์</b> : เมนูที่ผู้ใช้เลือกจะถูกส่งและไม่สามารถแก้ไขเมนูนั้นได้</p>
-                                <p><b>บันทึกข้อมูล</b> : เมนูที่ผู้ใช้เลือกจะถูกบันทึกไว้และสามารถแก้ไขจำนวนของเมนูได้</p>
-                            </div>
+                        <div class="modal-body">
+                            <p><b>ส่งออเดอร์</b> : เมนูที่ผู้ใช้เลือกจะถูกส่งและไม่สามารถแก้ไขเมนูนั้นได้</p>
+                            <p><b>บันทึกข้อมูล</b> : เมนูที่ผู้ใช้เลือกจะถูกบันทึกไว้และสามารถแก้ไขจำนวนของเมนูได้</p>
+                        </div>
 
                         <div class="modal-footer">
-                            <button type="button" data-dismiss="modal" class="btn btn-success" name="action" value="save" order="{{ order.id }}" onclick="sendForm(this)"><i
-                                    class="fas fa-save"></i> บันทึกข้อมูล</button>
-                            <button type="button" data-dismiss="modal" class="btn btn-primary" name="action" value="sendorder" order="{{ order.id }}" onclick="sendForm(this)"><i
-                                    class="fas fa-paper-plane" ></i> ส่งออเดอร์</button>
-                            <a href="{% url 'receipt' id=order.id %}" class="btn btn-secondary" style="color:white;"><i class="fas fa-receipt"></i> เช็คบิล</a>
+                            <button type="button" data-dismiss="modal" class="btn btn-success" name="action"
+                                value="save" order="{{ order.id }}" onclick="sendForm(this)"><i class="fas fa-save"></i>
+                                บันทึกข้อมูล</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-primary" name="action"
+                                value="sendorder" order="{{ order.id }}" onclick="sendForm(this)"><i
+                                    class="fas fa-paper-plane"></i> ส่งออเดอร์</button>
+                            <a href="{% url 'receipt' id=order.id %}" class="btn btn-secondary" style="color:white;"><i
+                                    class="fas fa-receipt"></i> เช็คบิล</a>
                         </div>
                     </div>
                 </div>
@@ -181,27 +244,42 @@
 <script>
     var total_price;
     var count = document.querySelectorAll("#foodorder > li").length
-    //ฟังก์ชันคำนวนราคามรวม และ เก็บรหัสเมนูอาหาร
+    if (window.screen.availWidth < 480) {
+        document.querySelector(".list_pc").remove()
+    } else {
+        document.querySelector(".sidebar").style.display = "none"
+    }
 
-    function toData(){
+    function sidebar() {
+        var side = document.querySelector(".sidebar").style.width
+        if (side == "0%") {
+            document.querySelector(".sidebar").style.width = "350px";
+        } else {
+            document.querySelector(".sidebar").style.width = "0%";
+        }
+
+
+    }
+    //ฟังก์ชันคำนวนราคามรวม และ เก็บรหัสเมนูอาหาร
+    function toData() {
         let text = ""
         let ul = document.querySelectorAll("#foodorder > li")
         let input;
-        for (let i=0; i < ul.length; i++){
+        for (let i = 0; i < ul.length; i++) {
             input = ul[i].firstElementChild.nextSibling.nextSibling
-            text += input.name+"="+input.value+"&"
+            text += input.name + "=" + input.value + "&"
         }
         return text
     }
 
-    function sendForm(button){
+    function sendForm(button) {
         let save_data = toData()
-        save_data += "action="+button.value+"&order_foods="+document.getElementById("order_foods").value
+        save_data += "action=" + button.value + "&order_foods=" + document.getElementById("order_foods").value
         console.log(save_data)
         var httpRequest = new XMLHttpRequest()
-        httpRequest.onreadystatechange = function (){
-            if (httpRequest.readyState === XMLHttpRequest.DONE){
-                if (httpRequest.status === 200){
+        httpRequest.onreadystatechange = function () {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                if (httpRequest.status === 200) {
                     let response = JSON.parse(httpRequest.responseText)
                     console.log("Asd")
                     console.log(button.textContent)
@@ -210,7 +288,7 @@
             }
         }
         console.log(button.getAttribute("order"))
-        httpRequest.open('POST', '/work_in/save_order/'+button.getAttribute("order")+'/')
+        httpRequest.open('POST', '/work_in/save_order/' + button.getAttribute("order") + '/')
         httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
         httpRequest.send(save_data)
 
@@ -246,7 +324,7 @@
         for (i = 0; i < order_ul.length; i++) {
             input = order_ul[i].firstElementChild.nextSibling.nextSibling
             var status = input.getAttribute("status")
-            text += "&"+input.name+"="+input.value
+            text += "&" + input.name + "=" + input.value
             if ((list.getAttribute("value") == order_ul[i].firstElementChild.textContent) && (status == "true" ||
                     status == "none")) {
                 var num = input.value
@@ -310,27 +388,34 @@
     }
     calTotal()
 
-    function notification(status){
+    function notification(status) {
         var flex = document.getElementById("flex")
         var div = document.createElement("div")
-        if (status == " บันทึกข้อมูล"){
+        if (status == " บันทึกข้อมูล") {
             console.log(status)
             div.id = "notification"
             div.style.background = "green"
-            div.innerHTML= "<span style='font-size:50px;'><i class='fas fa-check'></i></span> บันทึกข้อมูลเสร็จสิ้น"
+            div.innerHTML = "<span style='font-size:50px;'><i class='fas fa-check'></i></span> บันทึกข้อมูลเสร็จสิ้น"
             flex.appendChild(div)
-            setTimeout(function(){ document.getElementById("notification").style.opacity = "0" }, 2500);
-            setTimeout(function(){ document.getElementById("notification").remove() }, 4000);
-        }
-        else{
+            setTimeout(function () {
+                document.getElementById("notification").style.opacity = "0"
+            }, 2500);
+            setTimeout(function () {
+                document.getElementById("notification").remove()
+            }, 4000);
+        } else {
             div.id = "notification"
             div.style.background = "red"
-            div.innerHTML= "<span style='font-size:50px;'><i class='fas fa-check'></i></span> ส่งข้อมูลเสร็จสิ้น"
+            div.innerHTML = "<span style='font-size:50px;'><i class='fas fa-check'></i></span> ส่งข้อมูลเสร็จสิ้น"
             flex.appendChild(div)
-            setTimeout(function(){ document.getElementById("notification").style.opacity = "0" }, 2500);
-            setTimeout(function(){ document.getElementById("notification").remove() }, 4000);
+            setTimeout(function () {
+                document.getElementById("notification").style.opacity = "0"
+            }, 2500);
+            setTimeout(function () {
+                document.getElementById("notification").remove()
+            }, 4000);
         }
-        
+
     }
 </script>
 
