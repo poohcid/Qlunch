@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'appModel',
     'work_in',
+    'buffet'
 ]
 
 MIDDLEWARE = [
