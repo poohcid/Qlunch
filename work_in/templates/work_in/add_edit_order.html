@@ -58,6 +58,7 @@
         transition: 0.25s
     }
 
+    /*
     .sidebar {
         height: 100%;
         width: 0px;
@@ -91,6 +92,7 @@
             display: none;
         }
     }
+*/
 </style>
 <center>
     <div id="flex">
@@ -104,7 +106,7 @@
 {% else %}<br>
 <h2 style="margin-top: 25px;">หมายเลขออเดอร์ : {{ order.id }}</h2><br>
 {% endif %}
-<div class="sidebar">
+{% comment %} <div class="sidebar">
     <div class="col-md todolist overflow-auto h-100">
         {% csrf_token %}
         <div class="d-flex bd-highlight">
@@ -128,9 +130,9 @@
         </ul>
     </div>
 </div>
-<button class="button_side" onclick="sidebar()"><i class="fas fa-plus"></i></button>
+<button class="button_side" onclick="sidebar()"><i class="fas fa-plus"></i></button> {% endcomment %}
 <div class="row">
-    <div class="col-md todolist overflow-auto list_pc">
+    <div class="col-md todolist overflow-auto">
         {% csrf_token %}
         <div class="d-flex bd-highlight">
             <div class="p-2 flex-grow-1 bd-highlight">
@@ -177,12 +179,13 @@
                     จำนวน :
 
                     {% if order_food.status == None %}
-                    <input id="amount{{ forloop.counter }}" status="none" class="form-control"
-                        price="{{ order_food.food.price }}" name="{{ order_food.food.id }}"
-                        style="width: 60px; margin-right: 10px; margin-left: 10px;" onchange="input_event(this)"
-                        type="number" value="{{ order_food.unit }}" min="0" max="999">
-                    <button type="button" class="btn btn-danger" onclick="deleteMenu(this)"><i
-                            class="fas fa-trash-alt"></i> ลบ</button>
+                        <input id="amount{{ forloop.counter }}" status="none" class="notsave form-control"
+                            price="{{ order_food.food.price }}" name="{{ order_food.food.id }}"
+                            style="width: 60px; margin-right: 10px; margin-left: 10px;" onchange="input_event(this)"
+                            type="number" value="{{ order_food.unit }}" min="0" max="999">
+                        <button type="button" class="btn btn-danger" onclick="deleteMenu(this)"><i
+                                class="fas fa-trash-alt"></i> ลบ</button>
+                        <div class="changetosend p-1 bd-highlight alert alert-warning m-0 mr-1" style="display:none;"></div>
                     {% elif order_food.status %}
                     <input id="amount{{ forloop.counter }}" status="true" class="form-control"
                         price="{{ order_food.food.price }}" name="{{ order_food.food.id }}"
@@ -239,27 +242,26 @@
 
 
 
-
-
 <script>
     var total_price;
     var count = document.querySelectorAll("#foodorder > li").length
-    var side = 0;
-    if (window.screen.availWidth < 480) {
+    var sidebar = 0;
+    calTotal()
+    /*if (window.screen.availWidth < 480) {
         document.querySelector(".list_pc").remove()
     } else {
         document.querySelector(".sidebar").style.display = "none"
-    }
+    }*/
     function sidebar() {
-        if (side == 0) {
+        console.log(sidebar)
+        if (sidebar == 0) {
             document.querySelector(".sidebar").style.width = "350px";
-            side = 1
+            sidebar = 1
 
         } else {
             document.querySelector(".sidebar").style.width = "0px";
-            side = 0
+            sidebar = 0
         }
-
 
     }
     //ฟังก์ชันคำนวนราคามรวม และ เก็บรหัสเมนูอาหาร
@@ -283,8 +285,7 @@
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
                     let response = JSON.parse(httpRequest.responseText)
-                    console.log("Asd")
-                    console.log(button.value)
+                    console.log(response)
                     notification(button.value)
                 }
             }
@@ -310,9 +311,11 @@
             }
             total_price += inputs[i].value * Number(inputs[i].getAttribute("price"))
         }
+        console.log(total_price)
         document.getElementById("total_price").innerHTML = total_price
         document.getElementById("form_total").value = total_price
     }
+
 
     function addtoOrder(list) {
         var order_ul = document.querySelectorAll("#foodorder > li")
@@ -343,11 +346,11 @@
 
             li.innerHTML = '<div class="foodname p-1 flex-grow-1 bd-highlight">' + list.getAttribute("value") + '</div>'
             li.innerHTML = li.innerHTML + 'จำนวน : <input id="amount' + count +
-                '"class="form-control" status="none" price="' + list
+                '"class="notsave form-control" status="none" price="' + list
                 .getAttribute("price") + '" name="' + list.getAttribute("food-id") +
                 '" style="width: 60px; margin-right: 10px; margin-left: 10px;" onchange="input_event(this)" type="number" value="1" min="0" max="999"/>'
             li.innerHTML = li.innerHTML +
-                '<button type="button" class="btn btn-danger" onclick="deleteMenu(this)"><i class="fas fa-trash-alt"></i> ลบ</button>'
+                '<button type="button" class="btn btn-danger" onclick="deleteMenu(this)"><i class="fas fa-trash-alt"></i> ลบ</button><div class="changetosend p-1 bd-highlight alert alert-warning m-0 mr-1" style="display:none;"></div>'
             li.style.animation = "expand .25s ease-in-out"
             ul.appendChild(li)
             count = count + 1
@@ -359,7 +362,6 @@
     function deleteMenu(menuname) {
         menuname.parentNode.remove()
         calTotal()
-
     }
 
     function input_event(input) {
@@ -370,7 +372,6 @@
     }
 
     function search_menu() {
-
         var input, filter, ul, li, a, i, txtValue;
         input = document.getElementById('foodname_input');
         filter = input.value.toUpperCase();
@@ -397,7 +398,8 @@
             console.log(status)
             div.id = "notification"
             div.style.background = "green"
-            div.innerHTML = "<span style='font-size:50px;'><i class='fas fa-check'></i></span> บันทึกข้อมูลเสร็จสิ้น"
+            div.innerHTML =
+                "<span style='font-size:50px;'><i class='fas fa-check'></i></span> บันทึกข้อมูลออเดอร์เสร็จสิ้น"
             flex.appendChild(div)
             setTimeout(function () {
                 document.getElementById("notification").style.opacity = "0"
@@ -407,8 +409,8 @@
             }, 4000);
         } else {
             div.id = "notification"
-            div.style.background = "red"
-            div.innerHTML = "<span style='font-size:50px;'><i class='fas fa-check'></i></span> ส่งข้อมูลเสร็จสิ้น"
+            div.style.background = "blue"
+            div.innerHTML = "<span style='font-size:50px;'><i class='fas fa-check'></i></span> ส่งออเดอร์เรียบร้อย"
             flex.appendChild(div)
             setTimeout(function () {
                 document.getElementById("notification").style.opacity = "0"
@@ -416,9 +418,20 @@
             setTimeout(function () {
                 document.getElementById("notification").remove()
             }, 4000);
+            updateorder()
         }
+        
+    }
 
+    function updateorder() {
+        var change = document.getElementsByClassName("notsave")
+        var text = '<div class="p-1 bd-highlight alert alert-warning m-0 mr-1"><i class="fas fa-paper-plane"></i>เมนูถูกส่งแล้ว</div>'
+        for(i=0;i<=change.length;i++){
+            document.getElementsByClassName("notsave")[i].disabled = true
+            document.getElementsByClassName("notsave")[i].nextSibling.remove()
+            document.getElementsByClassName("notsave")[i].nextSibling.innerHTML = '<i class="fas fa-paper-plane"></i> เมนูถูกส่งแล้ว'
+            document.getElementsByClassName("notsave")[i].nextSibling.style.display = ""    
+        }
     }
 </script>
-
 {% endblock  %}

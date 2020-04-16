@@ -104,7 +104,7 @@ def save_order(request, order_id):
                 order_food.status = False
                 order_food.save()
         response = {
-            "status" : "บันทึกข้อมูลเรียบร้อย"
+            "status" : "บันทึกข้อมูลเรียบร้อย",
         }
         if request.POST.get('action') == "sendorder":
             response["status"] = "ส่งรายการออเดอร์เรียบร้อย"
@@ -119,7 +119,7 @@ def edit_order_food(request, order, table=False):
     if table:
         context['table'] = table
     context['food'] = Food.objects.all()
-    context['order_foods'] = order.order_food_set.all()
+    context['order_foods'] = order.order_food_set.all().order_by("status")
     return render(request, template_name='work_in/add_edit_order.html', context=context)
     
 @login_required
