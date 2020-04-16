@@ -80,6 +80,7 @@ def save_order(request, order_id):
     if request.method == "POST":
         order = Order.objects.get(pk=order_id)
         food_id_list = request.POST.get("order_foods").split(",")[:-1]
+        print(food_id_list)
         remove_list = order.order_food_set.exclude(food__in=food_id_list).filter(status=None)
         for order_food in remove_list:
             print(order_food)

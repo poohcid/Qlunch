@@ -179,13 +179,13 @@
                     จำนวน :
 
                     {% if order_food.status == None %}
-                        <input id="amount{{ forloop.counter }}" status="none" class="notsave form-control"
-                            price="{{ order_food.food.price }}" name="{{ order_food.food.id }}"
-                            style="width: 60px; margin-right: 10px; margin-left: 10px;" onchange="input_event(this)"
-                            type="number" value="{{ order_food.unit }}" min="0" max="999">
-                        <button type="button" class="btn btn-danger" onclick="deleteMenu(this)"><i
-                                class="fas fa-trash-alt"></i> ลบ</button>
-                        <div class="changetosend p-1 bd-highlight alert alert-warning m-0 mr-1" style="display:none;"></div>
+                    <input id="amount{{ forloop.counter }}" status="none" class="notsave form-control"
+                        price="{{ order_food.food.price }}" name="{{ order_food.food.id }}"
+                        style="width: 60px; margin-right: 10px; margin-left: 10px;" onchange="input_event(this)"
+                        type="number" value="{{ order_food.unit }}" min="0" max="999">
+                    <button type="button" class="btn btn-danger" onclick="deleteMenu(this)"><i
+                            class="fas fa-trash-alt"></i> ลบ</button>
+                    <div class="changetosend p-1 bd-highlight alert alert-warning m-0 mr-1" style="display:none;"></div>
                     {% elif order_food.status %}
                     <input id="amount{{ forloop.counter }}" status="true" class="form-control"
                         price="{{ order_food.food.price }}" name="{{ order_food.food.id }}"
@@ -240,8 +240,6 @@
 </div>
 
 
-
-
 <script>
     var total_price;
     var count = document.querySelectorAll("#foodorder > li").length
@@ -290,14 +288,11 @@
                 }
             }
         }
+        console.log("Asd")
         console.log(button.getAttribute("order"))
         httpRequest.open('POST', '/work_in/save_order/' + button.getAttribute("order") + '/')
         httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
         httpRequest.send(save_data)
-
-        //axios.post('/work_in/api/', {
-        //    type : text
-        // })
     }
 
     function calTotal() {
@@ -407,6 +402,7 @@
             setTimeout(function () {
                 document.getElementById("notification").remove()
             }, 4000);
+            
         } else {
             div.id = "notification"
             div.style.background = "blue"
@@ -418,19 +414,26 @@
             setTimeout(function () {
                 document.getElementById("notification").remove()
             }, 4000);
+            document.getElementById("order_foods").value = ""
             updateorder()
         }
-        
+
     }
 
-    function updateorder() {
+     function updateorder() {
         var change = document.getElementsByClassName("notsave")
         var text = '<div class="p-1 bd-highlight alert alert-warning m-0 mr-1"><i class="fas fa-paper-plane"></i>เมนูถูกส่งแล้ว</div>'
-        for(i=0;i<=change.length;i++){
-            document.getElementsByClassName("notsave")[i].disabled = true
-            document.getElementsByClassName("notsave")[i].nextSibling.remove()
-            document.getElementsByClassName("notsave")[i].nextSibling.innerHTML = '<i class="fas fa-paper-plane"></i> เมนูถูกส่งแล้ว'
-            document.getElementsByClassName("notsave")[i].nextSibling.style.display = ""    
+        var num = document.getElementsByClassName("notsave").length
+        var notsave = document.getElementsByClassName("notsave")
+        for(i=0;i<change.length;i++){
+            if (notsave[i].getAttribute("status") == "none"){
+                console.log("true")
+                notsave[i].disabled = true
+                notsave[i].nextElementSibling.remove()
+                notsave[i].nextElementSibling.innerHTML = '<i class="fas fa-paper-plane"></i> เมนูถูกส่งแล้ว'
+                notsave[i].nextElementSibling.style.display = ""
+                notsave[i].setAttribute("status", "false")
+            }   
         }
     }
 </script>
