@@ -8,8 +8,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
-from appModel.models import (Customer, Food, Order, Order_food, Order_in,
-                             Receipt, Table)
+from appModel.models import (Customer, Food, Order, Order_food, Order_in, Receipt, Table)
 
 from .forms import OrderForm, TableForm
 
