@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 style="margin-top: 50px;">ประวัติลูกค้า</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">ชื่อ</th>
+      <th scope="col">ชื่ออเดอร์ล่าสุด</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for list in order %}
+    <tr>
+      <th scope="row"></th>
+      <td>{{ list.order.customer.name }}</td>
+      <td>{{ list.order.customer.name }}</td>
+      <td>{{ list.order }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock  %}
