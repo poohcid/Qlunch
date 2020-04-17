@@ -15,6 +15,12 @@ class Customer(models.Model):
     name = models.CharField(max_length=255)
     amount = models.IntegerField()
 
+class Customer_buffet(models.Model):
+    company = models.CharField(max_length=255, null=True)
+    phone = models.CharField(max_length=10)
+    address = models.TextField()
+    customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
+
 class Order(models.Model):
     name = models.CharField(max_length=255, null=True)
     date_book = models.DateTimeField()
@@ -55,9 +61,7 @@ class Order_in(models.Model):
 class Order_buffet(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE)
     earnest = models.DecimalField(max_digits=8, decimal_places=2, null=True)
-    company = models.CharField(max_length=255, null=True)
     location = models.TextField()
-    phone = models.CharField(max_length=10)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
 

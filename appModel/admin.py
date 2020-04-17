@@ -29,6 +29,8 @@ admin.site.register(Permission)
 
 admin.site.register(Customer)
 
+admin.site.register(Customer_buffet)
+
 admin.site.register(Food)
 
 admin.site.register(Table, TableAdmin)
