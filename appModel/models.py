@@ -15,11 +15,17 @@ class Customer(models.Model):
     name = models.CharField(max_length=255)
     amount = models.IntegerField()
 
+    def __str__(self):
+        return self.name
+
 class Customer_buffet(models.Model):
     company = models.CharField(max_length=255, null=True, blank=True)
     phone = models.CharField(max_length=10)
     address = models.TextField()
     customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.customer.name
 
 class Order(models.Model):
     name = models.CharField(max_length=255, null=True)
