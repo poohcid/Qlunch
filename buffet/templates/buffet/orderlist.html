@@ -3,7 +3,7 @@
 <h1 style="margin-top: 50px;">ออเดอร์บุฟเฟต์</h1>
 <div class="row">
     <div class="col mb-5">
-        <button type="button" class="btn btn-success float-right"><i class="fas fa-plus"></i> สร้างออเดอร์</button>
+        <a href={% url 'customer' %}><button type="button" class="btn btn-success float-right"><i class="fas fa-plus"></i> สร้างออเดอร์</button></a>
     </div>
 </div>
 <table class="table text-center">
@@ -11,6 +11,7 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">ชื่อ</th>
+            <th scope="col">วันที่</th>
             <th scope="col">เวลาที่จัดเลั้ยง</th>
             <th scope="col">สถานที่</th>
             <th scope="col"></th>
@@ -21,6 +22,7 @@
         <tr>
             <th scope="row">{{ forloop.counter }}</th>
             <td>{{ list.order.name }}</td>
+            <td>{{ list.start_date|date:"SHORT_DATE_FORMAT"}}</td>
             <td>{{ list.start_date|date:"H:i น." }} - {{ list.end_date|date:"H:i น." }}</td>
             <td>{{ list.location }}</td>
             <td><button type="button" class="btn btn-primary mr-3"><i class="fas fa-tasks"></i> ดูรายละเอียด</button><a href="{% url 'get_order' id=list.order.id %}" type="button" class="btn btn-success"><i class="fas fa-plus"></i> สั่งอาหาร</a></td>

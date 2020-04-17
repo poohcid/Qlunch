@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1 style="margin-top: 50px;">ประวัติลูกค้า</h1>
-
+<h1 style="margin-top: 50px;">เลือกข้อมูลลูกค้า</h1>
+<div class="row">
+    <div class="col mb-5">
+        <a href="#"><button type="button" class="btn btn-success float-right"><i class="fas fa-plus"></i>สร้างข้อมูลลูกค้าใหม่</button></a>
+    </div>
+</div>
 <table class="table">
   <thead>
     <tr>
@@ -12,12 +16,12 @@
     </tr>
   </thead>
   <tbody>
-  {% for list in order %}
+  {% for c in customers %}
     <tr>
       <th scope="row"></th>
-      <td>{{ list.order.customer.name }}</td>
-      <td>{{ list.order.customer.name }}</td>
-      <td>{{ list.order }}</td>
+      <td>{{ c.name }}</td>
+      <td>{% for order in c.order_set.all %} {% if forloop.last %}{{ order.name }}{% endif %} {% endfor %}</td>
+      <td><button type="button" class="btn btn-success float-right"><i class="fas fa-plus"></i>เลือก</button></a></td>
     </tr>
     {% endfor %}
   </tbody>
