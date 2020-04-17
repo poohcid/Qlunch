@@ -16,12 +16,10 @@ from .forms import OrderForm, TableForm
 
 @login_required
 def create_table(request):
-    context = {}
     if request.method == "POST":
         form = TableForm(request.POST)
         if form.is_valid():
             form.save()
-        #return redirect('select_table', table_id=)
     
     return redirect('here_or_home')
     
@@ -198,7 +196,6 @@ def receipt(request, id):
     context['total_price'] = total_price #ราคา
     context['vat'] = (total_price*7)/100 #vat
     context['total'] = total_price+(total_price*7)/100 #ราคา+vat
-    
 
     if request.method == "POST":
         new_reciept = Receipt.objects.create(

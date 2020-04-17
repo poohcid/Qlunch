@@ -16,7 +16,7 @@ class Customer(models.Model):
     amount = models.IntegerField()
 
 class Customer_buffet(models.Model):
-    company = models.CharField(max_length=255, null=True)
+    company = models.CharField(max_length=255, null=True, blank=True)
     phone = models.CharField(max_length=10)
     address = models.TextField()
     customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
