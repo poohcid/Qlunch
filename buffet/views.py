@@ -89,12 +89,17 @@ def tax_invoice(request, order_id):
     context['now'] = datetime.now()
 
     if request.method == "POST":
-        tax = Tax_invoice.objects.create(
-            date=datetime.now(),
-            net_payment=total_price+(total_price*7)/100,
-            name= request.POST.get('tax_name'),
-            order_buffet=orderbuffet
-        ) 
+        if request.POST.get('create'):
+            tax = Tax_invoice.objects.create(
+                date=datetime.now(),
+                net_payment=total_price+(total_price*7)/100,
+                name= request.POST.get('tax_name'),
+                order_buffet=orderbuffet
+            )
+        else:
+            tax = Tax_invoice.objects.get(order_buffet_id=orderbuffet.id)
+            if request.POST.get('tax_name'):
+                tax.name = request.POST.get('tax_name')
+            tax.save()
         return render(request, "buffet/tax_invoice.html", context=context)
-
     return render(request, "buffet/tax_invoice.html", context=context)
