@@ -22,8 +22,8 @@
         <tr>
             <th scope="row">{{ forloop.counter }}</th>
             <td>{{ list.order.name }}</td>
-            <td>{{ list.start_date|date:"SHORT_DATE_FORMAT"}}</td>
-            <td>{{ list.start_date|date:"H:i น." }} - {{ list.end_date|date:"H:i น." }}</td>
+            <td>{{ list.date|date:"SHORT_DATE_FORMAT"}}</td>
+            <td>{{ list.start_time|date:'H:i น.' }} - {{ list.end_time|date:'H:i น.' }}</td>
             <td>{{ list.location }}</td>
             <td>
                 <button type="button" class="btn btn-primary"><i class="fas fa-tasks"></i> ดูรายละเอียด</button>
