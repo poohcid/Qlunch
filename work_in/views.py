@@ -126,32 +126,44 @@ def select_table(request, table_id):
     order = list(table.order_in_set.all())[-1].order
     return edit_order_food(request, order, table)
 
+
+
+
 @login_required
 def manage_order(request):
     context = {}   
-    order_in = Order_in.objects.all()
-    order_list = []
-    receipt_list = []
-    receipt = Receipt.objects.all()
+    # order_in = Order_in.objects.all()
+    # order_list = [] # รายชื่อออเดอร์ที่ไม่มีโต๊ะ
+    # receipt_list = [] # รายชื่อออเดอร์ที่ที่เช็คบิลแล้ว
+    # receipt = Receipt.objects.all()
 
-    for r in receipt:
-        receipt_list.append(r.order_id)
+    # for r in receipt:
+    #     receipt_list.append(r.order_id)
         
-    print(receipt_list)
-    for have_table in order_in:
-        if not have_table.table.all():
-            order_list.append(have_table.order_id)
+    # for have_table in order_in:
+    #     if not have_table.table.all():
+    #         order_list.append(have_table.order_id)
 
-    order_in = Order_in.objects.filter(order_id__in=order_list)
-    order2 = Order.objects.filter(id__in=order_list) #order ทานที่ร้าน
-    order = Order.objects.exclude(id__in=order_list) #order สั่งกลับบ้าน
+    # order_in = Order.objects.filter(order_in__in=order_list).filter(order_type="order_in")
+    # order2 = Order.objects.filter(order_in__in=order_list).filter(order_type="order_in") #order สั่งกลับบ้าน
+    # order = Order.objects.exclude(order_in__in=order_list).filter(order_type="order_in") #order ทานที่ร้าน
 
-    context['order2'] = order2.order_by("date_book")
-    context['order'] = order.order_by("date_book")
-    context['receipt'] = receipt_list
-    context['all_order'] = Order.objects.all()
+    order = Order.objects.filter(order_type="order_in")
+    order_table = order.exclude(order_in__table=None) #ออเดอรที่ทีโต๊ะ 
+    order_home = order.filter(order_in__table=None) #ออเดอรสั่งกลับบ้าน 
+
+    order_checked = order.exclude(receipt=None) #ออเดอร์ที่เช็คบิลแล้ว
+
+    context['order_home'] = order_home
+    context['order_table'] = order_table
+    context['all_order'] = order_checked
+
 
     return render(request, 'work_in/manage_order.html', context=context)
+
+
+
+
 
 @login_required
 def get_order(request, id):
