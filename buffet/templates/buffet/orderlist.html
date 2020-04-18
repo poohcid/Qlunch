@@ -27,10 +27,11 @@
             <td>{{ list.location }}</td>
             <td>
                 <button type="button" class="btn btn-primary"><i class="fas fa-tasks"></i> ดูรายละเอียด</button>
-                <a href="{% url 'get_order' id=list.order.id %}" type="button" class="btn btn-success mr-2 ml-2"><i class="fas fa-plus"></i> สั่งอาหาร</a>
+                
                 {% if list.id in tax_list %}
-                    <button class="btn btn-success" disabled>ทำใบกำกับภาษีแล้ว</button>
+                    <button class="btn btn-warning m-2" disabled><i class="fas fa-check"></i> ทำใบกำกับภาษีแล้ว</button>
                 {% else %}
+                    <a href="{% url 'get_order' id=list.order.id %}" type="button" class="btn btn-success m-2"><i class="fas fa-plus"></i> สั่งอาหาร</a>
                     <a href="{% url 'tax_invoice' order_id=list.order.id %}" type="button" class="btn btn-warning"><i class="fas fa-file-invoice"></i> ทำใบกำกับภาษี</a>
                 {% endif %}         
             </td>
