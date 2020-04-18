@@ -24,10 +24,19 @@
     </div>
 
     <div class="col" style="border:1px solid #AAA; border-radius: 5px; padding:10px;">
-        <h5><b><u>ข้อมูลใบกำกับภาษี</u></b></h5>
-        <h6><b>หมายเลขประจำตัวผู้เสียภาษีอากร :</b></h6>
+        <h5><b><u>ข้อมูลใบกำกับภาษี</u></b></h5> 
         <h6><b>วันที่ออก :</b> {{ now|date:"d-m-Y"  }}</h6>
-        <h6><b>ชื่อใบกำกับภาษี :</b> <input type="text" name="tax_name" style="border-radius: 5px; border: 1px solid #111;"></h6>
+        {% if tax_invoice %}
+            <h6><b>หมายเลขใบกำกับภาษี :</b> {{ tax_invoice.0.id }}</h6>
+            <h6>
+                <b>ชื่อใบกำกับภาษี :</b>
+                <input type="text" name="tax_name" value="{{tax_invoice.0.name}}" style="border-radius: 5px; border: 1px solid #111;" disabled>
+                <button type="button" onclick="edit_tax(this)"class="btn btn-warning"><i class="fas fa-edit"></i> แก้ไข</button>
+            </h6>
+        {% else %}
+          <h6><b>ชื่อใบกำกับภาษี :</b> <input type="text" name="tax_name" style="border-radius: 5px; border: 1px solid #111;"></h6>
+        {% endif %}
+        
     </div>
 </div>
 
@@ -91,4 +100,10 @@
 </div>
 </form>
 {% endif %}
+
+<script>
+    function edit_tax(button){
+        button.previousElementSibling.disabled = false;
+    }
+</script>
 {% endblock  %}

@@ -65,6 +65,8 @@ def add_order_buffet(request, cus_id):
     context['customer'] = Customer.objects.get(pk=cus_id)
     return render(request, "buffet/add_order_buffet.html", context=context)
 
+
+
 def tax_invoice(request, order_id):
     context = {}
     total_price = 0
@@ -76,6 +78,8 @@ def tax_invoice(request, order_id):
         total_price += i.food.price
     if total_price == 0:
         context['error'] = 'ไม่สามารถออกใบกำกับภาษีได้เนื่องจากออเดอร์นี้ไม่ได้ทำการสั่งเมนูใดเลย!'
+
+    context['tax_invoice'] = Tax_invoice.objects.filter(order_buffet_id=orderbuffet.id)
     context['order_food'] = orderfood
     context['customer'] = customer
     context['order'] = orderbuffet
@@ -83,14 +87,14 @@ def tax_invoice(request, order_id):
     context['vat'] = (total_price*7)/100 #vat
     context['total'] = total_price+(total_price*7)/100 #ราคา+vat
     context['now'] = datetime.now()
+
     if request.method == "POST":
         tax = Tax_invoice.objects.create(
             date=datetime.now(),
             net_payment=total_price+(total_price*7)/100,
             name= request.POST.get('tax_name'),
             order_buffet=orderbuffet
-        )
-        tax.save()
-        return redirect('orderlist')
-    
+        ) 
+        return render(request, "buffet/tax_invoice.html", context=context)
+
     return render(request, "buffet/tax_invoice.html", context=context)
