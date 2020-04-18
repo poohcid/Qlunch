@@ -18,7 +18,7 @@ class OrderForm(ModelForm):
         fields = ['name','detail']
         widgets={
             "name":forms.TextInput(attrs={'class':'form-control'}),
-            "detail":forms.Textarea(attrs={'class':'form-control'})
+            "detail":forms.Textarea(attrs={'class':'form-control','rows':4, 'cols':15})
         } 
         labels = {
             'name': 'ชื่อ ',
@@ -31,7 +31,7 @@ class Order_buffet_form(ModelForm):
         exclude = ['order_id','order']
         widgets={
             "earnest":forms.TextInput(attrs={'class':'form-control'}),
-            "location":forms.TextInput(attrs={'class':'form-control'}),
+            "location":forms.Textarea(attrs={'class':'form-control','rows':4, 'cols':15}),
             "date": forms.DateInput(attrs={'id':'input_date','name':'date'}, format=['%d-%m-%Y']),
             "start_time": forms.TimeInput(attrs={'id':'input_starttime','name':'start_time'}, format=['%H:%M']),
             "end_time": forms.TimeInput(attrs={'id':'input_endtime','name':'end_time'}, format=['%H:%M']),
