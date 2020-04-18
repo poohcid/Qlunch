@@ -27,7 +27,6 @@
             <td>{{ list.location }}</td>
             <td>
                 <button type="button" class="btn btn-primary"><i class="fas fa-tasks"></i> ดูรายละเอียด</button>
-                
                 {% if list.id in tax_list %}
                     <button class="btn btn-warning m-2" disabled><i class="fas fa-check"></i> ทำใบกำกับภาษีแล้ว</button>
                 {% else %}

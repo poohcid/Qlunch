@@ -68,10 +68,10 @@ def add_order_buffet(request, cus_id):
 def tax_invoice(request, order_id):
     context = {}
     total_price = 0
-    print(order_id)
+    check = [True,False]
     orderbuffet = Order_buffet.objects.get(order=order_id)
     customer = Customer_buffet.objects.get(customer_id=orderbuffet.order.customer_id)
-    orderfood = Order_food.objects.filter(order_id=order_id)
+    orderfood = Order_food.objects.filter(order_id=order_id).filter(status__in=check)
     for i in orderfood:
         total_price += i.food.price
     if total_price == 0:
@@ -84,11 +84,10 @@ def tax_invoice(request, order_id):
     context['total'] = total_price+(total_price*7)/100 #ราคา+vat
     context['now'] = datetime.now()
     if request.method == "POST":
-        print("check")
         tax = Tax_invoice.objects.create(
             date=datetime.now(),
             net_payment=total_price+(total_price*7)/100,
-            name="asd",
+            name= request.POST.get('tax_name'),
             order_buffet=orderbuffet
         )
         tax.save()

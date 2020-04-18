@@ -7,12 +7,13 @@
         class="fas fa-plus"></i> สร้างข้อมูลลูกค้าใหม่</button>
   </div>
 </div>
-<table class="table">
+<table class="table text-center">
   <thead>
     <tr>
       <th scope="col">#</th>
       <th scope="col">ชื่อ</th>
-      <th scope="col">ชื่ออเดอร์ล่าสุด</th>
+      <th scope="col">ที่อยู่</th>
+      <th scope="col">เบอร์โทรศัพท์</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -21,7 +22,8 @@
     <tr>
       <th scope="row">{{ forloop.counter }}</th>
       <td>{{ c.customer.name }}</td>
-      <td>{% for order in c.customer.order_set.all %} {% if forloop.last %}{{ order.name }}{% endif %} {% endfor %}</td>
+      <td>{{ c.address }}</td>
+      <td>{{ c.phone }}</td>
       <td><a href="{% url 'add_order_buffet' cus_id=c.customer.id %}" type="button" class="btn btn-primary float-right">เลือก</a></td>
     </tr>
     {% endfor %}

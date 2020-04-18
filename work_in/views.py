@@ -178,18 +178,17 @@ def receipt(request, id):
     order = Order.objects.get(pk=id)
     check = [False, True]
     order_food = Order_food.objects.filter(order_id=id).filter(status__in=check)
-    order_in = Order_in.objects.get(order_id=id)
-
+    
     for i in order_food:  #บวกจำนวนเงินทั้งหมด
         total_price += i.food_price
 
-    if order_in.table.all(): #เช็คว่า order นั้นมันโต๊ะหรือไม่
-        table_list = []
-        for i in order_in.table.all():
-            table_list.append(i.id)
-
-        context['table'] = table_list
-        print(table_list)
+    if order.order_type == "order_in":
+        order_in = Order_in.objects.get(order_id=id)
+        if order_in.table.all(): #เช็คว่า order นั้นมันโต๊ะหรือไม่
+            table_list = []
+            for i in order_in.table.all():
+                table_list.append(i.id)
+            context['table'] = table_list
 
     context['order'] = order
     context['order_food'] = order_food
@@ -205,14 +204,17 @@ def receipt(request, id):
             order_id=order.id,
             employee_id=request.user.id
             )
-        if order_in.table.all():
-            for i in order_in.table.all():    
-                table = Table.objects.get(pk=i.id)
-                table.status = False
-                table.save()
+        if order.order_type == "order_in":
+            if order_in.table.all():
+                for i in order_in.table.all():    
+                    table = Table.objects.get(pk=i.id)
+                    table.status = False
+                    table.save()
         return redirect('receipt', id)
+
     if total_price == 0:
         context['error'] = 'ไม่สามารถเช็คบิลได้เนื่องจากออเดอร์นี้ไม่ได้ทำการสั่งเมนูใดเลย!'
+
     try:  
         receipt = Receipt.objects.get(order_id=id)
         context['receipt'] = receipt
