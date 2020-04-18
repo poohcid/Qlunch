@@ -75,7 +75,7 @@
 <!-- Button trigger modal -->
 
 {% if tax_invoice %}
-<button type="button" class="btn btn-primary float-right m-2" data-toggle="modal" data-target="#exampleModalCenter">
+<button type="button" id="update_button" class="btn btn-primary float-right m-2" data-toggle="modal" data-target="#exampleModalCenter" disabled>
     <i class="fas fa-receipt"></i> อัปเดทใบกำกับภาษี
 </button>
 {% else %}
@@ -114,6 +114,7 @@
 <script>
     function edit_tax(button){
         button.previousElementSibling.disabled = false;
+        document.querySelector("#update_button").disabled = false;
     }
 </script>
 {% endblock  %}
