@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    h6 {
+        font-size: 18px;
+    }
+</style>
+<form action="{% url 'tax_invoice' order_id=order.order.id %}" method="POST">
+{% csrf_token %}
+<h1 style="margin-top:50px;">ใบกำกับภาษี<br>(Tax invoice)</h1><br><br>
+{% if error %}
+    <div class="alert alert-warning" role="alert">{{ error }}</div>
+{% endif %}
+<h6><b>วันเวลา :</b> {{ now }}</h6>
+<div class="row">
+    <div class="col" style="border:1px solid #AAA; border-radius: 5px; padding:10px;">
+     <h5><b><u>รายละเอียดออเดอร์</u></b></h5>
+        <h6><b>หมายเลขออเดอร์ :</b> {{ order.id }}</h6>
+        <h6><b>ชื่อ :</b> {{ order.order.name }}</h6>
+        <h6><b>ประเภทของออเดอร์ :</b> บุฟเฟต์</h6>
+        <h6><b>สถานที่ :</b> {{ order.location }}</h6>
+        <h6><b>วันที่ :</b> {{ order.date }}</h6>
+        <h6><b>เวลา :</b> {{ order.start_time }} - {{ order.end_time }}</h6>
+        <h6><b>ออกใบเสร็จโดยพนักงาน :</b> {{ order.order.employee_id }}</h6>
+    </div>
+
+    <div class="col" style="border:1px solid #AAA; border-radius: 5px; padding:10px;">
+        <h5><b><u>รายละเอียดลูกค้า</u></b></h5>
+        <h6><b>ชื่อลูกค้า : </b>{{customer}}</h6>
+        <h6><b>เบอร์โทร : </b>{{customer.phone}}</h6>
+        <h6><b>ที่อยู่ : </b>{{customer.address}}</h6>
+        <h6><b>ชื่อบริษัท : </b>{{customer.company}}</h6>
+        <h6><b>จำนวนลูกค้า : </b>{{customer.customer.amount}}</h6>
+        <h6><b>หมายเลขประจำตัวผู้เสียภาษีอากร :</b></h6>
+    </div>
+</div>
+
+
+<table class="table table-sm table-bordered text-center">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">รายละเอียด</th>
+            <th scope="col">จำนวน</th>
+            <th scope="col">ราคา</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for foods in order_food %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{foods.food.name}}</td>
+            <td>{{foods.unit}}</td>
+            <td>{{foods.food_price}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="d-flex bd-highlight text-right">
+    <div class="p-0 flex-grow-1 bd-highlight"></div>
+    <div class="p-0 flex-shrink-1 bd-highlight" style="border-bottom:1px solid #AAA; border-top:1px solid #AAA;">
+        <h6><b>ราคาทั้งหมด :</b> &nbsp;{{ total_price }} บาท</h6>
+        <h6><b>ภาษีมูลค่าเพิ่ม :</b> &nbsp;&nbsp;&nbsp;{{ vat }} บาท</h6>
+        <h6><b>จำนวนเงินรวมทั้งสิ้น :</b> &nbsp;{{ total }} บาท</h6>
+    </div>
+</div>
+
+{% if not error %}
+<br>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary float-right m-2" data-toggle="modal" data-target="#exampleModalCenter">
+    <i class="fas fa-receipt"></i> ออกใบกำกับภาษี
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">ยืนยันการออกใบกำกับภาษี?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                กดยืนยันเพื่อทำการเช็คบิล <b>ออเดอร์ : {{order.order.name}}</b>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                <input type="submit" class="btn btn-primary float-right m-2" value="ยืนยัน">
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+{% endif %}
+{% endblock  %}

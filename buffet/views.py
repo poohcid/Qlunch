@@ -1,13 +1,17 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from appModel.models import Order_buffet, Order, Customer, Customer_buffet
+from appModel.models import Order_food, Order_buffet, Order, Customer, Customer_buffet,Tax_invoice
 from django.utils import timezone
 from datetime import datetime
 from work_in.forms import Cus_buffet, Customer_form, Order_buffet_form, OrderForm
 
 def orderlist(request):
     context = {}
-    
+    tax_list = []
+    for i in Tax_invoice.objects.all():
+        tax_list.append(i.order_buffet.id)
+
+    context['tax_list'] = tax_list
     context['order'] = Order_buffet.objects.all()
     return render(request, "buffet/orderlist.html", context=context)
 
@@ -40,6 +44,7 @@ def add_order_buffet(request, cus_id):
             total_price = 0.0,
             employee = request.user,
             order_type = "order_buffet",
+            customer_id= cus_id,
         )
         form = OrderForm(request.POST, instance=order1)
         form2 = Order_buffet_form(request.POST)
@@ -51,6 +56,7 @@ def add_order_buffet(request, cus_id):
 
             orderbuffet.order = order
             orderbuffet.save()
+            return redirect('orderlist')
     else:
         form = OrderForm()
         form2 = Order_buffet_form()
@@ -58,3 +64,34 @@ def add_order_buffet(request, cus_id):
     context['buffet_form'] = form2
     context['customer'] = Customer.objects.get(pk=cus_id)
     return render(request, "buffet/add_order_buffet.html", context=context)
+
+def tax_invoice(request, order_id):
+    context = {}
+    total_price = 0
+    print(order_id)
+    orderbuffet = Order_buffet.objects.get(order=order_id)
+    customer = Customer_buffet.objects.get(customer_id=orderbuffet.order.customer_id)
+    orderfood = Order_food.objects.filter(order_id=order_id)
+    for i in orderfood:
+        total_price += i.food.price
+    if total_price == 0:
+        context['error'] = 'ไม่สามารถออกใบกำกับภาษีได้เนื่องจากออเดอร์นี้ไม่ได้ทำการสั่งเมนูใดเลย!'
+    context['order_food'] = orderfood
+    context['customer'] = customer
+    context['order'] = orderbuffet
+    context['total_price'] = total_price #ราคา
+    context['vat'] = (total_price*7)/100 #vat
+    context['total'] = total_price+(total_price*7)/100 #ราคา+vat
+    context['now'] = datetime.now()
+    if request.method == "POST":
+        print("check")
+        tax = Tax_invoice.objects.create(
+            date=datetime.now(),
+            net_payment=total_price+(total_price*7)/100,
+            name="asd",
+            order_buffet=orderbuffet
+        )
+        tax.save()
+        return redirect('orderlist')
+    
+    return render(request, "buffet/tax_invoice.html", context=context)
