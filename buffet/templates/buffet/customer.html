@@ -19,10 +19,10 @@
   <tbody>
     {% for c in customers %}
     <tr>
-      <th scope="row"></th>
+      <th scope="row">{{ forloop.counter }}</th>
       <td>{{ c.customer.name }}</td>
       <td>{% for order in c.customer.order_set.all %} {% if forloop.last %}{{ order.name }}{% endif %} {% endfor %}</td>
-      <td><button type="button" class="btn btn-success float-right"><i class="fas fa-plus"></i>เลือก</button></a></td>
+      <td><a href="{% url 'add_order_buffet' cus_id=c.customer.id %}" type="button" class="btn btn-success float-right"><i class="fas fa-plus"></i> เลือก</a></td>
     </tr>
     {% endfor %}
   </tbody>

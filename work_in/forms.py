@@ -1,7 +1,7 @@
 from django.db import models
 from django.forms import ModelForm, CharField, Textarea
 from django import forms
-from appModel.models import Table, Order, Order_food, Receipt,Customer_buffet, Customer
+from appModel.models import Table, Order, Order_food, Receipt,Customer_buffet, Customer, Order_buffet
 
 class TableForm(ModelForm):
     class Meta:
@@ -25,12 +25,27 @@ class OrderForm(ModelForm):
             'detail': 'รายละเอียด',
         }
 
+class Order_buffet_form(ModelForm):
+    class Meta:
+        model = Order_buffet
+        exclude = ['order_id','order']
+        widgets={
+            "earnest":forms.TextInput(attrs={'class':'form-control'}),
+            "location":forms.TextInput(attrs={'class':'form-control'}),
+            "start_date": forms.DateTimeInput(attrs={'id':'input_startdate','name':'start_date'}, format=['%d-%m-%Y %H:%M']),
+            "end_date": forms.DateTimeInput(attrs={'id':'input_enddate','name':'end_date'}, format=['%d-%m-%Y %H:%M']),
+        } 
+        labels = {
+            'earnest': 'ค่ามัดจำ',
+            'location': 'สถานที่',
+            'start_date': 'วันเวลาเริ่ม',
+            'end_date': 'วันเวลาสิ้นสุด',
+        }
+
 class Order_food(ModelForm):
     class Meta:
         model = Order_food
         fields = ['food', 'unit']
-
-
 
 
 class Cus_buffet(ModelForm):
@@ -47,6 +62,7 @@ class Cus_buffet(ModelForm):
             'phone': 'เบอร์โทรศัพท์',
             'address': 'ที่อยู่',
         }
+
 
 class Customer_form(ModelForm):
     class Meta:
