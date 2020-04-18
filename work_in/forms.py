@@ -32,14 +32,16 @@ class Order_buffet_form(ModelForm):
         widgets={
             "earnest":forms.TextInput(attrs={'class':'form-control'}),
             "location":forms.TextInput(attrs={'class':'form-control'}),
-            "start_date": forms.DateTimeInput(attrs={'id':'input_startdate','name':'start_date'}, format=['%d-%m-%Y %H:%M']),
-            "end_date": forms.DateTimeInput(attrs={'id':'input_enddate','name':'end_date'}, format=['%d-%m-%Y %H:%M']),
-        } 
+            "date": forms.DateInput(attrs={'id':'input_date','name':'date'}, format=['%d-%m-%Y']),
+            "start_time": forms.TimeInput(attrs={'id':'input_starttime','name':'start_time'}, format=['%H:%M']),
+            "end_time": forms.TimeInput(attrs={'id':'input_endtime','name':'end_time'}, format=['%H:%M']),
+        }
         labels = {
             'earnest': 'ค่ามัดจำ',
             'location': 'สถานที่',
-            'start_date': 'วันเวลาเริ่ม',
-            'end_date': 'วันเวลาสิ้นสุด',
+            'date' : 'วันที่',
+            'start_time': 'เวลาเริ่ม',
+            'end_time': 'เวลาสิ้นสุด',
         }
 
 class Order_food(ModelForm):

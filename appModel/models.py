@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.utils import timezone
 
 # ข้อมูลต่างๆ
 
@@ -69,8 +69,9 @@ class Order_buffet(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE)
     earnest = models.DecimalField(max_digits=8, decimal_places=2, null=True)
     location = models.TextField()
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    date = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
 
 class Tax_invoice(models.Model):
     date = models.DateTimeField()

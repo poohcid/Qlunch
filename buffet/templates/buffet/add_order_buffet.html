@@ -16,7 +16,9 @@
     <input type="submit" value="submit">
 </form>
 <script>
-    $('#input_startdate').datetimepicker({ footer: true, modal: true,  format: 'yyyy-mm-dd H:MM' });
-    $('#input_enddate').datetimepicker({ footer: true, modal: true, format: 'yyyy-mm-dd H:MM' });
+    //ฝากแก้ datetpicker
+    $('#input_date').datetpicker({ footer: true, modal: true,  format: 'yyyy-mm-dd' });
+    $('#input_starttime').timepicker({ footer: true, modal: true,  format: 'H:MM' });
+    $('#input_endtime').timepicker({ footer: true, modal: true, format: 'H:MM' });
 </script> 
 {% endblock  %}

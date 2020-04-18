@@ -39,7 +39,7 @@ def add_order_buffet(request, cus_id):
             date_book = datetime.now(),
             total_price = 0.0,
             employee = request.user,
-            order_type = "order_in",
+            order_type = "order_buffet",
         )
         form = OrderForm(request.POST, instance=order1)
         form2 = Order_buffet_form(request.POST)
