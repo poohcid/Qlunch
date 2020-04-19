@@ -149,12 +149,13 @@
         var text = document.querySelector("#exampleModalLabel");
         text.innerHTML = "หมายเลขโต๊ะที่เลือก คือ "
         for(i=0;i<count;i++){
-            document.getElementById("count_table").value += num[i].value
             if(i==0){
                 text.innerHTML = text.innerHTML+num[i].value
+                document.getElementById("count_table").value += num[i].value
             }
             else{
                 text.innerHTML = text.innerHTML+", "+num[i].value
+                document.getElementById("count_table").value += ","+num[i].value
             }
             
         }

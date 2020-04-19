@@ -40,7 +40,7 @@ def create_order(request):
             order_in1 = Order_in.objects.create(
                 order = order1
             )
-            for i in request.POST.get("count_table"):
+            for i in request.POST.get("count_table").split(","):
                 table1 = Table.objects.get(pk=int(i))
                 table1.status = True
                 table1.save()
