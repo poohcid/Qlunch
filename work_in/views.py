@@ -26,13 +26,13 @@ def create_table(request):
 
 @login_required
 def create_order(request):
-    context = {}
     if request.method == "POST":
         order1 = Order.objects.create(
             date_book = datetime.now(),
             total_price = 0.0,
             employee = request.user,
             order_type = "order_in",
+            customer_id = int(request.POST.get('customer'))
         )
         form = OrderForm(request.POST, instance=order1)
         if form.is_valid():
@@ -148,7 +148,19 @@ def get_order(request, id):
 @login_required
 def booking(request):
     context = {}
-    context['customer'] = Customer.objects.all()
+    customer_have_order = []
+    order = Order.objects.filter(customer__isnull=False)
+    for i in order:
+        customer_have_order.append(i.customer.id)
+    print(customer_have_order)
+    if request.method == "POST":
+        customer = Customer.objects.create(
+            name=request.POST.get('customer_name'),
+            amount=request.POST.get('customer_amount')
+        )
+        return redirect('booking')
+
+    context['customer'] = Customer.objects.exclude(id__in=customer_have_order)
     return render(request, 'work_in/booking.html', context=context)
 
 @login_required
@@ -210,3 +222,14 @@ def receipt(request, id):
         return render(request, 'work_in/receipt.html', context=context)
 
     return render(request, 'work_in/receipt.html', context=context)
+
+
+@login_required
+def createorder_booking(request, cus_id):
+    context = {}
+    table = Table.objects.all().order_by('id')
+    form_order = OrderForm()
+    context['customer'] = Customer.objects.get(pk=cus_id)
+    context['table'] = table
+    context['form_order'] = form_order
+    return render(request, template_name='work_in/at_store.html', context=context)

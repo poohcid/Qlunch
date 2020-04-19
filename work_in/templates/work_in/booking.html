@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1 style="margin: 50px 0;">จัดการคิว</h1>
-
+<div class="row">
+  <div class="col "><button type="button" class="float-right btn btn-success mt-2 mb-3" data-toggle="modal" data-target="#exampleModalCenter"><i class="fas fa-plus"></i> สร้างคิว</button></div>
+</div>
 <table class="table text-center table-bordered">
   <thead>
     <tr>
@@ -16,11 +18,37 @@
             <td>{{ cus.name }}</td>
             <td>{{ cus.amount }}</td>
             <td>
-                <a type="button" class="btn btn-success mr-2" href="{% url 'at_store' %}"><i class="fas fa-plus"></i> สร้างออเดอร์</a>
+                <a type="button" class="btn btn-success mr-2" href="{% url 'createorder_booking' cus_id=cus.id %}"><i class="fas fa-plus"></i> สร้างออเดอร์</a>
                 <a type="button" class="btn btn-danger" href="{% url 'del_booking' id=cus.id %}" ><i class="fas fa-trash-alt"></i> ลบ</a>
             </td>
         </tr>
     {% endfor %}
   </tbody>
 </table>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">สร้างคิว</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'booking' %}" method="POST">
+          {% csrf_token %}
+          <label>ชื่อลูกค้า :</label><br>
+          <input type="text" class="form-control" name="customer_name" placeholder="ชื่อลูกค้า"><br>
+          <label>จำนวนลูกค้า :</label><br>
+          <input type="number" min="0"  class="form-control w-25" name="customer_amount" placeholder="จำนวนลูกค้า">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+        <input type="submit" class="btn btn-primary"value="สร้าง">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock  %}

@@ -80,14 +80,3 @@ class Customer_form(ModelForm):
         }
 
 
-
-# class ReceiptForm(ModelForm):
-#     class Meta:
-#         model = Receipt
-#         fields = ['detail']
-#         widgets={
-#             "detail":forms.Textarea(attrs={'class':'form-control'})
-#         }
-#         labels = {
-#             'detail': 'รายละเอียดใบเสร็จรับเงิน'
-#         }
