@@ -16,7 +16,7 @@ def index(request):
         if request.user.is_superuser or group[0].name == "waiter": # http://127.0.0.1:8000/ จะไปที่หน้าแรก ของ user group นั้นๆ
             return redirect('../work_in/')
         if request.user.is_superuser or group[0].name == "salesman": # http://127.0.0.1:8000/ จะไปที่หน้าแรก ของ user group นั้นๆ
-            return redirect('../work_in/')
+            return redirect('../buffet/')
         if request.user.is_superuser or group[0].name == "staff": # http://127.0.0.1:8000/ จะไปที่หน้าแรก ของ user group นั้นๆ
             return redirect('../work_in/')
         if request.user.is_superuser or group[0].name == "chef": # http://127.0.0.1:8000/ จะไปที่หน้าแรก ของ user group นั้นๆ
@@ -52,7 +52,8 @@ def register(request):
 
 def my_login(request):
     context = {}
-
+    if request.user.is_authenticated:
+        return redirect('/')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -60,10 +61,8 @@ def my_login(request):
 
         if user:
             login(request, user)
-            group = request.user.groups.all()
 
-            if user.is_superuser or group[0].name == "waiter": # พนักงานในร้าน
-                return redirect('../work_in/')
+            return redirect('/')
 
             # elif group[0].name == "User":
             #     return redirect('../../')
@@ -79,7 +78,7 @@ def my_login(request):
     return render(request, 'authen/login.html', context=context)
 
 
-
+@login_required
 def my_logout(request):
     logout(request)
     return redirect('login')

@@ -1,10 +1,18 @@
+from datetime import datetime
+
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from appModel.models import Order_food, Order_buffet, Order, Customer, Customer_buffet,Tax_invoice, Receipt
 from django.utils import timezone
-from datetime import datetime
-from work_in.forms import Cus_buffet, Customer_form, Order_buffet_form, OrderForm
 
+from appModel.models import (Customer, Customer_buffet, Order, Order_buffet,
+                             Order_food, Receipt, Tax_invoice)
+from work_in.forms import (Cus_buffet, Customer_form, Order_buffet_form,
+                           OrderForm)
+
+
+@login_required
+@permission_required("appModel.add_order_buffet")
 def orderlist(request):
     context = {}
     receipt = Receipt.objects.all() 
@@ -17,9 +25,8 @@ def orderlist(request):
     context['order_notreceipt'] = Order_buffet.objects.exclude(order_id__in=order_receipt)
     return render(request, "buffet/orderlist.html", context=context)
 
-def index(request):
-    return HttpResponse("Hello") 
-
+@login_required
+@permission_required("appModel.add_order_buffet")
 def customer(request):
     context = {}
     if request.method == "POST":
@@ -38,6 +45,8 @@ def customer(request):
     context['customers'] = Customer_buffet.objects.all()
     return render(request, "buffet/customer.html", context=context)
 
+@login_required
+@permission_required("appModel.add_order_buffet")
 def add_order_buffet(request, cus_id):
     context = {}
     if request.method == "POST":
@@ -68,7 +77,8 @@ def add_order_buffet(request, cus_id):
     return render(request, "buffet/add_order_buffet.html", context=context)
 
 
-
+@login_required
+@permission_required("appModel.add_tax_invoice")
 def tax_invoice(request, order_id):
     context = {}
     total_price = 0

@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, JsonResponse
@@ -15,6 +15,7 @@ from .forms import OrderForm, TableForm
 # Create your views here.
 
 @login_required
+@permission_required('appModel.add_order_in')
 def create_table(request):
     if request.method == "POST":
         form = TableForm(request.POST)
@@ -25,6 +26,7 @@ def create_table(request):
     
 
 @login_required
+@permission_required('appModel.add_order_in')
 def create_order(request):
     if request.method == "POST":
         order1 = Order.objects.create(
@@ -34,7 +36,7 @@ def create_order(request):
             order_type = "order_in",
         )
         if 'customer' in request.POST:
-            order1.customer = request.POST.get('customer')
+            order1.customer = Customer.objects.get(pk=int(request.POST.get('customer')))
         form = OrderForm(request.POST, instance=order1)
         if form.is_valid():
             order1 = form.save()
@@ -42,6 +44,8 @@ def create_order(request):
                 order = order1
             )
             for i in request.POST.get("count_table").split(","):
+                if i == "":
+                    break
                 table1 = Table.objects.get(pk=int(i))
                 table1.status = True
                 table1.save()
@@ -54,6 +58,7 @@ def create_order(request):
 
 #index work in
 @login_required
+@permission_required('appModel.add_order_in')
 def table(request):
     context = {}
     table = Table.objects.all().order_by('id')
@@ -64,6 +69,7 @@ def table(request):
     return render(request, template_name='work_in/table.html', context=context)
 
 @login_required
+@permission_required('appModel.add_order_in')
 def at_store(request):
     context = {}
     table = Table.objects.all().order_by('id')
@@ -77,6 +83,7 @@ def at_store(request):
 
 @login_required
 @csrf_exempt
+@permission_required('appModel.add_order_food')
 def save_order(request, order_id):
     if request.method == "POST":
         order = Order.objects.get(pk=order_id)
@@ -112,6 +119,7 @@ def save_order(request, order_id):
     return redirect('here_or_home')
 
 @login_required
+@permission_required('appModel.add_order_food')
 def edit_order_food(request, order, table=False):
     context = {}
     context['order'] = order
@@ -122,6 +130,7 @@ def edit_order_food(request, order, table=False):
     return render(request, template_name='work_in/add_edit_order.html', context=context)
     
 @login_required
+@permission_required('appModel.add_order_in')
 def select_table(request, table_id):
     table = Table.objects.get(pk=table_id)
     order_ins = list(table.order_in_set.all())
@@ -131,6 +140,7 @@ def select_table(request, table_id):
     return edit_order_food(request, order, table)
 
 @login_required
+@permission_required('appModel.add_order_in')
 def manage_order(request):
     context = {}
 
@@ -145,11 +155,13 @@ def manage_order(request):
     return render(request, 'work_in/manage_order.html', context=context)
 
 @login_required
+@permission_required('appModel.add_order_food')
 def get_order(request, id):
     order = Order.objects.get(pk=id)
     return edit_order_food(request, order)
 
 @login_required
+@permission_required('appModel.add_customer')
 def booking(request):
     context = {}
     customer_have_order = []
@@ -168,6 +180,7 @@ def booking(request):
     return render(request, 'work_in/booking.html', context=context)
 
 @login_required
+@permission_required('appModel.add_customer')
 def del_booking(request, id):
     customer = Customer.objects.get(pk=id)
     customer.delete()
@@ -175,6 +188,7 @@ def del_booking(request, id):
     return redirect('booking')
 
 @login_required
+@permission_required('appModel.add_receipt')
 def receipt(request, id):
     context = {}
     total_price = 0
@@ -229,6 +243,7 @@ def receipt(request, id):
 
 
 @login_required
+@permission_required('appModel.add_order_in')
 def createorder_booking(request, cus_id):
     context = {}
     table = Table.objects.all().order_by('id')
