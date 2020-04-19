@@ -1,18 +1,20 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from appModel.models import Order_food, Order_buffet, Order, Customer, Customer_buffet,Tax_invoice
+from appModel.models import Order_food, Order_buffet, Order, Customer, Customer_buffet,Tax_invoice, Receipt
 from django.utils import timezone
 from datetime import datetime
 from work_in.forms import Cus_buffet, Customer_form, Order_buffet_form, OrderForm
 
 def orderlist(request):
     context = {}
-    tax_list = []
-    for i in Tax_invoice.objects.all():
-        tax_list.append(i.order_buffet.id)
+    receipt = Receipt.objects.all() 
+    order_receipt = []
 
-    context['tax_list'] = tax_list
-    context['order'] = Order_buffet.objects.all()
+    for i in receipt:
+        order_receipt.append(i.order_id)
+
+    context['order_receipt'] = Order_buffet.objects.filter(order_id__in=order_receipt)
+    context['order_notreceipt'] = Order_buffet.objects.exclude(order_id__in=order_receipt)
     return render(request, "buffet/orderlist.html", context=context)
 
 def index(request):
