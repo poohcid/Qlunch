@@ -32,8 +32,9 @@ def create_order(request):
             total_price = 0.0,
             employee = request.user,
             order_type = "order_in",
-            customer_id = int(request.POST.get('customer'))
         )
+        if 'customer' in request.POST:
+            order1.customer = request.POST.get('customer')
         form = OrderForm(request.POST, instance=order1)
         if form.is_valid():
             order1 = form.save()
@@ -66,6 +67,9 @@ def table(request):
 def at_store(request):
     context = {}
     table = Table.objects.all().order_by('id')
+    print(len(table.filter(status=False)))
+    if len(table.filter(status=False)) == 0:
+        return redirect('booking')
     form_order = OrderForm()
     context['table'] = table
     context['form_order'] = form_order

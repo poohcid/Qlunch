@@ -33,8 +33,8 @@ class Order(models.Model):
     date_book = models.DateTimeField()
     total_price = models.DecimalField(max_digits=8, decimal_places=2)
     detail = models.TextField(null=True)
-    customer = models.ForeignKey(Customer, null=True, on_delete=models.DO_NOTHING)
-    employee = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
+    employee = models.ForeignKey(User, on_delete=models.CASCADE)
     order_type = models.CharField(choices=(
         ("order_in", "in"),
         ("order_buffet", "buffet"),
