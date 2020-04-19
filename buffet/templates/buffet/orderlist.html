@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 <style>
-
-    table{
+    table {
         border: 1px solid #CCC;
     }
-    #button_receipt, #button_notreceipt{
+
+    #button_receipt,
+    #button_notreceipt {
         border-radius: 5px 5px 0 0;
         border: 1px solid #CCC;
         height: 35px;
@@ -14,7 +15,8 @@
 <h1 style="margin-top: 50px;">ออเดอร์บุฟเฟต์</h1>
 <div class="row">
     <div class="col mb-5">
-        <a href="{% url 'customer'%}" type="button" class="btn btn-success float-right" ><i class="fas fa-plus"></i> สร้างออเดอร์</a>
+        <a href="{% url 'customer'%}" type="button" class="btn btn-success float-right"><i class="fas fa-plus"></i>
+            สร้างออเดอร์</a>
     </div>
 </div>
 <button id="button_notreceipt" onclick="show_notreceipt()">ออเดอร์ที่ยังไม่ช็คบิล</button>
@@ -30,7 +32,7 @@
             <th scope="col"></th>
         </tr>
     </thead>
-    <tbody id="order_receipt_table"  style="display:none;">
+    <tbody id="order_receipt_table" style="display:none;">
         {% for list in order_receipt %}
         <tr>
             <th scope="row">{{ forloop.counter }}</th>
@@ -39,9 +41,12 @@
             <td>{{ list.start_time|date:'H:i น.' }} - {{ list.end_time|date:'H:i น.' }}</td>
             <td>{{ list.location }}</td>
             <td>
-                {% comment %} <button type="button" class="btn btn-primary"><i class="fas fa-tasks"></i> ดูรายละเอียด</button> {% endcomment %}
-                <a type="button" class="btn btn-info" href="{% url 'receipt' id=list.order.id %}"><i class="far fa-eye"></i> ดูบิล</a>
-                <a href="{% url 'tax_invoice' order_id=list.order.id %}" type="button" class="btn btn-warning"><i class="fas fa-file-invoice"></i> ทำใบกำกับภาษี</a>
+                <a type="button" class="btn btn-info" href="{% url 'receipt' id=list.order.id %}"><i
+                        class="far fa-eye"></i> ดูบิล</a>
+                <a href="{% url 'tax_invoice' order_id=list.order.id %}" type="button" class="btn btn-warning"><i
+                        class="fas fa-file-invoice"></i> ทำใบกำกับภาษี</a>
+                <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="รายละเอียดออเดอร์"
+                    data-content="{{ list.order.detail }}"><i class="fas fa-tasks"></i></button>
             </td>
         </tr>
         {% endfor %}
@@ -55,22 +60,35 @@
             <td>{{ list.start_time|date:'H:i น.' }} - {{ list.end_time|date:'H:i น.' }}</td>
             <td>{{ list.location }}</td>
             <td class="text-center m-auto">
-                {% comment %} <button type="button" class="btn btn-primary m-2"><i class="fas fa-tasks"></i> ดูรายละเอียด</button> {% endcomment %}
-                <a href="{% url 'get_order' id=list.order.id %}" type="button" class="btn btn-success"><i class="fas fa-utensils"></i> สั่งอาหาร</a>
-                <a type="button" class="btn btn-info" href="{% url 'receipt' id=list.order_id %}"><i class="fas fa-receipt"></i> เช็คบิล</a>
-                <a href="{% url 'tax_invoice' order_id=list.order.id %}" type="button" class="btn btn-warning"><i class="fas fa-file-invoice"></i> ทำใบกำกับภาษี</a>
+                <a href="{% url 'get_order' id=list.order.id %}" type="button" class="btn btn-success"><i
+                        class="fas fa-utensils"></i> สั่งอาหาร</a>
+                <a type="button" class="btn btn-info" href="{% url 'receipt' id=list.order_id %}"><i
+                        class="fas fa-receipt"></i> เช็คบิล</a>
+                <a href="{% url 'tax_invoice' order_id=list.order.id %}" type="button" class="btn btn-warning"><i
+                        class="fas fa-file-invoice"></i> ทำใบกำกับภาษี</a>
+                <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="รายละเอียดออเดอร์"
+                    data-content="{{ list.order.detail }}"><i class="fas fa-tasks"></i></button>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
+
+
+
+
 <script>
-    function show_receipt(){
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+
+    function show_receipt() {
         document.querySelector("#order_receipt_table").style.display = ""
         document.querySelector("#order_notreceipt_table").style.display = "none"
     }
-    function show_notreceipt(){
+
+    function show_notreceipt() {
         document.querySelector("#order_receipt_table").style.display = "none"
         document.querySelector("#order_notreceipt_table").style.display = ""
     }

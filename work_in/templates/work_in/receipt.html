@@ -16,21 +16,18 @@
         <h6><b>หมายเลขออเดอร์ :</b> {{order.id}}</h6>
         <h6><b>ชื่อ :</b> {{order.name}}</h6>
         <h6><b>วันเวลาออกใบเสร็จ :</b> {{order.date_book|date:"d-M-Y H:i น."}}</h6>
+
         {% if table %}
-        {% if order.order_type == "order_in" %}
-        <h6><b>ประเภทของออเดอร์ :</b> ทานที่ร้าน</h6>
-        <h6>
-            <b>หมายเลขโต๊ะ :</b> 
-            {% for t in table %} 
-                {{t}}
-            {% endfor %}
-        </h6>
-        {% elif order.order_type == "order_buffet" %}
-        <h6><b>ประเภทของออเดอร์ :</b> บุฟเฟต์</h6>
-        <h6><b>หมายเลขโต๊ะ :</b> {{table}}</h6>
-        {% endif %}
+            {% if order.order_type == "order_in" %}
+            <h6><b>ประเภทของออเดอร์ :</b> ทานที่ร้าน</h6>
+            <h6><b>หมายเลขโต๊ะ :</b> {% for t in table %}{{t}}{% endfor %}</h6>
+            {% endif %}
         {% else %}
-        <h6><b>ประเภทของออเดอร์ :</b> สั่งกลับบ้าน</h6>
+            {% if order.order_type == "order_in" %}
+            <h6><b>ประเภทของออเดอร์ :</b> สั่งกลับบ้าน</h6>
+            {% elif order.order_type == "order_buffet" %}
+                <h6><b>ประเภทของออเดอร์ :</b> บุฟเฟต์</h6>
+            {% endif %}
         {% endif %}
         <h6><b>ออกใบเสร็จโดยพนักงาน :</b> {{ emp.username }}</h6>
     </div>
