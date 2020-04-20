@@ -77,7 +77,9 @@
                                     class="fas fa-utensils"></i> สั่งอาหาร</a>
                             <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i
                                     class="fas fa-receipt"></i> เช็คบิล</a>
-                            <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
+                            <button type="button" class="btn btn-danger" id="{{ order_list.id }}" onclick="sendDel(this)">
+                                <i class="fas fa-trash-alt"></i> ลบ
+                            </button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -103,7 +105,9 @@
                                     class="fas fa-utensils"></i> สั่งอาหาร</a>
                             <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i
                                     class="fas fa-receipt"></i> เช็คบิล</a>
-                            <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
+                            <button type="button" class="btn btn-danger" id="{{ order_list.id }}" onclick="sendDel(this)">
+                                <i class="fas fa-trash-alt"></i> ลบ
+                            </button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -127,7 +131,9 @@
                         <td>
                             <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i
                                     class="far fa-eye"></i> ดูบิล</a>
-                            <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</button>
+                            <button type="button" class="btn btn-danger" id="{{ order_list.id }}" onclick="sendDel(this)">
+                                <i class="fas fa-trash-alt"></i> ลบ
+                            </button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -183,10 +189,15 @@
 
         document.getElementById("shop_button").style.color = "#FFF"
         document.getElementById("shop_button").style.background = "#698474"
+    }
 
-
-
-
+    function sendDel(button){
+        axios.post('/work_in/del_order/',{
+            order_id : button.id
+        })
+        .then(function (response){
+            button.parentElement.parentElement.remove()
+        })
     }
 </script>
 
