@@ -100,6 +100,9 @@
         <li class="nav-item">
           {% if perms.appModel.add_order_buffet %}<a class="nav-link" href="{% url 'orderlist'%}">ออเดอร์จัดเลี้ยง</a>{% endif %}
         </li>
+        <li class="nav-item">
+          {% if perms.appModel.add_order_buffet %}<a class="nav-link" href="{% url 'kitchen'%}">ยืนยันรายการอาหาร</a>{% endif %}
+        </li>
         <li class="nav-item active">
           <div class="dropdown show" style="margin: 0px 40px 0 15px;">
             <a class="btn btn-secondary dropdown-toggle bg-info" href="#" role="button" id="dropdownMenuLink"

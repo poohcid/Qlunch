@@ -182,11 +182,12 @@ def booking(request):
 
 @login_required
 @permission_required('appModel.add_customer')
-def del_booking(request, id):
-    customer = Customer.objects.get(pk=id)
+@csrf_exempt
+def del_booking(request):
+    data = json.loads(request.body)
+    customer = Customer.objects.get(pk=int(data["cus_id"]))
     customer.delete()
-    customer.save()
-    return redirect('booking')
+    return JsonResponse({}, status=200)
 
 @login_required
 @permission_required('appModel.add_receipt')

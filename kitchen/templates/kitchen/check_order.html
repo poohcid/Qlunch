@@ -1,4 +1,27 @@
 {% extends 'base.html' %}
 {% block content %}
-
+    <br>
+    <h1>ยืนยันรายการอาหาร</h1><br>
+    <table class="table text-center">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">เมนู</th>
+            <th scope="col">หมายเลขออเดอร์</th>
+            <th scope="col">ชื่ออเดอร์</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order_food in order_foods %}
+            <tr>
+                <td scope="row" >{{ forloop.counter }}</td>
+                <td>{{ order_food.food.name }}</td>
+                <td>{{ order_food.order.id }}</td>
+                <td>{{ order_food.order.name }}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
 {% endblock content %}
