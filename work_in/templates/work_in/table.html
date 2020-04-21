@@ -115,10 +115,10 @@
     <div class="row row-cols-4 row-cols-sm-3 row-cols-md-5 " id="table_list">
         {% for t in table %}
         {% if t.status %}
-        <div class="col"><a href="{% url 'select_table' table_id=t.id %}" class="activetable" type="button">{{t.id}}</a>
+        <div class="col animated zoomIn fast"><a href="{% url 'select_table' table_id=t.id %}" class="activetable" type="button">{{t.id}}</a>
         </div>
         {% else %}
-        <div class="col"><a href="" class="busytable" type="button" disable>{{t.id}} <i class="fas fa-lock"></i></a>
+        <div class="col animated zoomIn fast"><a href="" class="busytable" type="button" disable>{{t.id}} <i class="fas fa-lock"></i></a>
         </div>
         {% endif %}
         {% endfor %}

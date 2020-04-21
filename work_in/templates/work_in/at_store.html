@@ -93,7 +93,7 @@
                     {% if customer %}
                         <input type="hidden" value="{{customer.id}}" name="customer">
                     {% endif %}
-                    <input type="submit" class="btn btn-primary" value="ยืนยืน">
+                        <input type="submit" class="btn btn-primary" value="ยืนยืน">
                 </div>
             </form>
         </div>
@@ -105,9 +105,9 @@
     <div class="row row-cols-4 row-cols-sm-3 row-cols-md-5 " id="table_list">
         {% for t in table %}
         {% if t.status %}
-        <div class="col"><button class="busytable" type="button" onclick="select_order(this)" disabled><div class="button_content">{{t.id}} <i class="fas fa-lock"></i></div></button></div>
+        <div class="col animated lightSpeedIn fast"><button class="busytable" type="button" onclick="select_order(this)" disabled><div class="button_content">{{t.id}} <i class="fas fa-lock"></i></div></button></div>
         {% else %}   
-        <div class="col"><button class="activetable" type="button" onclick="select_order(this)"><div class="button_content">{{t.id}}</div></button></div>
+        <div class="col animated lightSpeedIn fast"><button class="activetable" type="button" onclick="select_order(this)"><div class="button_content">{{t.id}}</div></button></div>
         {% endif %}
         {% endfor %}
     </div>

@@ -172,7 +172,7 @@
 </div>
 <button class="button_side" onclick="sidebar()"><i class="fas fa-plus"></i></button> {% endcomment %}
 <div class="row">
-    <div class="col-md todolist d-flex flex-column">
+    <div class="col-md todolist d-flex flex-column animated zoomIn faster">
         {% csrf_token %}
         <div class="header">
             <div class="d-flex bd-highlight">
@@ -201,7 +201,7 @@
         </div>
     </div>
 
-    <div class="col-md todolist d-flex flex-column">
+    <div class="col-md todolist d-flex flex-column animated zoomIn faster">
         {% csrf_token %}
         <div class="header">
             <form action="{% url 'save_order' order_id=order.id %}" method="POST">
