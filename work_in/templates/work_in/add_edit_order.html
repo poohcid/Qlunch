@@ -118,10 +118,10 @@
 <h2><br>โต๊ะที่ : {{ table.id }}</h2>
 <h2>หมายเลขออเดอร์ : {{ order.id }}</h2>
 {% else %}<br>
-<h2 style="margin-top: 25px;">หมายเลขออเดอร์ : {{ order.id }} {% if buffet %}<button class="btn btn-info mt-3 mb-3" data-toggle="modal" data-target="#exampleModalCenter"><i class="fas fa-info "></i> ดูรายละเอียด</button>{% endif %}</h2><br>
+<h2 style="margin-top: 25px;">หมายเลขออเดอร์ : {{ order.id }} {% if buffet %}<button class="btn btn-info mt-3 mb-3" data-toggle="modal" data-target="#buffetModalCenter"><i class="fas fa-info "></i> ดูรายละเอียด</button>{% endif %}</h2><br>
 {% endif %}
 {% if buffet %}
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="buffetModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -490,4 +490,4 @@
         }
     }
 </script>
-{% endblock  %}
+{% endblock %}
