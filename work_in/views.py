@@ -9,7 +9,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
 from appModel.models import (Customer, Food, Order, Order_food, Order_in,
-                             Receipt, Table)
+                             Receipt, Table, Order_buffet)
 
 from .forms import OrderForm, TableForm
 
@@ -124,6 +124,10 @@ def save_order(request, order_id):
 def edit_order_food(request, order, table=False):
     context = {}
     context['order'] = order
+    if order.order_type == "order_buffet":
+        context['buffet'] = "buffet"
+        print(Order_buffet.objects.get(order_id=order.id))
+        context['order_buffet'] = Order_buffet.objects.get(order_id=order.id)
     if table:
         context['table'] = table
     context['food'] = Food.objects.all()

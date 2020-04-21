@@ -45,8 +45,6 @@
                         class="far fa-eye"></i> ดูบิล</a>
                 <a href="{% url 'tax_invoice' order_id=list.order.id %}" type="button" class="btn btn-warning"><i
                         class="fas fa-file-invoice"></i> ทำใบกำกับภาษี</a>
-                <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="รายละเอียดออเดอร์"
-                    data-content="{{ list.order.detail }}"><i class="fas fa-tasks"></i></button>
             </td>
         </tr>
         {% endfor %}
@@ -61,13 +59,11 @@
             <td>{{ list.location }}</td>
             <td class="text-center m-auto">
                 <a href="{% url 'get_order' id=list.order.id %}" type="button" class="btn btn-success"><i
-                        class="fas fa-utensils"></i> สั่งอาหาร</a>
+                        class="fas fa-utensils"></i> จัดการออเดอร์/สั่งอาหาร</a>
                 <a type="button" class="btn btn-info" href="{% url 'receipt' id=list.order_id %}"><i
                         class="fas fa-receipt"></i> เช็คบิล</a>
                 <a href="{% url 'tax_invoice' order_id=list.order.id %}" type="button" class="btn btn-warning"><i
                         class="fas fa-file-invoice"></i> ทำใบกำกับภาษี</a>
-                <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="รายละเอียดออเดอร์"
-                    data-content="{{ list.order.detail }}"><i class="fas fa-tasks"></i></button>
             </td>
         </tr>
         {% endfor %}
@@ -79,10 +75,6 @@
 
 
 <script>
-    $(function () {
-        $('[data-toggle="popover"]').popover()
-    })
-
     function show_receipt() {
         document.querySelector("#order_receipt_table").style.display = ""
         document.querySelector("#order_notreceipt_table").style.display = "none"

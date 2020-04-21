@@ -19,7 +19,7 @@
             <td>{{ cus.amount }}</td>
             <td>
                 <a type="button" class="btn btn-success mr-2" href="{% url 'createorder_booking' cus_id=cus.id %}"><i class="fas fa-plus"></i> สร้างออเดอร์</a>
-                <a type="button" class="btn btn-danger" id="{{ cus.id }}" onclick="del_booking(this)"><i class="fas fa-trash-alt"></i> ลบ</a>
+                <button type="button" class="btn btn-danger" id="{{ cus.id }}" onclick="del_booking(this)"><i class="fas fa-trash-alt"></i> ลบ</button>
             </td>
         </tr>
     {% endfor %}

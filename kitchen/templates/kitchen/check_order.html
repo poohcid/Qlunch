@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    <br>
-    <h1>ยืนยันรายการอาหาร</h1><br>
+    <h1 style="margin: 50px 0 50px 0;">ยืนยันรายการอาหาร</h1>
     <table class="table text-center">
     <thead>
         <tr>
@@ -13,15 +12,21 @@
         </tr>
     </thead>
     <tbody>
+    <form action="{% url 'kitchen' %}" method="POST">
+    {% csrf_token %}
         {% for order_food in order_foods %}
             <tr>
                 <td scope="row" >{{ forloop.counter }}</td>
                 <td>{{ order_food.food.name }}</td>
                 <td>{{ order_food.order.id }}</td>
                 <td>{{ order_food.order.name }}</td>
-                <td></td>
+                <td>
+                    <a href="{% url 'accept_order_food' order_id=order_food.id %}" class="btn btn-success"><i class="fas fa-check"></i> ยืนยัน</a>
+                    <a href="{% url 'delete_order_food' order_id=order_food.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</a>
+                </td>
             </tr>
         {% endfor %}
+    </form>
     </tbody>
     </table>
 {% endblock content %}

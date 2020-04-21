@@ -104,6 +104,9 @@
         height: 100%;
         overflow: auto;
     }
+    h6{
+        font-size: 20px;
+    }
 </style>
 
 <center>
@@ -115,8 +118,34 @@
 <h2><br>โต๊ะที่ : {{ table.id }}</h2>
 <h2>หมายเลขออเดอร์ : {{ order.id }}</h2>
 {% else %}<br>
-<h2 style="margin-top: 25px;">หมายเลขออเดอร์ : {{ order.id }}</h2><br>
+<h2 style="margin-top: 25px;">หมายเลขออเดอร์ : {{ order.id }} {% if buffet %}<button class="btn btn-info mt-3 mb-3" data-toggle="modal" data-target="#exampleModalCenter"><i class="fas fa-info "></i> ดูรายละเอียด</button>{% endif %}</h2><br>
 {% endif %}
+{% if buffet %}
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">รายละเอียดออเดอร์</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h6><b>ชื่อออเดอร์</b> : {{ order.name }}</h6>
+        <h6><b>สถานที่จัด</b> : {{ order_buffet.location }}</h6>
+        <h6><b>ค่ามัดจำ</b> : {{ order_buffet.earnest }} บาท</h6>
+        <h6><b>วันที่จัด</b> : {{ order_buffet.date }}</h6>
+        <h6><b>เวลา</b> : {{ order_buffet.start_time|date:'H:i น.' }} - {{ order_buffet.end_time|date:'H:i น.' }}</h6>
+        <h6><b>รายละเอียดเพิ่มเติม</b> : {{ order.detail }} </h6>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> ปิด</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
 {% comment %} <div class="sidebar">
     <div class="col-md todolist overflow-auto h-100">
         {% csrf_token %}
@@ -186,7 +215,7 @@
                             type="button">ดำเนินการต่อ <i class="fas fa-angle-right"></i></button>
                     </div>
                 </div>
-                <h4>&nbsp;<b>ราคาทั้งหมด : <span id="total_price">0</span> บาท</b></h4>
+                <h4>&nbsp;<b>ราคาทั้งหมด : <span id="total_price">0</span> บาท</b></h4>      
                 <input type="hidden" id="order_foods" name="order_foods" value="">
         </div>
         <div class="content">
