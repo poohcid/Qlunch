@@ -1,5 +1,79 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Food</h1>
+<h1 style="margin: 50px 0 50px 0;">เพิ่ม/แก้ไข เมนูอาหาร</h1>
+<div class="row">
+  <div class="col "><button type="button" class="float-right btn btn-success mt-1 mb-4" data-toggle="modal" data-target="#createfoodModalCenter"><i class="fas fa-plus"></i> สร้างเมนูอาหาร</button></div>
+</div>
+<table class="table table-striped text-center">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">ชื่ออาหาร</th>
+            <th scope="col">ราคา</th>
+            <th scope="col">จำนวนที่มี</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for f in food %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ f.name }}</td>
+            <td>{{ f.price }} บาท</td>
+            <td>{{ f.amount }}</td>
+            <td>
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editfoodModalCenter"><i class="fas fa-edit"></i> แก้ไข</button>
+                <a href="{% url 'delete_food' food_id=f.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<div class="modal fade" id="editfoodModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">แก้ไขเมนูอาหาร</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% for f in form %}
+            {{f.label}}
+            {{f}}
+        {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+        <a href="" class="btn btn-success">บันทึก</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="createfoodModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">สร้างเมนูอาหาร</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% for f in form %}
+            {{f.label}}
+            {{f}}
+        {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+        <a href="" class="btn btn-success">สร้าง</a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}

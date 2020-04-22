@@ -1,7 +1,7 @@
 from django.db import models
 from django.forms import ModelForm, CharField, Textarea
 from django import forms
-from appModel.models import Table, Order, Order_food, Receipt,Customer_buffet, Customer, Order_buffet
+from appModel.models import Table, Order, Order_food, Receipt,Customer_buffet, Customer, Order_buffet, Food
 
 class TableForm(ModelForm):
     class Meta:
@@ -80,3 +80,17 @@ class Customer_form(ModelForm):
         }
 
 
+class Food_form(ModelForm):
+    class Meta:
+        model = Food
+        fields = "__all__"
+        widgets={
+            "name":forms.TextInput(attrs={'class':'form-control'}),
+            "price":forms.TextInput(attrs={'class':'form-control'}),
+            "amount":forms.TextInput(attrs={'class':'form-control'}),
+        } 
+        labels = {
+            'name': 'ชื่อเมนูอาหาร',
+            'price': 'ราคา',
+            'amount': 'จำนวนที่มี',
+        }

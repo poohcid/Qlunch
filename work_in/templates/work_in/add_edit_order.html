@@ -375,8 +375,7 @@
             input = order_ul[i].firstElementChild.nextSibling.nextSibling
             var status = input.getAttribute("status")
             text += "&" + input.name + "=" + input.value
-            if ((list.getAttribute("value") == order_ul[i].firstElementChild.textContent) && (status == "true" ||
-                    status == "none")) {
+            if ((list.getAttribute("value") == order_ul[i].firstElementChild.textContent) && (status == "none")) {
                 var num = input.value
                 input.value = parseInt(num) + 1
                 have_menu = true
