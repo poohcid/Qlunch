@@ -1,27 +1,25 @@
-{% extends "staff_page.html" %}
+{% extends 'staff_page.html' %}
 
-  {% block table %}
+    {% block table %}
     <thead>
         <tr>
-            <th scope="col">หมายเลขอาหาร</th>
-            <th scope="col">ชื่ออาหาร</th>
-            <th scope="col">ราคา</th>
-            <th scope="col">จำนวนที่มี</th>
+            <th scope="col">หมายเลขโต๊ะ</th>
+            <th scope="col">ความจุ</th>
+            <th scope="col">สถานะ</th>
             <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
-    {% for f in food %}
+    {% for t in table %}
         <tr>
-            <th scope="row">{{ f.id }}</th>
-            <td value="{{ f.name }}">{{ f.name }}</td>
-            <td value="{{ f.price }}">{{ f.price }} บาท</td>
-            <td value="{{ f.amount }}">{{ f.amount }}</td>
+            <td value="{{ t.id }}">{{ t.id }}</td>
+            <td value="{{ t.space }}">{{ t.space }}</td>
+            <td value="{{ t.status }}">{{ t.status }}</td>
             <td>
-                <button type="button" class="btn btn-warning" id="{{ f.id }}" data-toggle="modal" data-target="#editfoodModalCenter" onclick="fill_edit(this)">
+                <button type="button" class="btn btn-warning" id="{{ t.id }}" data-toggle="modal" data-target="#editfoodModalCenter" onclick="fill_edit(this)">
                   <i class="fas fa-edit"></i> แก้ไข
                 </button>
-                <button class="btn btn-danger" id="{{ f.id }}"  onclick="item_delete(this, 'delete_food')"><i class="fas fa-trash-alt"></i> ลบ</button>
+                <button class="btn btn-danger" id="{{ t.id }}" onclick="item_delete(this, 'delete_table')"><i class="fas fa-trash-alt"></i> ลบ</button>
             </td>
         </tr>
     {% endfor %}
@@ -30,7 +28,7 @@
 
 
   {% block edit %}
-    <form action="{% url 'edit_food' %}" method="POST">
+    <form action="{% url 'edit_table' %}" method="POST">
       {% csrf_token %}
       <div class="modal-body" id="edit_form">
       <input type="hidden" name="id" value="">
@@ -48,7 +46,7 @@
 
 
   {% block create %}
-    <form action="{% url 'edit_food' %}" method="POST">
+    <form action="{% url 'edit_table' %}" method="POST">
       {% csrf_token %}
       <div class="modal-body" id="create_form">
       {% for f in form %}

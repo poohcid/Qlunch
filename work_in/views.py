@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from appModel.models import (Customer, Food, Order, Order_food, Order_in,
                              Receipt, Table, Order_buffet)
 
-from .forms import OrderForm, TableForm
+from appModel.forms import OrderForm, TableForm
 
 # Create your views here.
 

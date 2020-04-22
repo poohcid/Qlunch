@@ -7,7 +7,7 @@ from django.utils import timezone
 
 from appModel.models import (Customer, Customer_buffet, Order, Order_buffet,
                              Order_food, Receipt, Tax_invoice)
-from work_in.forms import (Cus_buffet, Customer_form, Order_buffet_form,
+from appModel.forms import (Cus_buffet, Customer_form, Order_buffet_form,
                            OrderForm)
 
 

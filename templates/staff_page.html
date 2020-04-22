@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 style="margin: 50px 0 50px 0;">{{ title }}</h1>
+<div class="row">
+  <div class="col "><button type="button" class="float-right btn btn-success mt-1 mb-4" data-toggle="modal" data-target="#createfoodModalCenter"><i class="fas fa-plus"></i>{{ create_title }}</button></div>
+</div>
+<table class="table table-striped text-center">
+    {% block table %}
+    {% endblock table %}
+</table>
+<div class="modal fade" id="editfoodModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">{{ edit_title }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        {% block edit %}
+        {% endblock edit %}
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="createfoodModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">{{ create_title }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        {% block create %}
+        {% endblock create %}
+    </div>
+  </div>
+</div>
+    <script>
+      let headText = document.getElementsByClassName("modal-title")[0].innerHTML
+      function fill_edit(button){
+        form = document.querySelectorAll("#edit_form > input")
+        document.getElementsByClassName("modal-title")[0].innerHTML = headText+" "+button.id
+        form[0].value = button.id
+        data = button.parentElement.parentElement.childNodes
+        for (let i=1; i < form.length; i++){
+          form[i].value = data[i+i+1].getAttribute("value")
+        }
+      }
+
+      function item_delete(button, path){
+        axios.delete('/staff/'+path+'/'+button.id+'/')
+        .then(function (respone){
+          button.parentElement.parentElement.remove()
+        })
+      }
+    </script>
+{% endblock content %}

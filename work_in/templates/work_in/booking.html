@@ -54,7 +54,7 @@
 <script>
   function del_booking(button){
     axios.post('/work_in/del_booking/',{
-            cus_id : button.id
+            id : button.id
         })
         .then(function (response){
             button.parentElement.parentElement.remove()

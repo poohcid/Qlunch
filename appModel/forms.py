@@ -7,6 +7,10 @@ class TableForm(ModelForm):
     class Meta:
         model = Table
         fields = "__all__"
+        widgets={
+            "space":forms.NumberInput(attrs={'class':'form-control'}),
+            "status":forms.CheckboxInput(attrs={'class':'form-control'}),
+        }
         labels = {
             'space': 'ความจุ ',
             'status': 'สถานะ '
