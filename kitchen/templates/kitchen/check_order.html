@@ -6,8 +6,9 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">เมนู</th>
+            <th scope="col">จำนวน</th>
             <th scope="col">หมายเลขออเดอร์</th>
-            <th scope="col">ชื่ออเดอร์</th>
+            <th scope="col">ชื่ออเดอร์</th>  
             <th scope="col"></th>
         </tr>
     </thead>
@@ -18,8 +19,10 @@
             <tr>
                 <td scope="row" >{{ forloop.counter }}</td>
                 <td>{{ order_food.food.name }}</td>
+                <td>{{ order_food.unit }}</td>
                 <td>{{ order_food.order.id }}</td>
                 <td>{{ order_food.order.name }}</td>
+                <td>{{ order_food.amount }}</td>
                 <td>
                     <a href="{% url 'accept_order_food' order_id=order_food.id %}" class="btn btn-success"><i class="fas fa-check"></i> ยืนยัน</a>
                     <a href="{% url 'delete_order_food' order_id=order_food.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</a>
