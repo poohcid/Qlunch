@@ -13,8 +13,14 @@
     {% for t in table %}
         <tr>
             <td value="{{ t.id }}">{{ t.id }}</td>
-            <td value="{{ t.space }}">{{ t.space }}</td>
-            <td value="{{ t.status }}">{{ t.status }}</td>
+            <td value="{{ t.space }}">{{ t.space }} คน</td>
+            <td value="{{ t.status }}">
+              {% if t.status %}
+                  ไม่ว่าง
+              {% else %}
+                  ว่าง
+              {% endif %}
+            </td>
             <td>
                 <button type="button" class="btn btn-warning" id="{{ t.id }}" data-toggle="modal" data-target="#editfoodModalCenter" onclick="fill_edit(this)">
                   <i class="fas fa-edit"></i> แก้ไข

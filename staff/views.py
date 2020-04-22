@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-
+from django.contrib.auth.models import Group, User
 from appModel.forms import Food_form, TableForm
 from appModel.models import Food, Table
 
@@ -81,3 +81,13 @@ def delete_table(request, table_id):
         return JsonResponse({}, status=200)
 
     return redirect("edit_table")
+
+def edit_employee(request):
+    context={}
+    print(Group.objects.all())
+    context["user"] = User.objects.exclude(is_superuser=True)
+    return render(request, "staff/edit_employee.html", context=context)
+
+def create_employee(request):
+    context={}
+    return render(request, "staff/create_employee.html", context=context)

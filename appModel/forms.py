@@ -8,7 +8,7 @@ class TableForm(ModelForm):
         model = Table
         fields = "__all__"
         widgets={
-            "space":forms.NumberInput(attrs={'class':'form-control'}),
+            "space":forms.NumberInput(attrs={'class':'form-control', 'min':'0'}),
             "status":forms.CheckboxInput(attrs={'class':'form-control'}),
         }
         labels = {
