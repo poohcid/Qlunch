@@ -19,5 +19,4 @@ def accept_order_food(request, order_id):
 def delete_order_food(request, order_id):
     order_food = Order_food.objects.get(pk=order_id)
     order_food.delete()
-    order_food.save()
     return redirect('kitchen')

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'work_in',
     'buffet',
     'kitchen',
+    'staff',
     'bootstrap_datepicker_plus',
 ]
 
