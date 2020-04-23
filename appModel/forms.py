@@ -114,14 +114,6 @@ class User_form(ModelForm):
     role_chef = forms.BooleanField(label="พ่อครัว", widget=forms.CheckboxInput(attrs={'class':''}), required=False)
     role_staff = forms.BooleanField(label="ผู้ดูแล", widget=forms.CheckboxInput(attrs={'class':''}), required=False)
 
-    def __init__(self, user=None, *args, **kwargs):
-        super(User_form, self).__init__(*args, **kwargs)
-        self.instance = kwargs.pop('instance', None)
-        if self.instance:
-            self.initial['role_waiter'] = bool(self.instance.groups.filter(name="waiter"))
-            self.initial['role_salesman'] = bool(self.instance.groups.filter(name="salesman"))
-
-
     class Meta:
         model = User
         fields = ["username", "first_name", "last_name"]
@@ -135,16 +127,6 @@ class User_form(ModelForm):
             "first_name" : "ชื่อจริง",
             "last_name" : "นามสกุล"
         }
-    def clean_password2(self):
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
-        if password1 and password2 and password1 != password2:
-            raise forms.ValidationError(
-                self.error_messages['password_mismatch'],
-                code='password_mismatch',
-            )
-        return password2
-    
     def clean_username(self):
         username = self.cleaned_data.get("username")
         if User.objects.filter(username=username):
@@ -153,7 +135,6 @@ class User_form(ModelForm):
                 code='username_repeat',
             )
         return username
-
     
     def save(self, commit=True):
         user = super(User_form, self).save(commit=False)
@@ -170,6 +151,53 @@ class User_form(ModelForm):
         if self.cleaned_data["role_staff"]:
             user.save()
             user.groups.add(Group.objects.get(name="staff"))
+        if commit:
+            user.save()
+        return user
+
+class User_change_form(ModelForm):
+    error_messages = {
+        'username_repeat' : "ชื่อผู้ใช้งานซ้ำ"
+    }
+
+    #ปุ่ม
+    role_waiter = forms.BooleanField(label="พนักงานบริการ", widget=forms.CheckboxInput(attrs={'class':''}), required=False)
+    role_salesman = forms.BooleanField(label="พนักงานขาย", widget=forms.CheckboxInput(attrs={'class':''}), required=False)
+    role_chef = forms.BooleanField(label="พ่อครัว", widget=forms.CheckboxInput(attrs={'class':''}), required=False)
+    role_staff = forms.BooleanField(label="ผู้ดูแล", widget=forms.CheckboxInput(attrs={'class':''}), required=False)
+
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name"]
+        widgets={
+            "first_name":forms.TextInput(attrs={'class':'form-control'}),
+            "last_name":forms.TextInput(attrs={'class':'form-control'}),
+        }
+        labels = {
+            "first_name" : "ชื่อจริง",
+            "last_name" : "นามสกุล"
+        }
+    
+    def save(self, commit=True):
+        user = super(User_change_form, self).save(commit=False)
+        
+        if self.cleaned_data["role_waiter"]:
+            user.groups.add(Group.objects.get(name="waiter"))
+        else:
+            user.groups.remove(Group.objects.get(name="waiter"))
+        if self.cleaned_data["role_salesman"]:
+            user.groups.add(Group.objects.get(name="salesman"))
+        else:
+            user.groups.remove(Group.objects.get(name="salesman"))
+        if self.cleaned_data["role_chef"]:
+            user.groups.add(Group.objects.get(name="chef"))
+        else:
+            user.groups.remove(Group.objects.get(name="chef"))
+        if self.cleaned_data["role_staff"]:
+            user.groups.add(Group.objects.get(name="staff"))
+        else:
+            user.groups.remove(Group.objects.get(name="staff"))
+
         if commit:
             user.save()
         return user

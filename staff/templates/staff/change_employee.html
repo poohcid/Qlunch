@@ -14,12 +14,11 @@
         font-size: 17px;
     }
 </style>
-<h1 style="margin:50px 0 50px 0">สร้างผู้ใช้ใหม่</h1>
+<h1 style="margin:50px 0 50px 0">แก้ไขพนักงาน</h1>
 <div class="user_form">
-    <form action="{% url 'create_employee' %}" method="POST">
+    {{ user_form.non_field_errors }}
+    <form action="{% url 'change_employee' user_id=user_id %}" method="POST">
         {% csrf_token %}
-        <b>{{ user_form.username.label }} {{ user_form.username.errors }}</b>
-        {{ user_form.username }}
         <div class="row">
             <div class="col">
                 <b>{{ user_form.first_name.label }}</b>
@@ -32,10 +31,7 @@
         </div>
 
         {% for u_form in user_form %}
-        {% if forloop.counter >= 4 and forloop.counter <= 5 %}
-            <b>{{ u_form.label }}   {{ u_form.errors }}</b>
-            {{ u_form }}
-        {% elif forloop.counter > 5 %}
+        {% if forloop.counter >= 3%}
             <label class="containercheck">
                 <b>{{ u_form.label }}</b>
                 {{ u_form }}
@@ -52,7 +48,3 @@
     </form>
 </div>
 {% endblock  %}
-
-
-
-
