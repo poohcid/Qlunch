@@ -109,10 +109,10 @@ class User_form(ModelForm):
     password2 = forms.CharField(label="ยืนยันรหัสผ่าน", widget=forms.PasswordInput(attrs={'class':'form-control'}))
 
     #ปุ่ม
-    role_waiter = forms.BooleanField(label="พนักงานบริการ", widget=forms.CheckboxInput(attrs={'class':'form-control'}), required=False)
-    role_salesman = forms.BooleanField(label="พนักงานขาย", widget=forms.CheckboxInput(attrs={'class':'form-control'}), required=False)
-    role_chef = forms.BooleanField(label="พ่อครัว", widget=forms.CheckboxInput(attrs={'class':'form-control'}), required=False)
-    role_staff = forms.BooleanField(label="ผู้ดูแล", widget=forms.CheckboxInput(attrs={'class':'form-control'}), required=False)
+    role_waiter = forms.BooleanField(label="พนักงานบริการ", widget=forms.CheckboxInput(attrs={'class':''}), required=False)
+    role_salesman = forms.BooleanField(label="พนักงานขาย", widget=forms.CheckboxInput(attrs={'class':''}), required=False)
+    role_chef = forms.BooleanField(label="พ่อครัว", widget=forms.CheckboxInput(attrs={'class':''}), required=False)
+    role_staff = forms.BooleanField(label="ผู้ดูแล", widget=forms.CheckboxInput(attrs={'class':''}), required=False)
 
     def __init__(self, user=None, *args, **kwargs):
         super(User_form, self).__init__(*args, **kwargs)
@@ -180,7 +180,7 @@ class Employee_form(ModelForm):
         exclude = ['user']
         widgets={
             "phone":forms.TextInput(attrs={'class':'form-control'}),
-            "address":forms.Textarea(attrs={'class':'form-control'}),
+            "address":forms.Textarea(attrs={'class':'form-control', 'rows':'3'}),
         }
         labels = {
             "phone" : "เบอร์โทรศัพท์",

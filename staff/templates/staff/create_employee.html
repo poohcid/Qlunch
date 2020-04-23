@@ -1,20 +1,58 @@
 {% extends "base.html" %}
 {% block content %}
+<style>
+    .user_form {
+        width: 75%;
+        height: 50%;
+        margin: 0 auto;
+
+    }
+    .form-control {
+        width: 100%;
+    }
+    body {
+        font-size: 17px;
+    }
+</style>
 <h1 style="margin:50px 0 50px 0">สร้างผู้ใช้ใหม่</h1>
-    {{ user_form.non_field_errors }}
+<div class="user_form">
     <form action="{% url 'create_employee' %}" method="POST">
         {% csrf_token %}
+        <b>{{ user_form.username.label }}</b>
+        {{ user_form.username }}
+        <div class="row">
+            <div class="col">
+                <b>{{ user_form.first_name.label }}</b>
+                {{ user_form.first_name }}
+            </div>
+            <div class="col">
+                <b>{{ user_form.last_name.label }}</b>
+                {{ user_form.last_name }}
+            </div>
+        </div>
+
         {% for u_form in user_form %}
-            {{ u_form.label }}
-            {{ u_form.errors }}
+        {% if forloop.counter >= 4 and forloop.counter <= 5 %}
+            <b>{{ u_form.label }}</b>
             {{ u_form }}
+        {% elif forloop.counter > 5 %}
+            <label class="containercheck">
+                <b>{{ u_form.label }}</b>
+                {{ u_form }}
+                <span class="checkmark"></span>
+            </label>
+        {% endif %}
         {% endfor %}
+
         {% for emp_form in emp_form %}
-            {{ emp_form.label }}
-            {{ emp_form }}
-        {% endfor %}
-        <button name="subnit">บันทึก</button>
+        <b>{{ emp_form.label }}</b>
+        {{ emp_form }}
+        {% endfor %}<br>
+        <button name="submit" class="btn btn-success"><i class="fas fa-save"></i> บันทึก</button>
     </form>
+</div>
 {% endblock  %}
 
-  
+
+
+
