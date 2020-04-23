@@ -4,6 +4,11 @@ from django.utils import timezone
 
 # ข้อมูลต่างๆ
 
+class Employee(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    address = models.TextField()
+    phone = models.CharField(max_length=10)
+
 class Food(models.Model):
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=8, decimal_places=2)

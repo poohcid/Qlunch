@@ -1,6 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
 <h1 style="margin:50px 0 50px 0">สร้างผู้ใช้ใหม่</h1>
+    <form action="{% url 'create_employee' %}" method="POST">
+        {% csrf_token %}
+        {% for u_form in user_form %}
+            {{ u_form.label }}
+            {{ u_form }}
+        {% endfor %}
+        {% for emp_form in emp_form %}
+            {{ emp_form.label }}
+            {{ emp_form }}
+        {% endfor %}
+        <button name="subnit">บันทึก</button>
+    </form>
 {% endblock  %}
 
   

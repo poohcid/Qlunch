@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import Group, User
-from appModel.forms import Food_form, TableForm
+from appModel.forms import Food_form, TableForm, User_form, Employee_form
 from appModel.models import Food, Table
 
 
@@ -86,8 +86,17 @@ def edit_employee(request):
     context={}
     print(Group.objects.all())
     context["user"] = User.objects.exclude(is_superuser=True)
+    context["title"] = "เพิ่ม/แก้ไข พนักงาน"
     return render(request, "staff/edit_employee.html", context=context)
 
 def create_employee(request):
-    context={}
+    context={
+        "user_form" : User_form(),
+        "emp_form" : Employee_form()
+    }
+    if request.method == "POST":
+        user_form = User_form(request.POST)
+        if user_form.is_valid():
+            user_form.save()
+        return redirect('edit_employee')
     return render(request, "staff/create_employee.html", context=context)

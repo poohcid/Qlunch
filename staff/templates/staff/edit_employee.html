@@ -23,13 +23,13 @@
         <tr>
             <td>{{ u.id }}</td>
             <td>{{ u.first_name }} {{ u.last_name }}</td>
-            <td value="{{ f.name }}">{{ u.groups.all.0 }}</td>
-            <td value="{{ f.price }}">{{ u.username }}</td>
+            <td value="{{ u.name }}">{{ u.groups.all.0 }}</td>
+            <td value="{{ u.price }}">{{ u.username }}</td>
             <td>
                 <button type="button" class="btn btn-warning" id="{{ f.id }}" data-toggle="modal" data-target="#editfoodModalCenter" onclick="fill_edit(this)">
                   <i class="fas fa-edit"></i> แก้ไข
                 </button>
-                <button class="btn btn-danger" id="{{ f.id }}"  onclick="item_delete(this, 'delete_food')"><i class="fas fa-trash-alt"></i> ลบ</button>
+                <button class="btn btn-danger" id="{{ u.id }}"  onclick=""><i class="fas fa-trash-alt"></i> ลบ</button>
             </td>
         </tr>
     {% endfor %}
