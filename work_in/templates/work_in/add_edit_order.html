@@ -9,6 +9,7 @@
         margin: 5px;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     }
+
     @keyframes expand {
         from {
             transform: scale(0);
@@ -16,28 +17,34 @@
             background: #5470B0;
         }
     }
+
     @keyframes fade {
         from {
             opacity: 0;
         }
     }
+
     .row {
         animation: fade .750s ease;
     }
+
     .list_menu:hover {
         background: #EEE;
         transition: 0.2s;
     }
+
     #flex {
         display: flex;
         justify-content: center;
 
     }
+
     @keyframes test {
         from {
             top: -1000;
         }
     }
+
     #notification {
         width: 500px;
         height: 90px;
@@ -54,6 +61,7 @@
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     }
 
+
     .sidebar {
         height: 100%;
         width: 0px;
@@ -68,6 +76,7 @@
         transition: 0.45s;
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     }
+
     #button_side {
         width: 65px;
         height: 65px;
@@ -82,11 +91,13 @@
         color: #fff;
         z-index: 1;
     }
+
     @media only screen and (min-width: 480px) {
         .sidebar, #button_side{
             display: none;
         }
     }
+
     .header {
         width: 100%;
     }
@@ -106,6 +117,11 @@
     }
 </style>
 
+<center>
+    <div id="flex">
+
+    </div>
+</center>
 {% if table %}
 <h2><br>โต๊ะที่ : {{ table.id }}</h2>
 <h2>หมายเลขออเดอร์ : {{ order.id }}</h2>
@@ -202,6 +218,7 @@
             </ul>
         </div>
     </div>
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -258,6 +275,9 @@
         </div>
     </div>
 </div>
+
+
 <button id="button_side" onclick="switchNav()"><i class="fas fa-plus"></i></button>
 <script src="{% static 'scripts_edit_order.js' %}"></script>
+
 {% endblock %}
