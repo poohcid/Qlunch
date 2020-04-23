@@ -29,9 +29,17 @@
                 <a type="button" class="btn btn-warning" id="{{ u.id }}" href={% url 'change_employee' user_id=u.id %}>
                   <i class="fas fa-edit"></i> แก้ไข
                 </a>
-                <button class="btn btn-danger" id="{{ u.id }}"  onclick=""><i class="fas fa-trash-alt"></i> ลบ</button>
+                  <button class="btn btn-danger" id="{{ u.id }}"  onclick="item_delete(this, 'delete_employee')"><i class="fas fa-trash-alt"></i> ลบ</button>
             </td>
         </tr>
     {% endfor %}
     </tbody>
+    <script>
+      function item_delete(button, path){
+        axios.delete('/staff/'+path+'/'+button.id+'/')
+        .then(function (respone){
+          button.parentElement.parentElement.remove()
+        })
+      }
+    </script>
   {% endblock table %}

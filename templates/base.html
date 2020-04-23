@@ -173,10 +173,16 @@
           {% if perms.appModel.add_order_buffet %}<a class="nav-link" href="{% url 'orderlist'%}">ออเดอร์จัดเลี้ยง</a>{% endif %}
         </li>
         <li class="nav-item">
-          {% if perms.appModel.add_order_buffet %}<a class="nav-link" href="{% url 'kitchen'%}">ยืนยันรายการอาหาร</a>{% endif %}
+          {% if perms.appModel.change_order_food %}<a class="nav-link" href="{% url 'kitchen'%}">ยืนยันรายการอาหาร</a>{% endif %}
         </li>
         <li class="nav-item">
-          {% if perms.appModel.change_user %}<a class="nav-link" href="{% url 'edit_employee'%}">เพิ่ม/แก้ไขพนักงาน</a>{% endif %}
+          {% if perms.auth.change_user %}<a class="nav-link" href="{% url 'edit_employee'%}">เพิ่ม/แก้ไขพนักงาน</a>{% endif %}
+        </li>
+        <li class="nav-item">
+          {% if perms.appModel.change_food %}<a class="nav-link" href="{% url 'edit_food'%}">เพิ่ม/แก้ไขเมนูอาหาร</a>{% endif %}
+        </li>
+        <li class="nav-item">
+          {% if perms.appModel.change_table %}<a class="nav-link" href="{% url 'edit_table'%}">เพิ่ม/แก้ไขโต๊ะ</a>{% endif %}
         </li>
         <li class="nav-item active">
           <div class="dropdown show" style="margin: 0px 40px 0 15px;">

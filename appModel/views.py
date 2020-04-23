@@ -18,9 +18,9 @@ def index(request):
         if request.user.is_superuser or group[0].name == "salesman": # http://127.0.0.1:8000/ จะไปที่หน้าแรก ของ user group นั้นๆ
             return redirect('../buffet/')
         if request.user.is_superuser or group[0].name == "staff": # http://127.0.0.1:8000/ จะไปที่หน้าแรก ของ user group นั้นๆ
-            return redirect('../work_in/')
+            return redirect('../staff/')
         if request.user.is_superuser or group[0].name == "chef": # http://127.0.0.1:8000/ จะไปที่หน้าแรก ของ user group นั้นๆ
-            return redirect('../work_in/')
+            return redirect('../kitchen/')
         else:
             return redirect('../work_in/')
     return redirect('login/')
