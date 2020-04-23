@@ -101,6 +101,10 @@ class Food_form(ModelForm):
         }
 
 class User_form(ModelForm):
+    error_messages = {
+        'password_mismatch': ("กรุณากรอกรหัสผ่านให้ตรงกัน"),
+        'username_repeat' : "ชื่อผู้ใช้งานซ้ำ"
+    }
     password1 = forms.CharField(label="รหัสผ่าน", widget=forms.PasswordInput(attrs={'class':'form-control'}))
     password2 = forms.CharField(label="ยืนยันรหัสผ่าน", widget=forms.PasswordInput(attrs={'class':'form-control'}))
 
@@ -109,6 +113,14 @@ class User_form(ModelForm):
     role_salesman = forms.BooleanField(label="พนักงานขาย", widget=forms.CheckboxInput(attrs={'class':'form-control'}), required=False)
     role_chef = forms.BooleanField(label="พ่อครัว", widget=forms.CheckboxInput(attrs={'class':'form-control'}), required=False)
     role_staff = forms.BooleanField(label="ผู้ดูแล", widget=forms.CheckboxInput(attrs={'class':'form-control'}), required=False)
+
+    def __init__(self, user=None, *args, **kwargs):
+        super(User_form, self).__init__(*args, **kwargs)
+        self.instance = kwargs.pop('instance', None)
+        if self.instance:
+            self.initial['role_waiter'] = bool(self.instance.groups.filter(name="waiter"))
+            self.initial['role_salesman'] = bool(self.instance.groups.filter(name="salesman"))
+
 
     class Meta:
         model = User
@@ -133,6 +145,16 @@ class User_form(ModelForm):
             )
         return password2
     
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if User.objects.filter(username=username):
+            raise forms.ValidationError(
+                self.error_messages['username_repeat'],
+                code='username_repeat',
+            )
+        return username
+
+    
     def save(self, commit=True):
         user = super(User_form, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
@@ -150,8 +172,7 @@ class User_form(ModelForm):
             user.groups.add(Group.objects.get(name="staff"))
         if commit:
             user.save()
-        else:
-            return user
+        return user
 
 class Employee_form(ModelForm):
     class Meta:

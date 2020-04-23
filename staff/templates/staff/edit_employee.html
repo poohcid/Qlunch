@@ -26,9 +26,9 @@
             <td value="{{ u.name }}">{{ u.groups.all.0 }}</td>
             <td value="{{ u.price }}">{{ u.username }}</td>
             <td>
-                <button type="button" class="btn btn-warning" id="{{ f.id }}" data-toggle="modal" data-target="#editfoodModalCenter" onclick="fill_edit(this)">
+                <a type="button" class="btn btn-warning" id="{{ u.id }}" href={% url 'change_employee' user_id=u.id %}>
                   <i class="fas fa-edit"></i> แก้ไข
-                </button>
+                </a>
                 <button class="btn btn-danger" id="{{ u.id }}"  onclick=""><i class="fas fa-trash-alt"></i> ลบ</button>
             </td>
         </tr>

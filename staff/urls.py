@@ -9,4 +9,5 @@ urlpatterns = [
     path('delete_table/<int:table_id>/', views.delete_table, name="delete_table"),
     path('edit_employee/', views.edit_employee, name="edit_employee"),
     path('create_employee/', views.create_employee, name="create_employee"),
+    path('edit_employee/<int:user_id>/', views.change_employee, name="change_employee")
 ]

@@ -27,6 +27,8 @@ class OrderFoodAdmin(admin.ModelAdmin):
 
 admin.site.register(Permission)
 
+admin.site.register(Employee)
+
 admin.site.register(Customer)
 
 admin.site.register(Customer_buffet)

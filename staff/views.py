@@ -7,7 +7,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import Group, User
 from appModel.forms import Food_form, TableForm, User_form, Employee_form
-from appModel.models import Food, Table
+from appModel.models import Food, Table, Employee
 
 
 def index(request):
@@ -96,7 +96,25 @@ def create_employee(request):
     }
     if request.method == "POST":
         user_form = User_form(request.POST)
+        employee_form = Employee_form(request.POST)
         if user_form.is_valid():
-            user_form.save()
-        return redirect('edit_employee')
+            user = user_form.save()
+            if employee_form.is_valid():
+                emp = employee_form.save(commit=False)
+                emp.user = user
+                emp.save()
+                return redirect('edit_employee')
+        else:
+            context["user_form"] = user_form
+    return render(request, "staff/create_employee.html", context=context)
+
+def change_employee(request, user_id):
+    context={}
+    user = User.objects.get(pk=user_id)
+    emp = Employee.objects.get(user=user)
+    user_form = User_form(instance=user)
+    context={
+        "user_form" : User_form(instance=user),
+        "emp_form" : Employee_form(instance=emp)
+    }
     return render(request, "staff/create_employee.html", context=context)

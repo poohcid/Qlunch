@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 <h1 style="margin:50px 0 50px 0">สร้างผู้ใช้ใหม่</h1>
+    {{ user_form.non_field_errors }}
     <form action="{% url 'create_employee' %}" method="POST">
         {% csrf_token %}
         {% for u_form in user_form %}
             {{ u_form.label }}
+            {{ u_form.errors }}
             {{ u_form }}
         {% endfor %}
         {% for emp_form in emp_form %}
