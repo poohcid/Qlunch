@@ -7,9 +7,11 @@
         margin: 0 auto;
 
     }
+
     .form-control {
         width: 100%;
     }
+
     body {
         font-size: 17px;
     }
@@ -18,7 +20,13 @@
 <div class="user_form">
     <form action="{% url 'create_employee' %}" method="POST">
         {% csrf_token %}
-        <b>{{ user_form.username.label }} {{ user_form.username.errors }}</b>
+        <b>{{ user_form.username.label }}</b>
+        {% if user_form.username.errors %}
+            <div class="alert alert-danger m-0 p-0 pt-3" role="alert">
+                <b>{{ user_form.username.errors }}</b>
+            </div>
+            <br>
+        {% endif %}
         {{ user_form.username }}
         <div class="row">
             <div class="col">
@@ -32,16 +40,22 @@
         </div>
 
         {% for u_form in user_form %}
-        {% if forloop.counter >= 4 and forloop.counter <= 5 %}
-            <b>{{ u_form.label }}   {{ u_form.errors }}</b>
-            {{ u_form }}
-        {% elif forloop.counter > 5 %}
-            <label class="containercheck">
+            {% if forloop.counter >= 4 and forloop.counter <= 5 %}
                 <b>{{ u_form.label }}</b>
+                {% if u_form.errors %}
+                    <div class="alert alert-danger m-0 p-0 pt-3" role="alert">
+                       <b>{{ u_form.errors }}</b>
+                    </div>
+                    <br>
+                {% endif %}
                 {{ u_form }}
-                <span class="checkmark"></span>
-            </label>
-        {% endif %}
+            {% elif forloop.counter > 5 %}
+                <label class="containercheck">
+                    <b>{{ u_form.label }}</b>
+                    {{ u_form }}
+                    <span class="checkmark"></span>
+                </label>
+                {% endif %}
         {% endfor %}
 
         {% for emp_form in emp_form %}
@@ -52,7 +66,3 @@
     </form>
 </div>
 {% endblock  %}
-
-
-
-

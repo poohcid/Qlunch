@@ -102,8 +102,8 @@ class Food_form(ModelForm):
 
 class User_form(ModelForm):
     error_messages = {
-        'password_mismatch': ("กรุณากรอกรหัสผ่านให้ตรงกัน"),
-        'username_repeat' : "ชื่อผู้ใช้งานซ้ำ"
+        'password_mismatch': ("กรุณากรอกรหัสผ่านให้ตรงกัน!"),
+        'username_repeat' : "ชื่อผู้ใช้งานซ้ำ!"
     }
     password1 = forms.CharField(label="รหัสผ่าน", widget=forms.PasswordInput(attrs={'class':'form-control'}))
     password2 = forms.CharField(label="ยืนยันรหัสผ่าน", widget=forms.PasswordInput(attrs={'class':'form-control'}))
@@ -154,6 +154,17 @@ class User_form(ModelForm):
         if commit:
             user.save()
         return user
+    
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError(
+                self.error_messages['password_mismatch'],
+                code='password_mismatch',
+            )
+        return password2
+    
 
 class User_change_form(ModelForm):
     error_messages = {
