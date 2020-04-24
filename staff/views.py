@@ -167,6 +167,6 @@ def change_employee(request, user_id):
 def delete_employee(request, user_id):
     if request.method == "DELETE":
         user = User.objects.get(pk=user_id)
-        user.delete()
+        # user.delete()
         return JsonResponse({}, status=200)
     return redirect('edit_employee')
