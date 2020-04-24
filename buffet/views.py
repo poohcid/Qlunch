@@ -113,5 +113,8 @@ def tax_invoice(request, order_id):
             if request.POST.get('tax_name'):
                 tax.name = request.POST.get('tax_name')
             tax.save()
-        return render(request, "buffet/tax_invoice.html", context=context)
+        customer.tax_id = request.POST.get('tax_id')
+        customer.save()
+
+    context['tax_id'] = customer.tax_id if customer.tax_id else ""
     return render(request, "buffet/tax_invoice.html", context=context)

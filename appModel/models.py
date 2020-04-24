@@ -25,6 +25,7 @@ class Customer(models.Model):
         return self.name
 
 class Customer_buffet(models.Model):
+    tax_id = models.CharField(max_length=13, null=True, blank=True)
     company = models.CharField(max_length=255, null=True, blank=True)
     phone = models.CharField(max_length=10)
     address = models.TextField()

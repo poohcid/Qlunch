@@ -10,7 +10,9 @@ from appModel.models import Order_food
 @permission_required("appModel.change_order_food")
 def index(request):
     context = {
-        "order_foods" : Order_food.objects.filter(status=False).filter(order__receipt=None).order_by("id")
+        "order_foods" : Order_food.objects.filter(status=False).filter(order__receipt=None).filter(order__order_type='order_in').order_by("id"),
+        #ออเดอร์อาหารของบุฟเฟ่ต์
+        "order_buffets" : Order_food.objects.filter(status=False).filter(order__receipt=None).filter(order__order_type='order_buffet').order_by("id")
     }
     return render(request, "kitchen/check_order.html", context=context)
 
