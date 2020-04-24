@@ -1,25 +1,28 @@
 var total_price;
 var count = document.querySelectorAll("#foodorder > li").length
-var sidebar = 0;
+var menuorder = true;
 calTotal()
-if (window.screen.availWidth < 480) {
-    document.querySelector("#orderpc").remove()
-} else {
-    document.querySelector(".sidebar").style.display = "none"
+console.log(window.screen.width)
+if (window.screen.availWidth < 896) {
+    document.getElementById("order").style.display = "none"
 }
 
-function switchNav() {
-    var side_nav = document.getElementById("mySidebar")
-    var button_side = document.getElementById("button_side")
-    console.log(side_nav.style.width)
-    if (side_nav.style.width == "95%") {
-        side_nav.style.width = "0";
-        button_side.innerHTML = '<i class="fas fa-plus"></i>';
+function switchmenu() {
+    var menu = document.getElementById("order")
+    var order = document.getElementById("menu")
+    if (menuorder == false) {
+        menu.style.display = "none"
+        order.style.display = ""
+        menuorder = true
+
     } else {
-        side_nav.style.width = "95%";
-        button_side.innerHTML = '<i class="fas fa-times"></i>';
+        menu.style.display = ""
+        order.style.display = "none"
+        menuorder = false
     }
+
 }
+
 //ฟังก์ชันคำนวนราคามรวม และ เก็บรหัสเมนูอาหาร
 function toData() {
     let text = ""
@@ -73,8 +76,7 @@ function calTotal() {
 function addtoOrder(list) {
     var order_ul = document.querySelectorAll("#foodorder > li")
     var have_menu = false
-
-    //สำหรับบันทึกข้อมูล
+        //สำหรับบันทึกข้อมูล
     let text = ""
     let input
 
@@ -84,6 +86,7 @@ function addtoOrder(list) {
         var status = input.getAttribute("status")
         text += "&" + input.name + "=" + input.value
         if ((list.getAttribute("value") == order_ul[i].firstElementChild.textContent) && (status == "none")) {
+
             var num = input.value
             input.value = parseInt(num) + 1
             have_menu = true
