@@ -77,9 +77,9 @@
                                     class="fas fa-utensils"></i> สั่งอาหาร</a>
                             <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i
                                     class="fas fa-receipt"></i> เช็คบิล</a>
-                            <button type="button" class="btn btn-danger" id="{{ order_list.id }}" onclick="sendDel(this)">
+                            {% comment %} <button type="button" class="btn btn-danger" id="{{ order_list.id }}" onclick="sendDel(this)">
                                 <i class="fas fa-trash-alt"></i> ลบ
-                            </button>
+                            </button> {% endcomment %}
                         </td>
                     </tr>
                     {% endfor %}
@@ -105,9 +105,9 @@
                                     class="fas fa-utensils"></i> สั่งอาหาร</a>
                             <a type="button" class="btn btn-info" href="{% url 'receipt' id=order_list.id %}"><i
                                     class="fas fa-receipt"></i> เช็คบิล</a>
-                            <button type="button" class="btn btn-danger" id="{{ order_list.id }}" onclick="sendDel(this)">
+                            {% comment %} <button type="button" class="btn btn-danger" id="{{ order_list.id }}" onclick="sendDel(this)">
                                 <i class="fas fa-trash-alt"></i> ลบ
-                            </button>
+                            </button> {% endcomment %}
                         </td>
                     </tr>
                     {% endfor %}

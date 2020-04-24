@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required, permission_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-
+from django.views.decorators.csrf import csrf_exempt
 from appModel.models import Order_food
 
 # Create your views here.
@@ -34,9 +34,13 @@ def accept_order_food(request, order_id):
     food.save()
     return redirect('kitchen')
 
+
+@csrf_exempt
 @login_required
 @permission_required("appModel.change_order_food")
 def delete_order_food(request, order_id):
-    order_food = Order_food.objects.get(pk=order_id)
-    order_food.delete()
+    if request.method == "DELETE":
+        order_food = Order_food.objects.get(pk=order_id)
+        order_food.delete()
+        return JsonResponse({}, status=200)
     return redirect('kitchen')

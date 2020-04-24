@@ -187,11 +187,12 @@ def booking(request):
 @login_required
 @permission_required('appModel.add_customer')
 @csrf_exempt
-def del_booking(request):
-    data = json.loads(request.body)
-    customer = Customer.objects.get(pk=int(data["cus_id"]))
-    customer.delete()
-    return JsonResponse({}, status=200)
+def del_booking(request, cus_id):
+    if request.method == "DELETE":
+        customer = Customer.objects.get(pk=cus_id)
+        customer.delete()
+        return JsonResponse({}, status=200)
+    return redirect('booking')
 
 @login_required
 @permission_required('appModel.add_receipt')

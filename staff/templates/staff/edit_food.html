@@ -21,13 +21,18 @@
                 <button type="button" class="btn btn-warning" id="{{ f.id }}" data-toggle="modal" data-target="#editfoodModalCenter" onclick="fill_edit(this)">
                   <i class="fas fa-edit"></i> แก้ไข
                 </button>
-                <button class="btn btn-danger" id="{{ f.id }}"  onclick="item_delete(this, 'delete_employee')"><i class="fas fa-trash-alt"></i> ลบ</button>
+                <button class="btn btn-danger" id="buttonlist{{ f.id }}" num="{{ f.id }}" onclick="sendto_modal(this)" data-toggle="modal" data-target="#deletemodal"><i class="fas fa-trash-alt"></i> ลบ</button>
             </td>
         </tr>
     {% endfor %}
     </tbody>
   {% endblock table %}
-
+  
+  {% block modalpath %}
+      <button type="button" class="deletebutton btn btn-danger" data-dismiss="modal" onclick="item_delete(this, '/staff/delete_food')">
+        <i class="fas fa-trash-alt"></i> ลบ
+      </button>
+  {% endblock modalpath %}
 
   {% block edit %}
     <form action="{% url 'edit_food' %}" method="POST">
@@ -51,7 +56,7 @@
       {% csrf_token %}
       <div class="modal-body" id="edit_form">
       <label for="">จำนวน</label>
-        <input type="number" min="0" name="fill">
+      <input type="number" min="0" name="fill" class="form-control">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>

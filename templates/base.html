@@ -76,7 +76,6 @@
       height: 50px;
       margin: 0;
     }
-    
     .containercheck {
         display: block;
         position: relative;
@@ -188,7 +187,7 @@
           <div class="dropdown show" style="margin: 0px 40px 0 15px;">
             <a class="btn btn-secondary dropdown-toggle bg-info" href="#" role="button" id="dropdownMenuLink"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class='fas fa-user-circle' style='font-size:24px'></i> สวัสดี {{ user.username }}
+              <i class='fas fa-user-circle' style='font-size:24px'></i> สวัสดี {{ request.user.username }}
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
@@ -205,7 +204,43 @@
     {% endblock  %}
   </div>
 
-
+  <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">ลบข้อมูล</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ยืนยันที่จะลบข้อมูลใช่หรือไม่?
+      </div>
+      <div class="modal-footer"> 
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+        {% block modalpath %}
+          
+        {% endblock modalpath %}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+      function sendto_modal(button){
+        var del_button = document.querySelector(".deletebutton")
+        del_button.id = button.getAttribute("num")
+      }
+      function item_delete(button, path){
+        axios.delete(path+'/'+button.id+'/')
+        .then(function (respone){
+          console.log("then1")
+          var text = "buttonlist"+button.id
+          var del = document.getElementById(text)
+          del.parentElement.parentElement.remove()
+        })
+      }
+</script>
 </body>
 
 </html>

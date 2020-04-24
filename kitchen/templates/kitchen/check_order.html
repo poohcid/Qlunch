@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1 style="margin: 50px 0 50px 0;">ยืนยันรายการอาหาร</h1>
+    <div class="table-responsive">
     <table class="table text-center">
     <thead>
         <tr>
@@ -26,11 +27,18 @@
                 <td>{{ order_food.amount }}</td>
                 <td>
                     <a href="{% url 'accept_order_food' order_id=order_food.id %}" class="btn btn-success"><i class="fas fa-check"></i> ยืนยัน</a>
-                    <a href="{% url 'delete_order_food' order_id=order_food.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ลบ</a>
+                    <button type="button" class="btn btn-danger" id="buttonlist{{ order_food.id }}" num="{{ order_food.id }}" onclick="sendto_modal(this)" data-toggle="modal" data-target="#deletemodal"><i class="fas fa-trash-alt"></i> ลบ</button>
                 </td>
             </tr>
         {% endfor %}
     </form>
     </tbody>
     </table>
+    </div>
 {% endblock content %}
+
+{% block modalpath %}
+    <button type="button" class="deletebutton btn btn-danger" data-dismiss="modal" onclick="item_delete(this, '/kitchen/delete_order_food')">
+        <i class="fas fa-trash-alt"></i> ลบ
+    </button>
+{% endblock modalpath %}

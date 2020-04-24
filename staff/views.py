@@ -56,7 +56,7 @@ class Add_edit_food(View):
 def delete_food(request, food_id):
     if request.method == "DELETE":
         food = Food.objects.get(pk=food_id)
-        #food.delete()
+        food.delete()
         return JsonResponse({}, status=200)
 
     return redirect("edit_food")
@@ -96,7 +96,7 @@ class Add_edit_table(View):
 def delete_table(request, table_id):
     if request.method == "DELETE":
         table = Table.objects.get(pk=table_id)
-        #table.delete()
+        table.delete()
         return JsonResponse({}, status=200)
 
     return redirect("edit_table")
@@ -167,6 +167,6 @@ def change_employee(request, user_id):
 def delete_employee(request, user_id):
     if request.method == "DELETE":
         user = User.objects.get(pk=user_id)
-        # user.delete()
+        user.delete()
         return JsonResponse({}, status=200)
     return redirect('edit_employee')

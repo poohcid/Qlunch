@@ -25,13 +25,17 @@
                 <button type="button" class="btn btn-warning" id="{{ t.id }}" data-toggle="modal" data-target="#editfoodModalCenter" onclick="fill_edit(this)">
                   <i class="fas fa-edit"></i> แก้ไข
                 </button>
-                <button class="btn btn-danger" id="{{ t.id }}" onclick="item_delete(this, 'delete_table')"><i class="fas fa-trash-alt"></i> ลบ</button>
+                <button class="btn btn-danger" id="buttonlist{{ t.id }}" num="{{ t.id }}" onclick="sendto_modal(this)" data-toggle="modal" data-target="#deletemodal"><i class="fas fa-trash-alt"></i> ลบ</button>
             </td>
         </tr>
     {% endfor %}
     </tbody>
   {% endblock table %}
-
+  {% block modalpath %}
+      <button type="button" class="deletebutton btn btn-danger" data-dismiss="modal" onclick="item_delete(this, '/staff/delete_table')">
+        <i class="fas fa-trash-alt"></i> ลบ
+      </button>
+  {% endblock modalpath %}
 
   {% block edit %}
     <form action="{% url 'edit_table' %}" method="POST">
