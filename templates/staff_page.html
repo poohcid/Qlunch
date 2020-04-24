@@ -3,7 +3,11 @@
 {% block content %}
 <h1 style="margin: 50px 0 50px 0;">{{ title }}</h1>
 <div class="addbutton row">
-  <div class="col"><button type="button" class="float-right btn btn-success mt-1 mb-4" data-toggle="modal" data-target="#createfoodModalCenter"><i class="fas fa-plus"></i> {{ create_title }}</button></div>
+  <div class="col">
+  {% if fill_title %}
+    <button type="button" class="float-right btn btn-warning mt-1 mb-4" data-toggle="modal" data-target="#fillfoodModalCenter"><i class="fas fa-plus"></i> {{ fill_title }}</button>
+  {% endif %}
+  <button type="button" class="float-right btn btn-success mt-1 mb-4" data-toggle="modal" data-target="#createfoodModalCenter"><i class="fas fa-plus"></i> {{ create_title }}</button></div>
 </div>
 <table class="table table-striped text-center">
     {% block table %}
@@ -24,6 +28,20 @@
   </div>
 </div>
 
+<div class="modal fade" id="fillfoodModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">{{ fill_title }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        {% block fill %}
+        {% endblock fill %}
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="createfoodModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">

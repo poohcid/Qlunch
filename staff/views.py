@@ -23,6 +23,7 @@ class Add_edit_food(View):
         "title" : "เพิ่ม/แก้ไข เมนูอาหาร",
         "edit_title" : "แก้ไขเมนูอาหาร",
         "create_title": "เพิ่มเมนูอาหาร",
+        "fill_title": "เติมอาหารทั้งหมด"
     }
     template = "staff/edit_food.html"
 
@@ -36,6 +37,9 @@ class Add_edit_food(View):
     @method_decorator(login_required)
     @method_decorator(permission_required("appModel.change_food"))
     def post(self, request):
+        if request.POST.get("submit") == "fill":
+            Food.objects.all().update(amount=int(request.POST.get("fill")))
+            return redirect('edit_food')
         if request.POST.get("submit") == "create":
             food_form = Food_form(request.POST)
         else:
@@ -56,7 +60,6 @@ def delete_food(request, food_id):
         return JsonResponse({}, status=200)
 
     return redirect("edit_food")
-
 
 class Add_edit_table(View):
     table_form = TableForm()

@@ -46,6 +46,19 @@
     </form>
   {% endblock edit %}
 
+  {% block fill %}
+    <form action="{% url 'edit_food' %}" method="POST">
+      {% csrf_token %}
+      <div class="modal-body" id="edit_form">
+      <label for="">จำนวน</label>
+        <input type="number" min="0" name="fill">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+        <button class="btn btn-success" name="submit" value="fill">บันทึก</button>
+      </div>
+    </form>
+  {% endblock fill %}
 
   {% block create %}
     <form action="{% url 'edit_food' %}" method="POST">

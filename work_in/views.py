@@ -130,7 +130,7 @@ def edit_order_food(request, order, table=False):
         context['order_buffet'] = Order_buffet.objects.get(order_id=order.id)
     if table:
         context['table'] = table
-    context['food'] = Food.objects.all()
+    context['food'] = Food.objects.filter(amount__gt=0).order_by("amount")
     context['order_foods'] = order.order_food_set.all().order_by("status")
     return render(request, template_name='work_in/add_edit_order.html', context=context)
     
