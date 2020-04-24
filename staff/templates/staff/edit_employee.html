@@ -1,45 +1,88 @@
 {% extends "staff_page.html" %}
-  
-  {% block table %}
-  <style>
-  .addbutton{
-    display:none;
+
+{% block table %}
+<style>
+  .addbutton {
+    display: none;
   }
-  </style>
-  <div class="row">
-    <div class="col"><a type="button" href="{% url 'create_employee' %}" class="float-right btn btn-success mt-1 mb-4"><i class="fas fa-plus"></i> สร้างผู้ใช้ใหม่</a></div>
+</style>
+<div class="row">
+  <div class="col"><a type="button" href="{% url 'create_employee' %}" class="float-right btn btn-success mt-1 mb-4"><i
+        class="fas fa-plus"></i> สร้างผู้ใช้ใหม่</a></div>
+</div>
+<thead>
+  <tr>
+    <th scope="col">รหัสพนักงาน</th>
+    <th scope="col">ชื่อ-นามสกุล</th>
+    <th scope="col">ตำแหน่ง</th>
+    <th scope="col">Username</th>
+    <th scope="col"></th>
+  </tr>
+</thead>
+<tbody>
+  {% for u in user %}
+  <tr>
+    <td>{{ u.id }}</td>
+    <td>{{ u.first_name }} {{ u.last_name }}</td>
+    <td value="{{ u.name }}">{{ u.groups.all.0 }}</td>
+    <td value="{{ u.price }}">{{ u.username }}</td>
+    <td>
+      <a type="button" class="btn btn-warning" id="{{ u.id }}" href={% url 'change_employee' user_id=u.id %}>
+        <i class="fas fa-edit"></i> แก้ไข
+      </a>
+      <button class="btn btn-danger" id="buttonlist{{ u.id }}" num="{{ u.id }}" onclick="sendto_modal(this)" data-toggle="modal" data-target="#exampleModalCenter">
+      <i class="fas fa-trash-alt"></i> ลบ</button>
+    </td>
+  </tr>
+  {% endfor %}
+</tbody>
+
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">ลบ</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ลบ
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="deletebutton btn btn-primary" data-dismiss="modal" onclick="item_delete(this, 'delete_employee')">
+          <i class="fas fa-trash-alt"></i> ลบ
+        </button>
+      </div>
+    </div>
   </div>
-    <thead>
-        <tr>
-            <th scope="col">รหัสพนักงาน</th>
-            <th scope="col">ชื่อ-นามสกุล</th>
-            <th scope="col">ตำแหน่ง</th>
-            <th scope="col">Username</th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for u in user %}
-        <tr>
-            <td>{{ u.id }}</td>
-            <td>{{ u.first_name }} {{ u.last_name }}</td>
-            <td value="{{ u.name }}">{{ u.groups.all.0 }}</td>
-            <td value="{{ u.price }}">{{ u.username }}</td>
-            <td>
-                <a type="button" class="btn btn-warning" id="{{ u.id }}" href={% url 'change_employee' user_id=u.id %}>
-                  <i class="fas fa-edit"></i> แก้ไข
-                </a>
-                  <button class="btn btn-danger" id="{{ u.id }}"  onclick="item_delete(this, 'delete_employee')"><i class="fas fa-trash-alt"></i> ลบ</button>
-            </td>
-        </tr>
-    {% endfor %}
-    </tbody>
-    <script>
-      function item_delete(button, path){
-        axios.delete('/staff/'+path+'/'+button.id+'/')
-        .then(function (respone){
-          button.parentElement.parentElement.remove()
-        })
-      }
-    </script>
-  {% endblock table %}
+</div>
+
+
+<script>
+  function sendto_modal(button){
+  var del_button = document.querySelector(".deletebutton")
+  del_button.id = button.getAttribute("num")
+  }
+
+  function item_delete(button, path) {
+    axios.delete('/staff/' + path + '/' + button.id + '/')
+      .then(function (response) {
+        console.log("then1")
+        var text = "buttonlist"+button.id
+        var del = document.getElementById(text)
+        del.parentElement.parentElement.remove()
+      })
+      .catch()
+      .then(function (response) {
+        console.log("then2")
+        var text = "buttonlist"+button.id
+        var del = document.getElementById(text)
+        del.parentElement.parentElement.remove()
+      });
+  }
+</script>
+{% endblock table %}
