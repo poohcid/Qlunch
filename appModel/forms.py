@@ -58,7 +58,7 @@ class Order_food(ModelForm):
 class Cus_buffet(ModelForm):
     class Meta:
         model = Customer_buffet
-        exclude = ['customer']
+        exclude = ['customer', 'tax_id']
         widgets={
             "company":forms.TextInput(attrs={'class':'form-control'}),
             "phone":forms.TextInput(attrs={'class':'form-control'}),

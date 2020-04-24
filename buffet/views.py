@@ -87,7 +87,7 @@ def tax_invoice(request, order_id):
     customer = Customer_buffet.objects.get(customer_id=orderbuffet.order.customer_id)
     orderfood = Order_food.objects.filter(order_id=order_id).filter(status__in=check)
     for i in orderfood:
-        total_price += i.food.price
+        total_price += i.food_price
     if total_price == 0:
         context['error'] = 'ไม่สามารถออกใบกำกับภาษีได้เนื่องจากออเดอร์นี้ไม่ได้ทำการสั่งเมนูใดเลย!'
 
