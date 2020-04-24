@@ -9,10 +9,12 @@
   {% endif %}
   <button type="button" class="float-right btn btn-success mt-1 mb-4" data-toggle="modal" data-target="#createfoodModalCenter"><i class="fas fa-plus"></i> {{ create_title }}</button></div>
 </div>
+<div class="table-responsive">
 <table class="table table-striped text-center">
     {% block table %}
     {% endblock table %}
 </table>
+></div>
 <div class="modal fade" id="editfoodModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
