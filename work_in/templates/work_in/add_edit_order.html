@@ -33,34 +33,9 @@
         transition: 0.2s;
     }
 
-    #flex {
-        display: flex;
-        justify-content: center;
 
-    }
-
-    @keyframes test {
-        from {
-            top: -1000;
-        }
-    }
-
-    #notification {
-        width: 500px;
-        height: 90px;
-        position: fixed;
-        top: 5;
-        z-index: 1;
-        border-radius: 10px;
-        animation: test .75s ease;
-        color: #fff;
-        font-size: 25px;
-        padding-top: 15px;
-        transition: 0.25s;
-        background: #66BB6A;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    }
-
+   
+    
     #button_side {
         width: 65px;
         height: 65px;
@@ -113,11 +88,7 @@
         }
     }
 </style>
-<center>
-    <div id="flex">
 
-    </div>
-</center>
 {% if table %}
 <h2><br>โต๊ะที่ : {{ table.id }}</h2>
 <h2>หมายเลขออเดอร์ : {{ order.id }}</h2>

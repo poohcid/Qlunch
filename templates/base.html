@@ -71,77 +71,105 @@
     .navbar {
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     }
-    a img{
+
+    a img {
       width: 140px;
       height: 50px;
       padding: 0;
       margin: 0;
     }
+
     .containercheck {
-        display: block;
-        position: relative;
-        padding-left: 35px;
-        margin-top: 12px;
-        margin-bottom: 12px;
-        cursor: pointer;
-        font-size: 18px;
-        transition: 0.25s;
-        user-select: none;
+      display: block;
+      position: relative;
+      padding-left: 35px;
+      margin-top: 12px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: 0.25s;
+      user-select: none;
     }
 
     /* Hide the browser's default checkbox */
     .containercheck input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        height: 0;
-        width: 0;
-        border-radius: 10px;
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+      border-radius: 10px;
     }
 
     /* Create a custom checkbox */
     .checkmark {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 25px;
-        border-radius: 5px;
-        width: 25px;
-        background-color: #eee;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 25px;
+      border-radius: 5px;
+      width: 25px;
+      background-color: #eee;
     }
 
     /* On mouse-over, add a grey background color */
     .containercheck:hover input~.checkmark {
-        background-color: #ccc;
+      background-color: #ccc;
     }
 
     /* When the checkbox is checked, add a blue background */
     .containercheck input:checked~.checkmark {
-        background-color: #4d4c7d;
+      background-color: #4d4c7d;
     }
 
     /* Create the checkmark/indicator (hidden when not checked) */
     .checkmark:after {
-        content: "";
-        position: absolute;
-        display: none;
+      content: "";
+      position: absolute;
+      display: none;
     }
 
     /* Show the checkmark when checked */
     .containercheck input:checked~.checkmark:after {
-        display: block;
+      display: block;
     }
 
     /* Style the checkmark/indicator */
     .containercheck .checkmark:after {
-        left: 9px;
-        top: 5px;
-        width: 5px;
-        height: 10px;
-        border: solid white;
-        border-width: 0 3px 3px 0;
-        transform: rotate(45deg);
+      left: 9px;
+      top: 5px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
     }
+    #flex {
+        display: flex;
+        justify-content: center;
+
+    }
+     @keyframes drop {
+        from {
+            top: -1000;
+        }
+    }
+    #notification {
+        width: 500px;
+        height: 90px;
+        position: fixed;
+        top: 5;
+        z-index: 1;
+        border-radius: 10px;
+        animation: drop .75s ease;
+        color: #fff;
+        font-size: 25px;
+        padding-top: 15px;
+        transition: 0.25s;
+        background: #66BB6A;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    }
+
   </style>
 
 </head>
@@ -161,28 +189,35 @@
           <a class="nav-link" href="/work_in/">Home <span class="sr-only">(current)</span></a>
         </li> {% endcomment %}
         <li class="nav-item">
-          {% if perms.appModel.view_table %}<a class="nav-link" href="{% url 'here_or_home'%}">รายชื่อโต๊ะ</a>{% endif %}
+          {% if perms.appModel.view_table %}<a class="nav-link"
+            href="{% url 'here_or_home'%}">รายชื่อโต๊ะ</a>{% endif %}
         </li>
         <li class="nav-item">
-          {% if perms.appModel.add_order_in %}<a class="nav-link" href="{% url 'manage_order'%}">จัดการออเดอร์</a>{% endif %}
+          {% if perms.appModel.add_order_in %}<a class="nav-link"
+            href="{% url 'manage_order'%}">จัดการออเดอร์</a>{% endif %}
         </li>
         <li class="nav-item">
           {% if perms.appModel.add_customer %}<a class="nav-link" href="{% url 'booking' %}">จัดการคิว</a>{% endif %}
         </li>
         <li class="nav-item">
-          {% if perms.appModel.add_order_buffet %}<a class="nav-link" href="{% url 'orderlist'%}">ออเดอร์จัดเลี้ยง</a>{% endif %}
+          {% if perms.appModel.add_order_buffet %}<a class="nav-link"
+            href="{% url 'orderlist'%}">ออเดอร์จัดเลี้ยง</a>{% endif %}
         </li>
         <li class="nav-item">
-          {% if perms.appModel.change_order_food %}<a class="nav-link" href="{% url 'kitchen'%}">ยืนยันรายการอาหาร</a>{% endif %}
+          {% if perms.appModel.change_order_food %}<a class="nav-link"
+            href="{% url 'kitchen'%}">ยืนยันรายการอาหาร</a>{% endif %}
         </li>
         <li class="nav-item">
-          {% if perms.auth.change_user %}<a class="nav-link" href="{% url 'edit_employee'%}">เพิ่ม/แก้ไขพนักงาน</a>{% endif %}
+          {% if perms.auth.change_user %}<a class="nav-link"
+            href="{% url 'edit_employee'%}">เพิ่ม/แก้ไขพนักงาน</a>{% endif %}
         </li>
         <li class="nav-item">
-          {% if perms.appModel.change_food %}<a class="nav-link" href="{% url 'edit_food'%}">เพิ่ม/แก้ไขเมนูอาหาร</a>{% endif %}
+          {% if perms.appModel.change_food %}<a class="nav-link"
+            href="{% url 'edit_food'%}">เพิ่ม/แก้ไขเมนูอาหาร</a>{% endif %}
         </li>
         <li class="nav-item">
-          {% if perms.appModel.change_table %}<a class="nav-link" href="{% url 'edit_table'%}">เพิ่ม/แก้ไขโต๊ะ</a>{% endif %}
+          {% if perms.appModel.change_table %}<a class="nav-link"
+            href="{% url 'edit_table'%}">เพิ่ม/แก้ไขโต๊ะ</a>{% endif %}
         </li>
         <li class="nav-item active">
           <div class="dropdown show" style="margin: 0px 40px 0 15px;">
@@ -199,6 +234,11 @@
 
     </div>
   </nav>
+  <center>
+    <div id="flex">
+
+    </div>
+  </center>
 
   <div class="container-md">
     {% block content %}
@@ -206,42 +246,61 @@
   </div>
 
   <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">ลบข้อมูล</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ยืนยันที่จะลบข้อมูลใช่หรือไม่?
-      </div>
-      <div class="modal-footer"> 
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-        {% block modalpath %}
-          
-        {% endblock modalpath %}
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">ลบข้อมูล</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ยืนยันที่จะลบข้อมูลใช่หรือไม่?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+          {% block modalpath %}
+
+          {% endblock modalpath %}
+        </div>
       </div>
     </div>
   </div>
-</div>
-<script>
-      function sendto_modal(button){
-        var del_button = document.querySelector(".deletebutton")
-        del_button.id = button.getAttribute("num")
-      }
-      function item_delete(button, path){
-        axios.delete(path+'/'+button.id+'/')
-        .then(function (respone){
-          console.log("then1")
-          var text = "buttonlist"+button.id
+  <script>
+    function sendto_modal(button) {
+      var del_button = document.querySelector(".deletebutton")
+      del_button.id = button.getAttribute("num")
+    }
+
+    function item_delete(button, path) {
+      axios.delete(path + '/' + button.id + '/')
+        .then(function (respone) {
+          console.log("then1123123123312")
+          var text = "buttonlist" + button.id
           var del = document.getElementById(text)
           del.parentElement.parentElement.remove()
+          delete_notification()
         })
-      }
-</script>
+    }
+
+    function delete_notification() {
+      var flex = document.getElementById("flex")
+      var div = document.createElement("div")
+      console.log(status)
+      div.id = "notification"
+      div.style.background = "#f46060"
+      div.innerHTML = "<span style='font-size:50px;'><i class='fas fa-trash-alt'></i></span> ลบข้อมูลเสร็จสิ้น"
+      flex.appendChild(div)
+      setTimeout(function () {
+        document.getElementById("notification").style.opacity = "0"
+      }, 2500);
+      setTimeout(function () {
+        document.getElementById("notification").remove()
+      }, 3000);
+
+    }
+  </script>
 </body>
 
 </html>

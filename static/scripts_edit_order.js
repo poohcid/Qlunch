@@ -36,8 +36,8 @@ function toData() {
 }
 
 function sendForm(button) {
-    if (button.value === "sendorder"){
-        if (!confirm("ต้องการจะส่งออเดอร์ใช่หรือไม่")){
+    if (button.value === "sendorder") {
+        if (!confirm("ต้องการจะส่งออเดอร์ใช่หรือไม่")) {
             return 0;
         }
     }
@@ -79,7 +79,7 @@ function calTotal() {
 
 
 function addtoOrder(list) {
-    if (window.screen.availWidth < 896){
+    if (window.screen.availWidth < 896) {
         switchmenu()
     }
     var order_ul = document.querySelectorAll("#foodorder > li")
@@ -177,7 +177,7 @@ function notification(status) {
         }, 2500);
         setTimeout(function() {
             document.getElementById("notification").remove()
-        }, 4000);
+        }, 3000);
         document.getElementById("order_foods").value = ""
         updateorder()
     }
