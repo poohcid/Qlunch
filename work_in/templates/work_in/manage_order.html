@@ -64,6 +64,7 @@
                     <tr>
                         <th scope="col">ชื่อออเดอร์</th>
                         <th scope="col">วัน-เวลาที่สร้าง</th>
+                        <th scope="col">ออกโดย</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -72,6 +73,7 @@
                     <tr>
                         <td>{{order_list.name}}</td>
                         <td>{{order_list.date_book|date:"d-M-Y H:i น."}}</td>
+                        <td>{{order_list.employee.first_name}}</td>
                         <td>
                             <a type="button" class="btn btn-success" href="{% url 'get_order' id=order_list.id %}"><i
                                     class="fas fa-utensils"></i> สั่งอาหาร</a>
@@ -92,6 +94,7 @@
                     <tr>
                         <th scope="col">ชื่อออเดอร์</th>
                         <th scope="col">วัน-เวลาที่สร้าง</th>
+                        <th scope="col">ออกโดย</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -100,6 +103,7 @@
                     <tr>
                         <td>{{order_list.name}}</td>
                         <td>{{order_list.date_book|date:"d-M-Y H:i น."}}</td>
+                        <td>{{order_list.employee.first_name}}</td>
                         <td>
                             <a type="button" class="btn btn-success" href="{% url 'get_order' id=order_list.id %}"><i
                                     class="fas fa-utensils"></i> สั่งอาหาร</a>
