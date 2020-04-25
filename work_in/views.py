@@ -171,11 +171,13 @@ def get_order(request, id):
 @permission_required('appModel.add_customer')
 def booking(request):
     context = {}
+    """
     customer_have_order = []
     order = Order.objects.filter(customer__isnull=False)
     for i in order:
         customer_have_order.append(i.customer.id)
     print(customer_have_order)
+    """
     if request.method == "POST":
         customer = Customer.objects.create(
             name=request.POST.get('customer_name'),
@@ -183,7 +185,7 @@ def booking(request):
         )
         return redirect('booking')
 
-    context['customer'] = Customer.objects.exclude(id__in=customer_have_order)
+    context['customer'] = Customer.objects.filter(customer_buffet=None)
     return render(request, 'work_in/booking.html', context=context)
 
 @login_required
