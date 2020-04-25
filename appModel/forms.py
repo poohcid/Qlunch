@@ -7,16 +7,14 @@ from appModel.models import Table, Order, Order_food, Receipt,Customer_buffet, C
 class TableForm(ModelForm):
     class Meta:
         model = Table
-        fields = "__all__"
+        fields = ["space"]
         widgets={
             "space":forms.NumberInput(attrs={'class':'form-control', 'min':'0'}),
-            "status":forms.CheckboxInput(attrs={'class':'form-control'}),
         }
         labels = {
             'space': 'ความจุ ',
-            'status': 'สถานะ '
         }
-        
+
 class OrderForm(ModelForm):
     class Meta:
         model = Order

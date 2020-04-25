@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-#import dj_database_url
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -92,7 +92,7 @@ DATABASES = {
     }
 }
 
-#DATABASES['default'] = dj_database_url.config(default='postgres://dcfvkfvmjupkzf:ab334b9d4b1f4c845d91085ba4858e8729b5f85c4612dfd056fdf1eca9fc1c7a@ec2-52-71-85-210.compute-1.amazonaws.com:5432/dadfk5rihfn8hm')
+DATABASES['default'] = dj_database_url.config(default='postgres://dcfvkfvmjupkzf:ab334b9d4b1f4c845d91085ba4858e8729b5f85c4612dfd056fdf1eca9fc1c7a@ec2-52-71-85-210.compute-1.amazonaws.com:5432/dadfk5rihfn8hm')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
