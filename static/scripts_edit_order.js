@@ -36,6 +36,9 @@ function toData() {
 }
 
 function sendForm(button) {
+    if (button.value === "sendorder"){
+        confirm("ต้องการจะส่งออเดอร์ใช่หรือไม่")
+    }
     let save_data = toData()
     save_data += "action=" + button.value + "&order_foods=" + document.getElementById("order_foods").value
     console.log(save_data)

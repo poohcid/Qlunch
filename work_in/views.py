@@ -123,6 +123,8 @@ def save_order(request, order_id):
 @permission_required('appModel.add_order_food')
 def edit_order_food(request, order, table=False):
     context = {}
+    if Receipt.objects.filter(order=order):
+        return redirect('/')
     context['order'] = order
     if order.order_type == "order_buffet":
         context['buffet'] = "buffet"
