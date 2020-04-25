@@ -65,7 +65,7 @@ class Receipt(models.Model):
 
 class Table(models.Model):
     space = models.IntegerField()
-    status = models.BooleanField()
+    status = models.BooleanField(default=False)
 
 class Order_in(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE)
