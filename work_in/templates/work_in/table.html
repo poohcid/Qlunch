@@ -115,10 +115,30 @@
     <div class="row row-cols-4 row-cols-sm-3 row-cols-md-5 " id="table_list">
         {% for t in table %}
         {% if t.status %}
-        <div class="col animated zoomIn" style="animation-delay: {{forloop.counter0}}0ms; animation-duration:500ms;"><a href="{% url 'select_table' table_id=t.id %}" class="activetable" type="button">{{t.id}}</a>
+        <div class="col animated zoomIn" style="animation-delay: {{forloop.counter0}}0ms; animation-duration:500ms;"><a href="{% url 'select_table' table_id=t.id %}" class="activetable" type="button">
+            {% if t.space == 4 %}
+                    A{{t.id}}
+            {% elif t.space == 6 %}
+                    B{{t.id}}
+            {% elif t.space == 8 %}
+                    c{{t.id}}
+            {% else %}
+                    D{{ t.id }}
+            {% endif %}
+        </a>
         </div>
         {% else %}
-        <div class="col animated zoomIn" style="animation-delay: {{forloop.counter0}}0ms; animation-duration:500ms;"><a href="" class="busytable" type="button" disable>{{t.id}} <i class="fas fa-lock"></i></a>
+        <div class="col animated zoomIn" style="animation-delay: {{forloop.counter0}}0ms; animation-duration:500ms;"><a href="" class="busytable" type="button" disable>
+            {% if t.space == 4 %}
+                    A{{t.id}}
+            {% elif t.space == 6 %}
+                    B{{t.id}}
+            {% elif t.space == 8 %}
+                    c{{t.id}}
+            {% else %}
+                    D{{ t.id }}
+            {% endif %}
+        <i class="fas fa-lock"></i></a>
         </div>
         {% endif %}
         {% endfor %}
