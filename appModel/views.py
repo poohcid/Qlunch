@@ -25,6 +25,7 @@ def index(request):
             return redirect('../work_in/')
     return redirect('login/')
 
+"""
 def register(request):
     context = {}
     if request.method == "POST":
@@ -48,7 +49,7 @@ def register(request):
             context['error'] = 'รหัสผ่านไม่ถูกต้อง!'
 
     return render(request, 'authen/register.html', context=context)
-
+"""
 
 def my_login(request):
     context = {}
