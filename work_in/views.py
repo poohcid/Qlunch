@@ -88,11 +88,9 @@ def at_store(request):
 def save_order(request, order_id):
     if request.method == "POST":
         order = Order.objects.get(pk=order_id)
-        total_price = order.total_price
         food_id_list = request.POST.get("order_foods").split(",")[:-1]
         remove_list = order.order_food_set.exclude(food__in=food_id_list).filter(status=None)
         for order_food in remove_list:
-            total_price -= order_food.food_price
             order_food.delete()
         for food_id in food_id_list:
             food = Food.objects.get(pk=food_id)
@@ -109,10 +107,12 @@ def save_order(request, order_id):
                     food = food,
                     order = order
                 )
-            total_price += order_food.food_price
             if request.POST.get('action') == "sendorder":
                 order_food.status = False
                 order_food.save()
+        total_price = 0
+        for i in Order_food.objects.filter(order=order):  #บวกจำนวนเงินทั้งหมด
+            total_price += i.food_price
         order.total_price = total_price
         order.save()
         response = {
@@ -207,13 +207,13 @@ def del_booking(request, cus_id):
 @permission_required('appModel.add_receipt')
 def receipt(request, id):
     context = {}
-    total_price = 0
     order = Order.objects.get(pk=id)
+    total_price = order.total_price
     check = [False, True]
     order_food = Order_food.objects.filter(order_id=id).filter(status__in=check)
     
-    for i in order_food:  #บวกจำนวนเงินทั้งหมด
-        total_price += i.food_price
+    #for i in order_food:  #บวกจำนวนเงินทั้งหมด
+    #total_price += i.food_price
 
     if order.order_type == "order_in":
         order_in = Order_in.objects.get(order_id=id)
