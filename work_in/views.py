@@ -47,7 +47,7 @@ def create_order(request):
             for i in request.POST.get("count_table").split(","):
                 if i == "":
                     break
-                table1 = Table.objects.get(pk=int(i))
+                table1 = Table.objects.get(pk=int(i[1:]))
                 table1.status = True
                 table1.save()
                 order_in1.table.add(table1)
@@ -88,9 +88,11 @@ def at_store(request):
 def save_order(request, order_id):
     if request.method == "POST":
         order = Order.objects.get(pk=order_id)
+        total_price = order.total_price
         food_id_list = request.POST.get("order_foods").split(",")[:-1]
         remove_list = order.order_food_set.exclude(food__in=food_id_list).filter(status=None)
         for order_food in remove_list:
+            total_price -= order_food.food_price
             order_food.delete()
         for food_id in food_id_list:
             food = Food.objects.get(pk=food_id)
@@ -107,9 +109,12 @@ def save_order(request, order_id):
                     food = food,
                     order = order
                 )
+            total_price += order_food.food_price
             if request.POST.get('action') == "sendorder":
                 order_food.status = False
                 order_food.save()
+        order.total_price = total_price
+        order.save()
         response = {
             "status" : "บันทึกข้อมูลเรียบร้อย",
         }

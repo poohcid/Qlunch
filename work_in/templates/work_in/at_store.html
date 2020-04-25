@@ -118,15 +118,7 @@
         <i class="fas fa-lock"></i></div></button></div>
         {% else %}   
         <div class="col animated lightSpeedIn fast"><button class="activetable" type="button" onclick="select_order(this)"><div class="button_content">
-            {% if t.space == 4 %}
-                    A{{t.id}}
-            {% elif t.space == 6 %}
-                    B{{t.id}}
-            {% elif t.space == 8 %}
-                    c{{t.id}}
-            {% else %}
-                    D{{ t.id }}
-            {% endif %}
+            {% if t.space == 4 %}A{{t.id}}{% elif t.space == 6 %}B{{t.id}}{% elif t.space == 8 %}c{{t.id}}{% else %}D{{ t.id }}{% endif %}
         </div></button></div>
         {% endif %}
         {% endfor %}
@@ -141,7 +133,7 @@
         var hidden_input;
         if (button.firstElementChild.style.border == "7px solid rgb(45, 45, 45)") {
             button.firstElementChild.style.border = "0px solid #333";
-            hidden_input = document.getElementById("t"+button.firstElementChild.innerHTML)
+            hidden_input = document.getElementById("t"+button.firstElementChild.innerText)
             hidden_input.remove()
             console.log(div)    
         } else {
@@ -149,9 +141,9 @@
             button.firstElementChild.style.border = "7px solid rgb(45, 45, 45)";
             hidden_input = document.createElement("input")
             hidden_input.setAttribute("type", "text")
-            hidden_input.setAttribute("value", button.firstElementChild.innerHTML)
-            hidden_input.setAttribute("name", "t"+button.firstElementChild.innerHTML)
-            hidden_input.setAttribute("id", "t"+button.firstElementChild.innerHTML)
+            hidden_input.setAttribute("value", button.firstElementChild.innerText)
+            hidden_input.setAttribute("name", "t"+button.firstElementChild.innerText)
+            hidden_input.setAttribute("id", "t"+button.firstElementChild.innerText)
             div.appendChild(hidden_input)       
             console.log(div)
         }
@@ -170,19 +162,19 @@
         document.getElementById("count_table").value = ""
         var num = document.querySelectorAll(".hidden_div > input");
         var text = document.querySelector("#exampleModalLabel");
-        text.innerHTML = "หมายเลขโต๊ะที่เลือก คือ "
+        text.innerText = "หมายเลขโต๊ะที่เลือก คือ "
         for(i=0;i<count;i++){
             if(i==0){
-                text.innerHTML = text.innerHTML+num[i].value
+                text.innerText = text.innerText+num[i].value
                 document.getElementById("count_table").value += num[i].value
             }
             else{
-                text.innerHTML = text.innerHTML+", "+num[i].value
+                text.innerText = text.innerText+", "+num[i].value
                 document.getElementById("count_table").value += ","+num[i].value
             }
             
         }
-        console.log(text.innerHTML)
+        console.log(text.innerText)
         document.getElementById("id_name").value = "โต๊ะ "+document.getElementById("count_table").value
     }
 </script>
