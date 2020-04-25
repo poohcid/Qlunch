@@ -79,6 +79,9 @@ function calTotal() {
 
 
 function addtoOrder(list) {
+    if (window.screen.availWidth < 896){
+        switchmenu()
+    }
     var order_ul = document.querySelectorAll("#foodorder > li")
     var have_menu = false
         //สำหรับบันทึกข้อมูล
