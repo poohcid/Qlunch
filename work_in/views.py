@@ -190,7 +190,7 @@ def booking(request):
         )
         return redirect('booking')
 
-    context['customer'] = Customer.objects.filter(customer_buffet=None)
+    context['customer'] = Customer.objects.filter(customer_buffet=None).filter(order=None)
     return render(request, 'work_in/booking.html', context=context)
 
 @login_required
