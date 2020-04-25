@@ -13,7 +13,7 @@
     <tbody>
     {% for f in food %}
         <tr>
-            <th scope="row">{{ f.id }}</th>
+            <th scope="row">{{ forloop.counter }}</th>
             <td value="{{ f.name }}">{{ f.name }}</td>
             <td value="{{ f.price }}">{{ f.price }} บาท</td>
             <td value="{{ f.amount }}">{{ f.amount }}</td>
