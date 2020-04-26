@@ -23,7 +23,13 @@
         {{buffet_form.location}}
 
         {{buffet_form.date.label}}
+        {{buffet_form.date.errors}}
         {{buffet_form.date}}
+        {% if buffet_form.end_time.errors %}
+            <div class="alert alert-danger m-0 p-0 pt-3" role="alert">
+                <b>{{ buffet_form.end_time.errors }}</b>
+            </div>
+        {% endif %}
         <div class="row">
             <div class="col">
                 {{buffet_form.start_time.label}}

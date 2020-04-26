@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.forms import ModelForm, CharField, Textarea
 from django import forms
@@ -33,7 +34,7 @@ class Order_buffet_form(ModelForm):
         model = Order_buffet
         exclude = ['order_id','order']
         widgets={
-            "earnest":forms.TextInput(attrs={'class':'form-control'}),
+            "earnest":forms.NumberInput(attrs={'class':'form-control'}),
             "location":forms.Textarea(attrs={'class':'form-control','rows':4, 'cols':15}),
             "date": forms.DateInput(attrs={'id':'input_date','name':'date'}, format=['%d-%m-%Y']),
             "start_time": forms.TimeInput(attrs={'id':'input_starttime','name':'start_time'}, format=['%H:%M']),
@@ -47,6 +48,13 @@ class Order_buffet_form(ModelForm):
             'end_time': 'เวลาสิ้นสุด',
         }
 
+    def clean_end_time(self):
+        start_time = self.cleaned_data.get("start_time")
+        end_time = self.cleaned_data.get("end_time")
+        if start_time > end_time:
+            raise forms.ValidationError("กรอกเวลาสิ้นสุดไม่ถูกต้อง", code="end_time letter than start_time")
+        return end_time
+
 class Order_food(ModelForm):
     class Meta:
         model = Order_food
@@ -59,7 +67,7 @@ class Cus_buffet(ModelForm):
         exclude = ['customer', 'tax_id']
         widgets={
             "company":forms.TextInput(attrs={'class':'form-control'}),
-            "phone":forms.TextInput(attrs={'class':'form-control'}),
+            "phone":forms.TextInput(attrs={'class':'form-control', 'pattern' : '[0-9]{3}[0-9]{3}[0-9]{4}'}),
             "address":forms.Textarea(attrs={'class':'form-control'}),  
         } 
         labels = {
@@ -216,10 +224,16 @@ class Employee_form(ModelForm):
         model = Employee
         exclude = ['user']
         widgets={
-            "phone":forms.TextInput(attrs={'class':'form-control'}),
+            "phone":forms.TextInput(attrs={'class':'form-control', 'pattern' : '[0-9]{3}[0-9]{3}[0-9]{4}'}),
             "address":forms.Textarea(attrs={'class':'form-control', 'rows':'3'}),
         }
         labels = {
             "phone" : "เบอร์โทรศัพท์",
             "address" : "ที่อยู่"
         }
+    
+    def clean_phone(self):
+        phone = self.cleaned_data.get("phone")
+        if not phone.isnumeric():
+            raise forms.ValidationError("กรอกเบอร์โทรให้ถูกต้อง", code="")
+        return phone

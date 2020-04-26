@@ -60,6 +60,11 @@
 
         {% for emp_form in emp_form %}
         <b>{{ emp_form.label }}</b>
+        {% if emp_form.errors %}
+            <div class="alert alert-danger m-0 p-0 pt-3" role="alert">
+                <b>{{ emp_form.errors }}</b>
+            </div>
+        {% endif %}
         {{ emp_form }}
         {% endfor %}<br>
         <button name="submit" class="btn btn-success"><i class="fas fa-save"></i> บันทึก</button>

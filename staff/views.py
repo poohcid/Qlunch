@@ -119,15 +119,15 @@ def create_employee(request):
     if request.method == "POST":
         user_form = User_form(request.POST)
         employee_form = Employee_form(request.POST)
-        if user_form.is_valid():
+        if user_form.is_valid() and employee_form.is_valid():
             user = user_form.save()
-            if employee_form.is_valid():
-                emp = employee_form.save(commit=False)
-                emp.user = user
-                emp.save()
-                return redirect('edit_employee')
+            emp = employee_form.save(commit=False)
+            emp.user = user
+            emp.save()
+            return redirect('edit_employee')
         else:
             context["user_form"] = user_form
+            context["emp_form"] = employee_form
     return render(request, "staff/create_employee.html", context=context)
 
 @login_required
@@ -136,18 +136,16 @@ def change_employee(request, user_id):
     context={}
     user = User.objects.get(pk=user_id)
     emp = Employee.objects.get(user=user)
+    emp_form = Employee_form(instance=emp)
     if request.method == "POST":
         user_form = User_change_form(request.POST, instance=user)
         employee_form = Employee_form(request.POST, instance=emp)
-        if user_form.is_valid():
+        if user_form.is_valid() and employee_form.is_valid():
             user_form.save()
-            if employee_form.is_valid():
-                employee_form.save()
-                return redirect('edit_employee')
-            else:
-                print(123)
+            employee_form.save()
+            return redirect('edit_employee')
         else:
-            print(456)
+            emp_form = employee_form
     user_form = User_change_form(instance=user, initial={
         "role_waiter" : bool(user.groups.filter(name="waiter")),
         "role_salesman" : bool(user.groups.filter(name="salesman")),
@@ -156,7 +154,7 @@ def change_employee(request, user_id):
     })
     context={
         "user_form" : user_form,
-        "emp_form" : Employee_form(instance=emp),
+        "emp_form" : emp_form,
         "user_id" : user_id
     }
     return render(request, "staff/change_employee.html", context=context)
