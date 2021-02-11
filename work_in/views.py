@@ -268,19 +268,3 @@ def createorder_booking(request, cus_id):
     context['table'] = table
     context['form_order'] = form_order
     return render(request, template_name='work_in/at_store.html', context=context)
-
-@csrf_exempt
-def del_order(request):
-    try:
-        data = json.loads(request.body)
-        order = Order.objects.get(pk=int(data["order_id"]))
-        for table in order.order_in.table.all():
-            table.status = False
-            table.save()
-        order.delete()
-        response = {
-            "order" : data["order_id"]
-        }
-        return JsonResponse(response, status=200)
-    except json.JSONDecodeError:
-        return redirect('here_or_home')
